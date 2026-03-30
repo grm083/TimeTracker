@@ -111,19 +111,9 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Extension
 
         public EmployeeAuthenticationModel GetAuthenticatedUserFromTicket(FormsAuthenticationTicket ticket)
         {
-            if (ticket == null)
-            {
-                return null;
-            }
-            var _UserData = ticket.UserData;
-            JavaScriptSerializer _JavaScriptSerializer = new JavaScriptSerializer();
-            if ((_UserData != null) && (_UserData.Length > 0))
-            {
-                LoginModel loginModel= _JavaScriptSerializer.Deserialize<LoginModel>(_UserData);
-                AccountController accountController = new AccountController();
-                EmployeeAuthenticationModel employeeAuthenticationModel = accountController.ValidateUser(loginModel.UserName, loginModel.Password);
-                return employeeAuthenticationModel;
-            }
+            // Session has expired but the Forms Auth cookie is still valid.
+            // Rather than replaying stored credentials, return null to force
+            // the user back to the login page via SessionTimeoutAttribute.
             return null;
         }
     }

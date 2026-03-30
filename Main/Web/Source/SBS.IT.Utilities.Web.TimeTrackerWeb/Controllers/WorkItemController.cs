@@ -26,14 +26,14 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         //The URL of the WEB API Service
         string url = "http://mpindo02pc207.wm.com/SBS.IT.Utilities.TimeTrackerWebAPI/api/Project/";
 
-        public WorkItemController()
+        public WorkItemController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration)
         {
             client = new HttpClient();
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            apiExtension = new APIExtension();
-            apiConfiguration =new  APIConfiguration();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
         }
 
         // GET: WorkItem

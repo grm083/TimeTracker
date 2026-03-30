@@ -23,11 +23,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIExtension apiExtension;
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
-        public ProjectController()
+        public ProjectController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
         // GET: Project
         public ActionResult Index()
@@ -73,7 +73,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
 
         private List<ProjectModel> getProjectSearch(string searchText, string sortColumn, int sortOrder, int pageNumber, int pageSize)
         {
-            List<ProjectModel> ProjectModelLst = apiExtension.InvokeGet<List<ProjectModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectSearch + "?searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == 1 ? true:false) + "&sortColumn=" + sortColumn));
+            List<ProjectModel> ProjectModelLst = apiExtension.InvokeGet<List<ProjectModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectSearch + "?searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == 1 ? true:false) + "&sortColumn=" + sortColumn));
             return ProjectModelLst;
         }
 
@@ -90,8 +90,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ProjectTypeModel> getProjectTypeList()
         {
-            List<ProjectTypeModel> projectTypelst = apiExtension.InvokeGet<List<ProjectTypeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetProjectType));
-            return projectTypelst;
+            return ReferenceDataCache.GetProjectTypes(apiExtension, apiConfiguration);
         }
 
         /// <summary>
@@ -135,7 +134,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             int EmployeeId = authenticationModel.EmployeeId;
             if (ProjectId > 0)
             {
-                deletedCount = apiExtension.InvokeGet<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectDelete + "?projectId=" + ProjectId + "&deleteUserId=" + EmployeeId));
+                string postData = JsonConvert.SerializeObject(new { projectId = ProjectId, deleteUserId = EmployeeId });
+                deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectDelete), postData);
             }
             return Json(deletedCount);
         }

@@ -10,11 +10,15 @@ using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Core;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Edmx;
 using System.Transactions;
+using SBS.IT.Utilities.Logger.Core;
+using SBS.IT.Utilities.Logger.Implementation;
 
 namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementation
 {
     public class EFTimeTrackerDbRepository : ITrackerDbRepository
     {
+        private readonly ILogger logger = new Log4NetLogger();
+
         #region Application Method
         public IEnumerable<ApplicationModel> GetApplication(Nullable<int> isActive)
         {
@@ -258,7 +262,8 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementati
                 }
                 catch (Exception ex)
                 {
-
+                    logger.WriteMessage(this.GetType(), LogLevel.ERROR, "TimeEntryAdd failed", ex);
+                    throw;
                 }
             }
             return recordCount;
@@ -300,7 +305,8 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementati
                 }
                 catch (Exception ex)
                 {
-
+                    logger.WriteMessage(this.GetType(), LogLevel.ERROR, "TimeEntryUpdate failed", ex);
+                    throw;
                 }
             }
             return isUpdate;
@@ -370,7 +376,10 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementati
                     isValid = pc.ValidateCredentials(logonName, logonPassword, ContextOptions.Negotiate);
                 }
                 else if (isProduction == false && identity != null && identity.Name == logonName)
+                {
+                    logger.WriteMessage(this.GetType(), LogLevel.WARN, string.Format("Non-production auth bypass: user '{0}' authenticated without password validation", logonName));
                     isValid = true;
+                }
             }
             return isValid;
         }
@@ -436,11 +445,11 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementati
         public Nullable<int> EmployeeUpdatePassword(Nullable<int> employeeId, string logonName, string logonPassword, Nullable<int> updateUserId)
         {
             Nullable<int> isUpdate = null;
-            //using (var context = new EFContextFactory().TimeTrackerDBContext)
-            //{
-            //    isUpdate = context.usp_Employee_UpdatePassword(employeeId, logonName, logonPassword, updateUserId);
-            //    context.SaveChanges();
-            //}
+            using (var context = new EFContextFactory().TimeTrackerDBContext)
+            {
+                isUpdate = context.usp_Employee_UpdatePassword(employeeId, logonName, logonPassword, updateUserId);
+                context.SaveChanges();
+            }
             return isUpdate;
         }
         public IEnumerable<EmployeeSearchModel> EmployeeSearch(Nullable<int> employeeId, Nullable<int> managerId, string searchBy, Nullable<int> pageSize, Nullable<int> pageNumber, Nullable<bool> sortOrder, string sortColumn)

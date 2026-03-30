@@ -84,7 +84,7 @@ namespace SBS.IT.Utilities.API.TimeTrackerWebAPI.Controllers
             return Ok(_employee);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("EmployeeDelete")]
         public IHttpActionResult EmployeeDelete(Nullable<int> employeeId, Nullable<int> deleteUserId)
         {

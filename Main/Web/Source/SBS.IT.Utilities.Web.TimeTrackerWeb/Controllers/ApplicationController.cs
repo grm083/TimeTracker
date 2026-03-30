@@ -24,11 +24,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
 
-        public ApplicationController()
+        public ApplicationController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
         // GET: Application
         public ActionResult Index()
@@ -75,7 +75,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ApplicationModel> getapplicationList(string searchText, string sortColumn, int sortOrder, int pageNumber, int pageSize)
         {
-            List<ApplicationModel> applicationlst = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetApplicationSearch + "?applicationId=null&searchBy="+ (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty)+ "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
+            List<ApplicationModel> applicationlst = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetApplicationSearch + "?applicationId=null&searchBy="+ Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty)+ "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
             return applicationlst;
         }
 

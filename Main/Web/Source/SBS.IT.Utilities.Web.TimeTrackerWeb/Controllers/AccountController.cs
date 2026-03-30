@@ -24,13 +24,13 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly ISessionCacheManager sessionCacheManager;
         private readonly ILogger logger;
         // GET: Account
-        public AccountController()
+        public AccountController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager, ILogger logger)
         {
             this._expirationTimeSpan = FormsAuthentication.Timeout;
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
-            logger = new Log4NetLogger();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
+            this.logger = logger;
         }
         public ActionResult Login()
         {
@@ -50,8 +50,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     if (employeeAuthenticationModel != null && employeeAuthenticationModel.EmployeeId > 0)
                     {
                         var now = DateTime.UtcNow.ToLocalTime();
-                        var userDataViewModelJson = new JavaScriptSerializer().Serialize(loginModel);
-                        var ticket = new FormsAuthenticationTicket(1, loginModel.UserName, now, now.Add(_expirationTimeSpan), false, userDataViewModelJson, FormsAuthentication.FormsCookiePath);
+                        var ticket = new FormsAuthenticationTicket(1, loginModel.UserName, now, now.Add(_expirationTimeSpan), false, loginModel.UserName, FormsAuthentication.FormsCookiePath);
                         var encryptedTicket = FormsAuthentication.Encrypt(ticket);
                         var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                         cookie.HttpOnly = true;
