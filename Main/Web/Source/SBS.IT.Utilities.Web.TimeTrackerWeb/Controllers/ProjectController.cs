@@ -73,7 +73,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
 
         private List<ProjectModel> getProjectSearch(string searchText, string sortColumn, int sortOrder, int pageNumber, int pageSize)
         {
-            List<ProjectModel> ProjectModelLst = apiExtension.InvokeGet<List<ProjectModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectSearch + "?searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == 1 ? true:false) + "&sortColumn=" + sortColumn));
+            List<ProjectModel> ProjectModelLst = apiExtension.InvokeGet<List<ProjectModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectSearch + "?searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == 1 ? true:false) + "&sortColumn=" + sortColumn));
             return ProjectModelLst;
         }
 
@@ -135,7 +135,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             int EmployeeId = authenticationModel.EmployeeId;
             if (ProjectId > 0)
             {
-                deletedCount = apiExtension.InvokeGet<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectDelete + "?projectId=" + ProjectId + "&deleteUserId=" + EmployeeId));
+                string postData = JsonConvert.SerializeObject(new { projectId = ProjectId, deleteUserId = EmployeeId });
+                deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectDelete), postData);
             }
             return Json(deletedCount);
         }

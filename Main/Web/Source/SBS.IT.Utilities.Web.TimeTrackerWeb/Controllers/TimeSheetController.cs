@@ -153,7 +153,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             {
                 endDate = Convert.ToDateTime(startDate).AddDays(6).ToString();
             }
-            List<TimeEntrySearchModel> TimeSheetlst = apiExtension.InvokeGet<List<TimeEntrySearchModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetTimeEntrySearch + "?employeeId=" + (employeeId == 0 ? null : employeeId) + "&searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&timeEntryDateFrom=" + (!string.IsNullOrEmpty(startDate) ? startDate : string.Empty) + "&timeEntryDateTo=" + (!string.IsNullOrEmpty(endDate) ? endDate : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
+            List<TimeEntrySearchModel> TimeSheetlst = apiExtension.InvokeGet<List<TimeEntrySearchModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetTimeEntrySearch + "?employeeId=" + (employeeId == 0 ? null : employeeId) + "&searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&timeEntryDateFrom=" + (!string.IsNullOrEmpty(startDate) ? startDate : string.Empty) + "&timeEntryDateTo=" + (!string.IsNullOrEmpty(endDate) ? endDate : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
             return TimeSheetlst;
         }
 
@@ -551,20 +551,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllApplication));
-                request.Method = "GET";
-                String responseData = String.Empty;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseData = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-
-                    List<ApplicationModel> applicationList = JsonConvert.DeserializeObject<List<ApplicationModel>>(responseData);
-                    return Json(applicationList, JsonRequestBehavior.AllowGet);
-                }
+                List<ApplicationModel> applicationList = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllApplication));
+                return Json(applicationList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -577,27 +565,14 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetProjectItemByApplicationId + "?applicationId=" + applicationId + ""));
-                request.Method = "GET";
-                String responseData = String.Empty;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseData = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-
-                    List<ProjectItemListModel> projectItemList = JsonConvert.DeserializeObject<List<ProjectItemListModel>>(responseData);
-                    return Json(projectItemList, JsonRequestBehavior.AllowGet);
-                }
+                List<ProjectItemListModel> projectItemList = apiExtension.InvokeGet<List<ProjectItemListModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetProjectItemByApplicationId + "?applicationId=" + applicationId));
+                return Json(projectItemList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, ex.Message, ex);
                 return Json(new List<ProjectItemListModel>(), JsonRequestBehavior.AllowGet);
             }
-
         }
 
         public JsonResult GetAllProjectItembyProjectId(int projectId)
@@ -620,20 +595,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllWorkType + "?isActive=true"));
-                request.Method = "GET";
-                String responseData = String.Empty;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseData = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-
-                    List<WorkTypeModel> workTypeList = JsonConvert.DeserializeObject<List<WorkTypeModel>>(responseData);
-                    return Json(workTypeList, JsonRequestBehavior.AllowGet);
-                }
+                List<WorkTypeModel> workTypeList = apiExtension.InvokeGet<List<WorkTypeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllWorkType + "?isActive=true"));
+                return Json(workTypeList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -658,7 +621,9 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                         isRedirect = true
                     });
                 }
-                if (ValidateTimeEntries(model, ref responseData))
+                var workTypelst = getWorkTypeList();
+                var projectlst = getallProjectList();
+                if (ValidateTimeEntries(model, workTypelst, projectlst, ref responseData))
                 {
                     model.CreateUserId = model.UserId = authenticationModel.EmployeeId;
                     var postData = JsonConvert.SerializeObject(model);
@@ -678,13 +643,10 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             return Json(responseData, JsonRequestBehavior.AllowGet);
         }
 
-        private bool ValidateTimeEntries(TimeSheetModel model, ref String responseData)
+        private bool ValidateTimeEntries(TimeSheetModel model, List<WorkTypeModel> workTypelst, List<ProjectListModel> projectlst, ref String responseData)
         {
             try
             {
-                var workTypelst = getWorkTypeList();
-                var projectlst = getallProjectList();
-                var projectItemlst = getProjectItemList();
                 var groupedResult = from obj in model.TimeEntry
                                     where obj.WorkHour > 0
                                     group obj by obj.Date into g

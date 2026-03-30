@@ -78,7 +78,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<WorkTypeViewModel> getWorkTypeList(string searchText, string sortColumn, string sortOrder, int pageNumber, int pageSize)
         {
-            List<WorkTypeViewModel> workTypelst = apiExtension.InvokeGet<List<WorkTypeViewModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.WorkTypeSearch + "?searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder=="ASC"?true:false) + "&sortColumn=" + sortColumn));
+            List<WorkTypeViewModel> workTypelst = apiExtension.InvokeGet<List<WorkTypeViewModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.WorkTypeSearch + "?searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder=="ASC"?true:false) + "&sortColumn=" + sortColumn));
             return workTypelst;
         }
 

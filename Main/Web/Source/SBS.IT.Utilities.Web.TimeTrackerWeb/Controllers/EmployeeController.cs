@@ -105,7 +105,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         {
             EmployeeAuthenticationModel authenticationModel = sessionCacheManager.Get<EmployeeAuthenticationModel>();
             int managerId = authenticationModel.EmployeeId;
-            List<EmployeeModel> EmployeeModelLst = apiExtension.InvokeGet<List<EmployeeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.EmployeeSearch + "?searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&managerId=" + managerId + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == "ASC" ? true : false) + "&sortColumn=" + sortColumn));
+            List<EmployeeModel> EmployeeModelLst = apiExtension.InvokeGet<List<EmployeeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.EmployeeSearch + "?searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&managerId=" + managerId + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder == "ASC" ? true : false) + "&sortColumn=" + sortColumn));
             return EmployeeModelLst;
         }
 
@@ -154,7 +154,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             }
             if (!(string.IsNullOrEmpty(employeeModel.LogonName) || employeeModel.LogonName.Length == 0) && employeeModel.EmployeeId<=0)
             {
-                if (!apiExtension.InvokeGet<bool>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.CheckLogonName + "?logonName=" + employeeModel.LogonName)))
+                if (!apiExtension.InvokeGet<bool>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.CheckLogonName + "?logonName=" + Uri.EscapeDataString(employeeModel.LogonName))))
                 {
                     ModelState.AddModelError("InvalidUser", "User not exist");
                 }
@@ -184,7 +184,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         public JsonResult ValidateUserName(string userName)
         {
             bool IsExist = false;
-            IsExist = apiExtension.InvokeGet<bool>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.CheckLogonName + "?logonName=" + userName));
+            IsExist = apiExtension.InvokeGet<bool>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.CheckLogonName + "?logonName=" + Uri.EscapeDataString(userName)));
             return Json(IsExist, JsonRequestBehavior.AllowGet);
         }
         public virtual JsonResult DeleteEmployee(int EmployeeId)
@@ -194,7 +194,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             int userId = authenticationModel.EmployeeId;
             if (EmployeeId > 0)
             {
-                deletedCount = apiExtension.InvokeGet<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.EmployeeDelete + "?employeeId=" + EmployeeId + "&deleteUserId=" + userId));
+                string postData = JsonConvert.SerializeObject(new { employeeId = EmployeeId, deleteUserId = userId });
+                deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.EmployeeDelete), postData);
             }
             return Json(deletedCount);
         }

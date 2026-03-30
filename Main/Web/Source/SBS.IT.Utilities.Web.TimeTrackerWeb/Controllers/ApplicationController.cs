@@ -75,7 +75,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ApplicationModel> getapplicationList(string searchText, string sortColumn, int sortOrder, int pageNumber, int pageSize)
         {
-            List<ApplicationModel> applicationlst = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetApplicationSearch + "?applicationId=null&searchBy="+ (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty)+ "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
+            List<ApplicationModel> applicationlst = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetApplicationSearch + "?applicationId=null&searchBy="+ Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty)+ "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + sortOrder + "&sortColumn=" + sortColumn));
             return applicationlst;
         }
 

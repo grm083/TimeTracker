@@ -136,7 +136,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ProjectItemModel> ProjectItems(string searchText, string sortColumn, int sortOrder, int pageNumber, int pageSize)
         {
-            List<ProjectItemModel> ProjectItemLst = apiExtension.InvokeGet<List<ProjectItemModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectItemSearch + "?searchBy=" + (!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder==1?true:false) + "&sortColumn=" + sortColumn));
+            List<ProjectItemModel> ProjectItemLst = apiExtension.InvokeGet<List<ProjectItemModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.ProjectItemSearch + "?searchBy=" + Uri.EscapeDataString(!string.IsNullOrEmpty(searchText) ? searchText : string.Empty) + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber + "&sortOrder=" + (sortOrder==1?true:false) + "&sortColumn=" + sortColumn));
             return ProjectItemLst;
         }
 

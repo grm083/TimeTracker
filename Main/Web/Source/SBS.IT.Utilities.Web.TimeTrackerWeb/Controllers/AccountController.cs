@@ -50,8 +50,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     if (employeeAuthenticationModel != null && employeeAuthenticationModel.EmployeeId > 0)
                     {
                         var now = DateTime.UtcNow.ToLocalTime();
-                        var userDataViewModelJson = new JavaScriptSerializer().Serialize(loginModel);
-                        var ticket = new FormsAuthenticationTicket(1, loginModel.UserName, now, now.Add(_expirationTimeSpan), false, userDataViewModelJson, FormsAuthentication.FormsCookiePath);
+                        var ticket = new FormsAuthenticationTicket(1, loginModel.UserName, now, now.Add(_expirationTimeSpan), false, loginModel.UserName, FormsAuthentication.FormsCookiePath);
                         var encryptedTicket = FormsAuthentication.Encrypt(ticket);
                         var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                         cookie.HttpOnly = true;

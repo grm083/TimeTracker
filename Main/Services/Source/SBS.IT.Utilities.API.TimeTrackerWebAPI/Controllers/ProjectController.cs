@@ -43,7 +43,7 @@ namespace SBS.IT.Utilities.API.TimeTrackerWebAPI.Controllers
             return Ok(_project);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ProjectDelete")]
         public IHttpActionResult ProjectDelete(Nullable<int> projectId, Nullable<int> deleteUserId)
         {
