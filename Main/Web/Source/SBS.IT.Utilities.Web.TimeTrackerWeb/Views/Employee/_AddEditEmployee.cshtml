@@ -1,0 +1,210 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.EmployeeModel
+<script>
+    if ('@TempData["EmployeeMessage"]' != '') {
+        alert('@TempData["EmployeeMessage"]');
+    }
+</script>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div id="messageBox" class="text-danger"></div>
+        <div class="panel-body">
+            <div class="row" style="margin-top:10px;">
+                <div class="col-lg-2">
+                    @Html.HiddenFor(M => M.EmployeeId)
+                    @Html.LabelFor(model => model.LogonName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.LogonName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LogonName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2" style="top:35px">
+                    @Html.Label(" ", new { @class = "text-danger",id = "lblIsExist" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.FirstName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.LastName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.Team, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.TeamId, new SelectList(Model.TeamList, "TeamId", "TeamName", Model.TeamId), "--Select Team--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Team, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.Manager, new { @class = "" })
+                    @Html.DropDownListFor(model => model.ManagerId, new SelectList(Model.ManagerList, "ManagerId", "ManagerName", Model.ManagerId), "--Select Manager--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.EmployeeLocation, new { @class = "" })
+                    @Html.DropDownListFor(model => model.LocationId, new SelectList(Model.LocationList, "LocationId", "LocationName", 1), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.TimeZoneId, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.TimeZoneId, new SelectList(Model.TimeZonelst, "TimeZoneId", "TimeZoneCode", Model.TimeZoneId), "--Select Time Zone--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TimeZone, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.IsTimeEntryEnable, new { @class = "manadatory" })
+                    @Html.DropDownList("IsTimeEntryEnable", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IsTimeEntryEnable, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.DOJ, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.DOJ, "{0:yyyy-MM-dd}", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DOJ, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.UserType, new { @class = "" })
+                    @Html.DropDownListFor(model => model.UserTypeId, new SelectList(Model.UserTypeList, "UserTypeId", "UserTypeName", 3), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.EmploymentType, new { @class = "" })
+                    @Html.DropDownListFor(model => model.EmploymentTypeId, new SelectList(Model.EmploymentTypeList, "EmploymentTypeId", "EmploymentTypeName", 1), new { @class = "form-control",@id= "EmploymentType" })
+                    @Html.ValidationMessageFor(model => model.EmploymentTypeId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.CompanyName, new { @class = "" })
+                    @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-2">
+                    @if (Model != null && Model.EmployeeId > 0)
+                    {
+                        @Html.LabelFor(model => model.IsActive, new { @class = "" })
+                        @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="col-lg-2">
+                    @Html.LabelFor(model => model.DOT)
+                    @Html.TextBoxFor(model => model.DOT, "{0:yyyy-MM-dd}", new { @class = "form-control" })                    
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#EmploymentType").change(function () {        
+        if ($(this).find('option:selected').val() == '1')
+        { $('#CompanyName').prop('disabled', true).val(''); }
+        else {$('#CompanyName').prop('disabled', false).val('');}
+    });
+    $('#LogonName').blur(function () {
+        var userName = $("#LogonName").val();
+        let url = '@Url.Action("ValidateUserName")'+ "/" + userName;
+        $.getJSON(url, { userName: userName }, function (IsExist) {
+            if (!IsExist) {
+                $("#lblIsExist").text("User not exist");
+                $('#btnSave').prop('disabled', true);
+            }
+            else
+            {   $("#lblIsExist").text(" ");
+                $('#btnSave').prop('disabled', false);
+            }
+        });
+    }
+        );
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveEmployee")',
+            data: JSON.stringify({
+                EmployeeId: $('#EmployeeId').val(),
+                //EmployeeCode: $('#EmployeeCode').val(),
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                //Gender: $('#Gender').val(),
+                EmployeeLocation: $('#EmployeeLocation').val(),
+                Designation: $('#Designation').val(),
+                LogonName: $('#LogonName').val(),
+                //LogonPassword: $('#LogonPassword').val(),
+                EmailAddress: $('#EmailAddress').val(),
+                PhoneNumber: $('#PhoneNumber').val(),
+                //EmergencyContactNumber: $('#EmergencyContactNumber').val(),
+                //DOB: $('#DOB').val(),
+                DOJ: $('#DOJ').val(),
+                TimeZoneId: $('#TimeZoneId').val(),
+                TeamId: $('#TeamId').val(),
+                UserType: $('#UserType').val(),
+                ManagerId: $('#ManagerId').val(),
+                LocationId: $('#LocationId').val(),
+                UserTypeId: $('#UserTypeId').val(),
+                CompanyName: $('#CompanyName').val(),
+                EmploymentTypeId: $('#EmploymentType').val(),
+                IsTimeEntryEnable: $('#IsTimeEntryEnable').val(),
+                IsActive: $('#IsActive').val(),
+                DOT: $('#DOT').val()
+            }),
+            success: function (result) {
+                if (result.length > 0) {
+                    displayPartialNotoficationError(['messageBox'], result);
+                }
+                else if (result != null && result == 0)
+                    displayNotoficationError(['Employee already exists']);
+                else if (result != null && result > 0) {
+                    displayNotoficationSuccess(['Employee Created successfully.']);
+                }
+                else if (result != null && result == -1) {
+                    displayNotoficationSuccess(['Employee Updated successfully.']);
+                }
+                if (!result.length > 0) {
+                var window = $("#AddEmployee").data("kendoWindow");
+                window.close();
+                $('#EmployeeId').val(null);
+                var grid = $("#EmployeeGrid").data("kendoGrid");
+                grid.dataSource.read();
+                    }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddEmployee").data("kendoWindow");
+        window.close();
+    });
+
+    $(document).ready(function () {
+            if ($("#EmploymentType").find('option:selected').val() == '1')
+            {$('#CompanyName').prop('disabled', true);}
+            else { $('#CompanyName').prop('disabled', false); }
+
+        $("#DOB, #DOJ,#DOT").datepicker
+            ({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 1,
+                changeYear: true,
+                startView: 'decade',
+                //yearRange: new Date().getFullYear() + ':' + new Date().getFullYear(),
+                onSelect: function (date) {
+                }
+            });
+    });
+</script>

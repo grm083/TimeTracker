@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+    @Styles.Render("~/Content/css")
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bundles/css/kendo")
+    @Styles.Render("~/bundles/css/kendocustomized")
+</head>
+<body>
+    <div id="wrapper" class="active">
+        <!-- Navigation -->
+        @*<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">*@
+        @*<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="~/Home/Index">Time Tracker</a>
+            </div>*@
+        <!-- /.navbar-header -->
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown">
+                Hi @Session["FullName"]
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="~/Account/Logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+            <!-- /.dropdown -->
+        </ul>
+        <!-- /.navbar-top-links -->
+
+        <div id="sidebar-wrapper">
+            <ul id="sidebar_menu" class="sidebar-nav">
+                <li class="sidebar-brand"><a href="~/Home/Index">Time Tracker</a></li>
+            </ul>
+            <ul class="sidebar-nav" id="sidebar">
+                <li>
+                    <a id="menu-toggle" href=""><span id="main_icon" class="fa fa-navicon fa-fw"></span></a>
+                </li>
+
+                @if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "SAN")
+                {
+                    <li>
+                        <a href="~/Home/Index"><i class="fa fa-dashboard fa-fw"></i>&nbsp; Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="~/Report/Index"><i class="fa fa-area-chart fa-fw"></i>&nbsp; Report</a>
+                    </li>
+                    @*<li>
+                            <a href="~/Application/Index"><i class="fa fa-edit fa-fw"></i> Application</a>
+                        </li>*@
+                    <li>
+                        <a href="~/Project/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Project</a>
+                    </li>
+                    <li>
+                        <a href="~/ProjectItem/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Project Item</a>
+                    </li>
+                    <li>
+                        <a href="~/WorkType/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Work Type</a>
+                    </li>
+                    <li>
+                        <a href="~/Employee/Index"><i class="fa fa-group fa-fw"></i>&nbsp; Employee</a>
+                    </li>
+                    <li>
+                        <a href="~/Timesheet/Index"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Team Time Sheet</a>
+                    </li>
+                    if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.IsTimeEntryEnable == 1)
+                    {
+                        <li>
+                            <a href="~/Timesheet/WeeklyTimeSheet"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Time Sheet</a>
+                        </li>
+                    }
+                }
+                else if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "ADN")
+                {
+                    <li>
+                        <a href="~/Home/Index"><i class="fa fa-dashboard fa-fw"></i>&nbsp; Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="~/Report/Index"><i class="fa fa-area-chart fa-fw"></i>&nbsp; Report</a>
+                    </li>
+                    <li>
+                        <a href="~/ProjectItem/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Project Item</a>
+                    </li>
+                    <li>
+                        <a href="~/Employee/Index"><i class="fa fa-group fa-fw"></i>&nbsp; Employee</a>
+                    </li>
+                    <li>
+                        <a href="~/Timesheet/Index"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Team Time Sheet</a>
+                    </li>
+                    if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.IsTimeEntryEnable == 1)
+                    {
+                        <li>
+                            <a href="~/Timesheet/WeeklyTimeSheet"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Time Sheet</a>
+                        </li>
+                    }
+                }
+                else if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "USR"
+                && SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.TeamCode == "BA")
+                {
+                    <li>
+                        <a href="~/Home/Index"><i class="fa fa-dashboard fa-fw"></i>&nbsp; Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="~/Project/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Project</a>
+                    </li>
+                    <li>
+                        <a href="~/ProjectItem/Index"><i class="fa fa-edit fa-fw"></i>&nbsp; Project Item</a>
+                    </li>
+                    if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.IsTimeEntryEnable == 1)
+                    {
+                        <li>
+                            <a href="~/Timesheet/WeeklyTimeSheet"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Time Sheet</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>
+                        <a href="~/Home/Index"><i class="fa fa-dashboard fa-fw"></i>&nbsp; Dashboard</a>
+                    </li>
+                    if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.IsTimeEntryEnable == 1)
+                    {
+                        <li>
+                            <a href="~/Timesheet/WeeklyTimeSheet"><i class="fa fa-hourglass-2 fa-fw"></i>&nbsp; Time Sheet</a>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+        <!-- /.sidebar-collapse -->
+        <!-- /.navbar-static-side -->
+        @*</nav>*@
+        <div id="page-content-wrapper">
+            <div class="page-content inset" style="padding-right: 15px;">
+                <div class="row">
+                    @Scripts.Render("~/bundles/jquery")
+                    @Scripts.Render("~/bundles/js/kendo")
+                    @Scripts.Render("~/bundles/bootstrap")
+                    @RenderBody()
+                    @Html.Partial("_AjaxLoading")
+                    @RenderSection("scripts", required: false)
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+</body>
+</html>
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+    });
+    $(document).ajaxSend(function () {
+        $(".error").html("");
+    });
+</script>
+<style>
+    .fa-fw {
+        width: 20% !important;
+        font-size: 24px;
+    }
+</style>

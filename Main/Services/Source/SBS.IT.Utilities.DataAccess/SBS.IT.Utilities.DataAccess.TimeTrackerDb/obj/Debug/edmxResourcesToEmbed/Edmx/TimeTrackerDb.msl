@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TimeTrackerModelStoreContainer" CdmEntityContainer="TimeTrackerEntities">
+    <FunctionImportMapping FunctionImportName="usp_WorkType_Get" FunctionName="TimeTrackerModel.Store.usp_WorkType_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkType_Get_Result">
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+          <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Team_Add" FunctionName="TimeTrackerModel.Store.usp_Team_Add" />
+    <FunctionImportMapping FunctionImportName="usp_Team_Get" FunctionName="TimeTrackerModel.Store.usp_Team_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Team_Get_Result">
+          <ScalarProperty Name="teamId" ColumnName="teamId" />
+          <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+          <ScalarProperty Name="teamName" ColumnName="teamName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeZone_Get" FunctionName="TimeTrackerModel.Store.usp_TimeZone_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeZone_Get_Result">
+          <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+          <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+          <ScalarProperty Name="timeZoneName" ColumnName="timeZoneName" />
+          <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_WorkType_Delete" FunctionName="TimeTrackerModel.Store.usp_WorkType_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_Application_Add" FunctionName="TimeTrackerModel.Store.usp_Application_Add" />
+    <FunctionImportMapping FunctionImportName="usp_Application_Get" FunctionName="TimeTrackerModel.Store.usp_Application_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Application_Get_Result">
+          <ScalarProperty Name="applicationId" ColumnName="applicationId" />
+          <ScalarProperty Name="applicationCode" ColumnName="applicationCode" />
+          <ScalarProperty Name="applicationName" ColumnName="applicationName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_ProjectItem_Delete" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_Project_Delete" FunctionName="TimeTrackerModel.Store.usp_Project_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_Employee_Delete" FunctionName="TimeTrackerModel.Store.usp_Employee_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_Application_Delete" FunctionName="TimeTrackerModel.Store.usp_Application_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_Application_Update" FunctionName="TimeTrackerModel.Store.usp_Application_Update" />
+    <FunctionImportMapping FunctionImportName="usp_Employee_GetManager" FunctionName="TimeTrackerModel.Store.usp_Employee_GetManager">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_GetManager_Result">
+          <ScalarProperty Name="managerId" ColumnName="managerId" />
+          <ScalarProperty Name="managerName" ColumnName="managerName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetLastEntry" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetLastEntry" />
+    <FunctionImportMapping FunctionImportName="usp_Employee_GetList" FunctionName="TimeTrackerModel.Store.usp_Employee_GetList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_GetList_Result">
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Application_Search" FunctionName="TimeTrackerModel.Store.usp_Application_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Application_Search_Result">
+          <ScalarProperty Name="applicationId" ColumnName="applicationId" />
+          <ScalarProperty Name="applicationCode" ColumnName="applicationCode" />
+          <ScalarProperty Name="applicationName" ColumnName="applicationName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_ProjectType_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectType_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectType_Get_Result">
+          <ScalarProperty Name="projectTypeId" ColumnName="projectTypeId" />
+          <ScalarProperty Name="projectTypeCode" ColumnName="projectTypeCode" />
+          <ScalarProperty Name="projectTypeName" ColumnName="projectTypeName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_ProjectItemStatus_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectItemStatus_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItemStatus_Get_Result">
+          <ScalarProperty Name="projectItemStatusId" ColumnName="projectItemStatusId" />
+          <ScalarProperty Name="projectItemStatusCode" ColumnName="projectItemStatusCode" />
+          <ScalarProperty Name="projectItemStatusName" ColumnName="projectItemStatusName" />
+          <ScalarProperty Name="projectItemStatusDescription" ColumnName="projectItemStatusDescription" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_WorkType_Search" FunctionName="TimeTrackerModel.Store.usp_WorkType_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkType_Search_Result">
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+          <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="isCapitalizable" ColumnName="isCapitalizable" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="workTypeCategoryId" ColumnName="workTypeCategoryId" />
+          <ScalarProperty Name="workTypeCategoryCode" ColumnName="workTypeCategoryCode" />
+          <ScalarProperty Name="workTypeCategoryName" ColumnName="workTypeCategoryName" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_EmploymentType_Get" FunctionName="TimeTrackerModel.Store.usp_EmploymentType_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_EmploymentType_Get_Result">
+          <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+          <ScalarProperty Name="employmentTypeCode" ColumnName="employmentTypeCode" />
+          <ScalarProperty Name="employmentTypeName" ColumnName="employmentTypeName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Location_Get" FunctionName="TimeTrackerModel.Store.usp_Location_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Location_Get_Result">
+          <ScalarProperty Name="locationId" ColumnName="locationId" />
+          <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+          <ScalarProperty Name="locationName" ColumnName="locationName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_UserType_Get" FunctionName="TimeTrackerModel.Store.usp_UserType_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_UserType_Get_Result">
+          <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+          <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+          <ScalarProperty Name="userTypeName" ColumnName="userTypeName" />
+          <ScalarProperty Name="description" ColumnName="description" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_WorkTypeCategory_Get" FunctionName="TimeTrackerModel.Store.usp_WorkTypeCategory_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkTypeCategory_Get_Result">
+          <ScalarProperty Name="workTypeCategoryId" ColumnName="workTypeCategoryId" />
+          <ScalarProperty Name="workTypeCategoryCode" ColumnName="workTypeCategoryCode" />
+          <ScalarProperty Name="workTypeCategoryName" ColumnName="workTypeCategoryName" />
+          <ScalarProperty Name="workTypeCategorydescription" ColumnName="workTypeCategorydescription" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_WorkType_Add" FunctionName="TimeTrackerModel.Store.usp_WorkType_Add" />
+    <FunctionImportMapping FunctionImportName="usp_WorkType_Update" FunctionName="TimeTrackerModel.Store.usp_WorkType_Update" />
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_Add" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Add" />
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_Delete" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Delete" />
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_Get" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_Get_Result">
+          <ScalarProperty Name="timeEntryId" ColumnName="timeEntryId" />
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="workHour" ColumnName="workHour" />
+          <ScalarProperty Name="comments" ColumnName="comments" />
+          <ScalarProperty Name="workItem" ColumnName="workItem" />
+          <ScalarProperty Name="weekDays" ColumnName="weekDays" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetWeeklyStatus" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetWeeklyStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetWeeklyStatus_Result">
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="weekStartDT" ColumnName="weekStartDT" />
+          <ScalarProperty Name="weekEndDT" ColumnName="weekEndDT" />
+          <ScalarProperty Name="weeklyUpdate" ColumnName="weeklyUpdate" />
+          <ScalarProperty Name="weekWithMonth" ColumnName="weekWithMonth" />
+          <ScalarProperty Name="weeklyTotalHours" ColumnName="weeklyTotalHours" />
+          <ScalarProperty Name="weeklyStatus" ColumnName="weeklyStatus" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_Search" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_Search_Result">
+          <ScalarProperty Name="timeEntryId" ColumnName="timeEntryId" />
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+          <ScalarProperty Name="logonName" ColumnName="logonName" />
+          <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+          <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+          <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+          <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+          <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+          <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+          <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+          <ScalarProperty Name="projectItemNameDescription" ColumnName="projectItemNameDescription" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="workHour" ColumnName="workHour" />
+          <ScalarProperty Name="comments" ColumnName="comments" />
+          <ScalarProperty Name="workItem" ColumnName="workItem" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_Update" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Update" />
+    <FunctionImportMapping FunctionImportName="usp_Project_Add" FunctionName="TimeTrackerModel.Store.usp_Project_Add" />
+    <FunctionImportMapping FunctionImportName="usp_Project_Get" FunctionName="TimeTrackerModel.Store.usp_Project_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Project_Get_Result">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="projectDescription" ColumnName="projectDescription" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Project_Search" FunctionName="TimeTrackerModel.Store.usp_Project_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Project_Search_Result">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="projectDescription" ColumnName="projectDescription" />
+          <ScalarProperty Name="projectTypeId" ColumnName="projectTypeId" />
+          <ScalarProperty Name="projectTypeCode" ColumnName="projectTypeCode" />
+          <ScalarProperty Name="projectTypeName" ColumnName="projectTypeName" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Project_Update" FunctionName="TimeTrackerModel.Store.usp_Project_Update" />
+    <FunctionImportMapping FunctionImportName="usp_ProjectItem_Add" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Add" />
+    <FunctionImportMapping FunctionImportName="usp_ProjectItem_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItem_Get_Result">
+          <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+          <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+          <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+          <ScalarProperty Name="projectItemNameDescription" ColumnName="projectItemNameDescription" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_ProjectItem_Search" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItem_Search_Result">
+          <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+          <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+          <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+          <ScalarProperty Name="budget" ColumnName="budget" />
+          <ScalarProperty Name="benefit" ColumnName="benefit" />
+          <ScalarProperty Name="devLOE" ColumnName="devLOE" />
+          <ScalarProperty Name="qaLOE" ColumnName="qaLOE" />
+          <ScalarProperty Name="baLOE" ColumnName="baLOE" />
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="projectItemStatusId" ColumnName="projectItemStatusId" />
+          <ScalarProperty Name="projectItemStatusCode" ColumnName="projectItemStatusCode" />
+          <ScalarProperty Name="projectItemStatusName" ColumnName="projectItemStatusName" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_ProjectItem_Update" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Update" />
+    <FunctionImportMapping FunctionImportName="usp_ReportRegistry_Detail" FunctionName="TimeTrackerModel.Store.usp_ReportRegistry_Detail">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ReportRegistry_Detail_Result">
+          <ScalarProperty Name="reportRegistryId" ColumnName="reportRegistryId" />
+          <ScalarProperty Name="displayName" ColumnName="displayName" />
+          <ScalarProperty Name="reportPath" ColumnName="reportPath" />
+          <ScalarProperty Name="reportFolder" ColumnName="reportFolder" />
+          <ScalarProperty Name="reportServerId" ColumnName="reportServerId" />
+          <ScalarProperty Name="isUserIdRequired" ColumnName="isUserIdRequired" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="reportCategory" ColumnName="reportCategory" />
+          <ScalarProperty Name="sourceDescription" ColumnName="sourceDescription" />
+          <ScalarProperty Name="sourceImage" ColumnName="sourceImage" />
+          <ScalarProperty Name="isDraft" ColumnName="isDraft" />
+          <ScalarProperty Name="displayOrder" ColumnName="displayOrder" />
+          <ScalarProperty Name="toolTip" ColumnName="toolTip" />
+          <ScalarProperty Name="guid_PK" ColumnName="guid_PK" />
+          <ScalarProperty Name="isClientFriendly" ColumnName="isClientFriendly" />
+          <ScalarProperty Name="reportServerCode" ColumnName="reportServerCode" />
+          <ScalarProperty Name="reportServerName" ColumnName="reportServerName" />
+          <ScalarProperty Name="reportServerURL" ColumnName="reportServerURL" />
+          <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+          <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+          <ScalarProperty Name="userTypeName" ColumnName="userTypeName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Employee_Authentication" FunctionName="TimeTrackerModel.Store.usp_Employee_Authentication">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_Authentication_Result">
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="logonName" ColumnName="logonName" />
+          <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+          <ScalarProperty Name="dOJ" ColumnName="dOJ" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="locationId" ColumnName="locationId" />
+          <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+          <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+          <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+          <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+          <ScalarProperty Name="userType" ColumnName="userType" />
+          <ScalarProperty Name="isTimeEntryEnable" ColumnName="isTimeEntryEnable" />
+          <ScalarProperty Name="teamId" ColumnName="teamId" />
+          <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+          <ScalarProperty Name="teamName" ColumnName="teamName" />
+          <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+          <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+          <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetDistinctRecords" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetDistinctRecords">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetDistinctRecords_Result">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workItem" ColumnName="workItem" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetProjectView" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetProjectView">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetProjectView_Result">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+          <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+          <ScalarProperty Name="locationName" ColumnName="locationName" />
+          <ScalarProperty Name="workHour" ColumnName="workHour" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetProjectViewForExport" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetProjectViewForExport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetProjectViewForExport_Result">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="projectName" ColumnName="projectName" />
+          <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+          <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+          <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+          <ScalarProperty Name="locationName" ColumnName="locationName" />
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+          <ScalarProperty Name="workHour" ColumnName="workHour" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Employee_Search" FunctionName="TimeTrackerModel.Store.usp_Employee_Search">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_Search_Result">
+          <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+          <ScalarProperty Name="employeeCode" ColumnName="employeeCode" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="logonName" ColumnName="logonName" />
+          <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+          <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+          <ScalarProperty Name="emergencyContactNumber" ColumnName="emergencyContactNumber" />
+          <ScalarProperty Name="dOB" ColumnName="dOB" />
+          <ScalarProperty Name="dOJ" ColumnName="dOJ" />
+          <ScalarProperty Name="designation" ColumnName="designation" />
+          <ScalarProperty Name="locationId" ColumnName="locationId" />
+          <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+          <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+          <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+          <ScalarProperty Name="employmentTypeCode" ColumnName="employmentTypeCode" />
+          <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+          <ScalarProperty Name="companyName" ColumnName="companyName" />
+          <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+          <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+          <ScalarProperty Name="userType" ColumnName="userType" />
+          <ScalarProperty Name="isTimeEntryEnable" ColumnName="isTimeEntryEnable" />
+          <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+          <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+          <ScalarProperty Name="timeZoneName" ColumnName="timeZoneName" />
+          <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+          <ScalarProperty Name="teamId" ColumnName="teamId" />
+          <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+          <ScalarProperty Name="teamName" ColumnName="teamName" />
+          <ScalarProperty Name="managerId" ColumnName="managerId" />
+          <ScalarProperty Name="employeeManager" ColumnName="employeeManager" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="dOT" ColumnName="dOT" />
+          <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="usp_Employee_Update" FunctionName="TimeTrackerModel.Store.usp_Employee_Update" />
+    <FunctionImportMapping FunctionImportName="usp_Employee_Add" FunctionName="TimeTrackerModel.Store.usp_Employee_Add" />
+  </EntityContainerMapping>
+</Mapping>

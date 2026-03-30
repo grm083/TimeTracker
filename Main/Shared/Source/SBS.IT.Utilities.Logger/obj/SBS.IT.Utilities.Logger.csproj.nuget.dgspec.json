@@ -1,0 +1,70 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj",
+        "projectName": "SBS.IT.Utilities.Logger",
+        "projectPath": "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj",
+        "packagesPath": "C:\\Users\\bkalyana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\bkalyana\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net461"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net461": {
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net461": {
+          "dependencies": {
+            "log4net": {
+              "target": "Package",
+              "version": "[2.0.12, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

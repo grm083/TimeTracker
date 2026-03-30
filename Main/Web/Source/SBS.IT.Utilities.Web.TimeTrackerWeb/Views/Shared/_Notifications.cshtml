@@ -1,0 +1,220 @@
+﻿@using SBS.IT.Utilities.Web.TimeTrackerWeb.Models.Common;
+@{
+    var successMessages = new List<string>();
+    if (TempData[string.Format("wm.notifications.{0}", eNotificationType.eSuccess)] != null)
+    {
+        successMessages.AddRange(TempData[string.Format("wm.notifications.{0}", eNotificationType.eSuccess)] as IList<string>);
+    }
+    if (ViewData[string.Format("wm.notifications.{0}", eNotificationType.eSuccess)] != null)
+    {
+        successMessages.AddRange(ViewData[string.Format("wm.notifications.{0}", eNotificationType.eSuccess)] as IList<string>);
+    }
+    var errorMessages = new List<string>();
+    if (TempData[string.Format("wm.notifications.{0}", eNotificationType.eError)] != null)
+    {
+        errorMessages.AddRange(TempData[string.Format("wm.notifications.{0}", eNotificationType.eError)] as IList<string>);
+    }
+    if (ViewData[string.Format("wm.notifications.{0}", eNotificationType.eError)] != null)
+    {
+        errorMessages.AddRange(ViewData[string.Format("wm.notifications.{0}", eNotificationType.eError)] as IList<string>);
+    }
+    @(Html.Kendo().Window()
+                .Name("NotificationPopupWindow")
+                .Draggable()
+                .Animation(false)
+                .Width(500)
+                .Modal(true)
+                .Visible(false)
+                .Actions(actions => actions.Close())
+    )
+    @(Html.Kendo().Window()
+                .Name("DeleteNotificationPopUpWindow")
+                .Visible(false)
+                .Animation(false)
+                .Modal(true)
+                .Draggable()
+                .Width(400)
+                .Content(@<text>
+                    <div class="details-container">
+                        <p><strong> Are you sure to delete the selected record?</strong></p>
+                        <div style="text-align:right;">
+                            <button class="button-1 search-button" id="yesNotificationButton">Yes</button>
+                            <button class="button-1 search-button" id="noNotificationButton"> No</button>
+                        </div>
+                    </div>
+                </text>)
+                        .Title("Confirm")
+                        .Events(events => events.Refresh("DeleteNotificationPopUpWindow_Refresh"))
+                        .Actions(actions => actions.Close())
+    )
+}
+@if (successMessages.Count > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#notification-error").empty();
+            $("#notification-error").hide();
+            $("#notification-success").show();
+        });
+    </script>}
+@if (errorMessages.Count > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#notification-success").empty();
+            $("#notification-success").hide();
+            $("#notification-error").show();
+        });
+    </script>
+}
+<div id="notification-success" class="notificationBox notificationSuccess alert alert-success" title="Notification" style="display:none;">
+    <ul>
+        @foreach (var message in successMessages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+</div>
+<div id="notification-error" class="notificationBox notificationError alert alert-danger" title="Error" style="display:none;">
+    <ul>
+        @foreach (var message in errorMessages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+</div>
+<script type="text/ecmascript">
+    function DeleteNotificationPopUpWindow_Refresh(e) {
+        this.center();
+    }
+    function ClearNotifications() {
+        $('#notification-error').empty();
+        $('#notification-error').hide();
+        $('#notification-success').empty();
+        $('#notification-success').hide();
+    }
+    function displayNotoficationSuccess(messagesArray) {
+        var Index;
+        if (messagesArray.length > 0) {
+            $('#notification-error').empty();
+            $('#notification-error').hide();
+            $('#notification-success').empty();
+            $('#notification-success').append("<ul></ul>");
+            for (Index = 0; Index < messagesArray.length; Index++) {
+                $('#notification-success > ul').append('<li>' + messagesArray[Index] + '</li>');
+            }
+            $('#notification-success').show();
+        }
+    }
+    function displayNotoficationError(messagesArray) {
+        var Index;
+        if (messagesArray.length > 0) {
+            $('#notification-success').empty();
+            $('#notification-success').hide();
+            $('#notification-error').empty();
+            $('#notification-error').append("<ul></ul>");
+            for (Index = 0; Index < messagesArray.length; Index++) {
+                $('#notification-error > ul').append('<li>' + messagesArray[Index] + '</li>');
+            }
+            $('#notification-error').show();
+        }
+    }
+    function displayNotoficationModelError(e) {
+        var Index;
+        if (e.Errors) {
+            var messagesArray = [];
+            $.each(e.Errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        messagesArray.push(this);
+                    });
+                }
+            });
+            if (messagesArray.length > 0) {
+                $('#notification-success').empty();
+                $('#notification-success').hide();
+                $('#notification-error').empty();
+                $('#notification-error').append("<ul></ul>");
+                for (Index = 0; Index < messagesArray.length; Index++) {
+                    $('#notification-error > ul').append('<li>' + messagesArray[Index] + '</li>');
+                }
+                $('#notification-error').show();
+            }
+        }
+    }
+    function displayKendoUIModelErrors(e) {
+        if (e.errors) {
+            var messagesArray = [];
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        messagesArray.push(this);
+                    });
+                }
+            });
+            displayNotoficationError(messagesArray);
+        }
+    }
+    function displayPartialViewErrors(ErrorPanelId, e) {
+        if (e.Errors) {
+            var messagesArray = [];
+            $.each(e.Errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        messagesArray.push(this);
+                    });
+                }
+            });
+            var Index;
+            if (messagesArray.length > 0) {
+                $('#' + ErrorPanelId).empty();
+                $('#' + ErrorPanelId).append("<ul></ul>");
+                for (Index = 0; Index < messagesArray.length; Index++) {
+                    $('#' + ErrorPanelId + ' > ul').append('<li>' + messagesArray[Index] + '</li>');
+                }
+                $('#' + ErrorPanelId).show();
+            }
+        }
+    }
+    function displayPartialNotoficationError(ErrorPanelId, messagesArray) {
+        var Index;
+        if (messagesArray.length > 0) {
+            $('#' + ErrorPanelId).empty();
+            $('#' + ErrorPanelId).append("<ul></ul>");
+            for (Index = 0; Index < messagesArray.length; Index++) {
+                $('#' + ErrorPanelId + ' > ul').append('<li>' + messagesArray[Index] + '</li>');
+            }
+            $('#' + ErrorPanelId).show();
+        }
+    }
+    function displayPopupNotificationSuccess(messagesArray) {
+        var Index;
+        if (messagesArray.length > 0) {
+            $('#notification-success').empty();
+            $('#notification-success').hide();
+            $('#notification-error').empty();
+            $('#notification-error').hide();
+            var htmlcode = '';
+            for (Index = 0; Index < messagesArray.length; Index++) {
+                htmlcode = htmlcode + '<p>' + messagesArray[Index] + '</p>';
+            }
+            $("#NotificationPopupWindow").data("kendoWindow").title('Success Notification').content(htmlcode).center().open();
+        }
+    }
+    function displayPopupNotificationError(messagesArray) {
+        var Index;
+        if (messagesArray.length > 0) {
+            $('#notification-success').empty();
+            $('#notification-success').hide();
+            $('#notification-error').empty();
+            $('#notification-error').hide();
+            var htmlcode = '';
+            for (Index = 0; Index < messagesArray.length; Index++) {
+                htmlcode = htmlcode + '<p>' + messagesArray[Index] + '</p>';
+            }
+            $("#NotificationPopupWindow").data("kendoWindow").title('Error Notification').content(htmlcode).center().open();
+        }
+    }
+</script>
+
+

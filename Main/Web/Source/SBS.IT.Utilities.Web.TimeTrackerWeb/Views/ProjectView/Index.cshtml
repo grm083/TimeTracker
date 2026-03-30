@@ -1,0 +1,114 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectView
+
+@{
+    ViewBag.Title = "Index";
+}
+@Html.Partial("_Notifications")
+
+<div id='Project-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<h4 class="page-header">Project View</h4>
+
+
+
+
+
+
+<div class="panel-body">
+    <div class="col-md-3">
+        <label for="ProjectId">Project Name<span style="color:red">*</span></label>
+        @Html.DropDownListFor(model => model.ProjectId, ViewBag.Projects as List<SelectListItem>, "--Select Project--", new { @class = "form-control" })
+        <div class="invalid-feedback alert-danger" id="msg_projectname">
+            Required, Please select project!
+        </div>
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class="col-md-3">
+        <label for="Month">Month</label>
+        @Html.DropDownListFor(model => model.Month, ViewBag.Months as List<SelectListItem>, "--All--", new { @class = "form-control" })
+    </div>
+    <div class="col-md-3">
+        <label for="Year">Year</label>
+        @Html.DropDownListFor(model => model.Year, ViewBag.Years as List<SelectListItem>, "--All--", new { @class = "form-control" })
+    </div>
+</div>
+<div class="panel-body">
+    <div class="col-md-3">
+        <input id="btnSearchData" class="btn btn-success" type="button" value="Search" />
+    </div>
+    <div id="spinner" class="col-md-3">
+        <div id="fade"></div>
+        <div id="modal" style="text-align:center;display:none;">
+            <img id="loader" src="~/Content/images/loadingimage.gif" />
+        </div>
+    </div>
+</div>
+
+
+<div id="tbl_projectView">
+    <div id="spinner" class="col-md-3">
+        <div id="fade"></div>
+        <div id="modal" style="text-align:center;display:none;">
+            <img id="loader" src="~/Content/images/loadingimage.gif" />
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        hideProjectValidationMsg();
+
+        $("#btnSearchData").click(function () {
+            var projectId = $("#ProjectId").val();
+            var month = $("#Month").val();
+            var year = $("#Year").val();
+
+            if (projectId) {
+                showLoader();
+                var dataparam = { "projectId": projectId, "month": month, "year": year };
+                $.get("GetProjectDetail", dataparam, function (data) {
+                    $("#tbl_projectView").html(data);
+                    hideLoader();
+                }).fail(function () {
+                    alert("Something went wrong! Please try again.");
+                    hideLoader();
+                })
+
+            } else {
+                showProjectValidationMsg();
+            }
+        });
+
+        $("#ProjectId").change(function () {
+            var projectId = $("#ProjectId").val();
+            if (projectId) {
+                hideProjectValidationMsg();
+            } else {
+                showProjectValidationMsg();
+            }
+        });
+
+        function showProjectValidationMsg() {
+            $("#msg_projectname").show();
+        }
+
+        function hideProjectValidationMsg() {
+            $("#msg_projectname").hide();
+        }
+
+        function showLoader() {
+            $("#modal").show();
+        }
+
+        function hideLoader() {
+            $("#modal").hide();
+        }
+
+    });
+</script>

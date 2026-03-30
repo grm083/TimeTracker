@@ -1,0 +1,161 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ApplicationModel
+<script>
+    if ('@TempData["ApplicationMessage"]' != '') {
+        alert('@TempData["ApplicationMessage"]');
+    }
+</script>
+<form id="applicationForm">
+    <div id="messageBox" class="text-danger"></div>
+    <div class="col-lg-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        @Html.HiddenFor(M => M.ApplicationId)
+                        @Html.LabelFor(model => model.ApplicationCode, new { @class = "manadatory" })
+                        @if (Model != null && Model.ApplicationId > 0)
+            {
+                @Html.TextBoxFor(model => model.ApplicationCode, new { @class = "form-control", @readonly = "readonly" })
+                @Html.HiddenFor(M => M.ApplicationCode)
+}
+else
+{
+            @Html.TextBoxFor(model => model.ApplicationCode, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ApplicationCode, "", new { @class = "text-danger" })
+}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        @Html.LabelFor(model => model.ApplicationName, new { @class = "manadatory" })
+                        @Html.TextBoxFor(model => model.ApplicationName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ApplicationName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        @Html.LabelFor(model => model.Description, new { @class = "" })
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @if (Model != null && Model.ApplicationId > 0)
+                {
+                <div class="row">
+                    <div class="col-lg-8">
+                        @Html.LabelFor(model => model.IsActive, new { @class = "manadatory" })
+                        @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                }
+                <div class="row" style="margin-top:10px;">
+                    <div class="form-group">
+                        <div class="col-md-offset-0 col-md-12">
+                            @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                            @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveApplication")',
+            data: JSON.stringify({
+                ApplicationId: $('#ApplicationId').val(),
+                ApplicationCode: $('#ApplicationCode').val(),
+                ApplicationName: $('#ApplicationName').val(),
+                Description: $('#Description').val(),
+                IsActive: $('#IsActive').val()
+            }),
+            success: function (result) {                
+                if (result.length > 0)
+                {
+                    displayPartialNotoficationError(['messageBox'],result);
+                }
+                else if (result != null && result == 0)
+                    displayNotoficationError(['Application already exists']);
+                else if (result != null && result > 0) {
+                    displayNotoficationSuccess(['Application Created successfully.']);
+                }
+                else if (result != null && result == -1) {
+                    displayNotoficationSuccess(['Application Updated successfully.']);
+                }
+                if (!result.length > 0) {
+                    var window = $("#AddApplication").data("kendoWindow");
+                    window.close();
+                    $('#ApplicationId').val(null);
+                    var grid = $("#ApplicationGrid").data("kendoGrid");
+                    grid.dataSource.read();
+                }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddApplication").data("kendoWindow");
+        window.close();
+        });
+
+        $(document).ready(function () {
+
+            $("#applicationForm").validate({
+                rules: {
+                    ApplicationCode: {
+                        required: true,
+                    },
+                    ApplicationName: {
+                        required: true,
+                    },
+                    Description: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    ApplicationCode: "Please select Application Code",
+                    ApplicationName: "Please select Application Name",
+                    Description: "Please select Description",
+
+                },
+                showErrors: function (errorMap, errorList) {
+                    if (submitted) {
+
+                        var summary = "";//"You have the following errors: </br>";
+
+                        $.each(errorList, function (index, value) {
+                            var element = errorList[index].element;
+                            $(element).addClass("invalid");
+                            summary += "<label class='error'>" + this.message + "</label></br>";
+                        });
+
+                        $("#messageBox").empty();
+                        $("#messageBox").append(summary);
+                        closeModal();
+
+                        //$.each(errorList, function () { summary += " * " + this.message + "\n"; });
+
+                        // alert(summary);
+                        submitted = false;
+                    }
+                    //   this.defaultShowErrors();
+                },
+
+                submitHandler: function (form) {
+
+                    form.submit();
+                    // LoginUser();
+                }
+            });
+
+        });
+    </script>

@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h2> Project</h2>
+<div id='workitem-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<div style="float:right; margin-top:-3em;"><a href="#" id="Add">Add New Project</a></div>
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.WorkItemModel>()
+                                                                .Name("WorkItemGrid")
+                                                                .DataSource(dataSource => dataSource
+                                                                .Ajax()
+                                                                .PageSize(25)
+                                                                .Read(read => read.Url(Url.Action("ReadWorkItemGrid")))
+                                                            ).Events(events => events.DataBound("CustomerGrid_DataBound"))
+                                                            .Columns(columns =>
+                                                            {
+                                                                columns.Bound(p => p.WorkItemId).Hidden();
+                                                                columns.Bound(p => p.ProjectName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.WorkItemName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.WorkItemDescription).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.PlannedDeploymentDate).Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = "text-align: center;" }).Sortable(false);
+                                                                columns.Bound(p => p.ActualDeploymentDate).Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = "text-align: center;" }).Sortable(false);
+                                                                columns.Bound(p => p.CompletionComment).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.BusinessOwner).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.CompletionComment).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Bound(p => p.BusinessOwner).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                                columns.Command(command =>
+                                                                {
+                                                                    command.Custom("gridIEdit").Text(" ").Click("gridIEditClick");
+                                                                    command.Custom("gridDelete").Text(" ").Click("gridDeleteClick");
+                                                                }).Title("Action").HtmlAttributes(new { @style = "text-align: center;" }).HeaderHtmlAttributes(new { style = "text-align: center;" });
+                                                            }).ToolBar(toolbar =>
+                                                            {
+                                                            toolbar.Template(@<text>
+                                                        <div class="toolbar">
+
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </text>);
+                                                        })
+                                                        .Pageable(p => p.Refresh(true).Input(true))
+                                                        .Sortable(sortable => sortable.AllowUnsort(false))
+                                                        .Resizable(resizable => resizable.Columns(true))
+                                                        .Scrollable(scrollable => scrollable.Enabled(false))
+    )
+</div>
+
+@(Html.Kendo().Window().Name("AddWorkItem")
+                        .Visible(false)
+                        .Animation(false)
+                        .Modal(true)
+                        .Draggable()
+                        .Width(900)
+                        .Actions(actions => actions.Close())
+)
+
+@section scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#Add").click(function () {
+            var window = $("#AddWorkItem").data("kendoWindow");
+            $("#AddWorkItem").html("");
+            window.refresh({
+                type: 'POST',
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("AddWorkItem")'
+            })
+            window.title('Add Project').center().open();
+        });
+    });
+
+    function gridIEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var clientId = dataItem.ClientId;
+        $("#AddWorkItem").html("");
+        var window = $("#AddWorkItem").data("kendoWindow");
+        window.refresh({
+            type: 'POST',
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("EditWorkitem")',
+            data: JSON.stringify({
+                ClientId: clientId,
+            }),
+        })
+        window.title('Edit WokItem').center().open();
+    };
+
+    function gridDeleteClick(e) {
+        ClearNotifications();
+        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+        window.center().open();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#yesNotificationButton").click(function () {
+            var clientId = dataItem.ClientId;
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("DeleteWokItem")',
+                data: JSON.stringify({
+                    ClientId: clientId,
+                }),
+                success: function (result) {
+                    if (result != null && result.Errors != null && result.Errors.length != 0) {
+                        displayPartialViewErrors('WokItem-notification-error', result);
+                    }
+                    else {
+                        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                        window.close();
+                        displayNotoficationSuccess(['WokItem Deleted successfully.']);
+                        var grid = $("#WorkItemGrid").data("kendoGrid");
+                        grid.dataSource.read();
+                    }
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+        })
+        $("#noNotificationButton").click(function () {
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            window.close();
+        })
+    };
+
+    function CustomerGrid_DataBound(e) {
+        e.preventDefault();
+        $(".k-grid-gridIEdit").find("span").addClass("k-icon k-i-pencil pull-left");
+        $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+        $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+    }
+    </script>
+}

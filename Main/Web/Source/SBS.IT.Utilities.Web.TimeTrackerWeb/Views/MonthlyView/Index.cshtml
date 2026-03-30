@@ -1,0 +1,296 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.MonthlyViewModel
+@{
+
+}
+<script src="~/Scripts/kendo/2015.3.930/jszip.min.js"></script>
+<script src="~/Scripts/jquery.table2excel.min.js"></script>
+<style>
+
+    body, html {
+        margin: 0;
+        height: 100%
+    }
+
+    .error {
+        color: red !important;
+        font-weight: normal !important;
+    }
+
+    .k-grid-content {
+        height: auto !important;
+        max-height: 200px !important;
+    }
+
+    #loading-img {
+        background: url(/SBS.IT.Utilities.Web.TimeTrackerWeb/Content/images/loading.gif) center center no-repeat;
+        height: 100%;
+        z-index: 20;
+    }
+
+    .div-scroll {
+        max-height: 500px;
+        overflow: scroll;
+    }
+</style>
+
+<input type="hidden" value="@ViewBag.UserId" id="hdnUserId" />
+<h4 class="page-header">Managers Monthly View</h4>
+
+<div id="messageBox"></div>
+<div class="row">
+
+    <div style="margin-top:10px;"></div>
+    @Html.LabelFor(model => model.Search)
+    <div class="panel-body">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ManagerName)
+            @Html.DropDownListFor(model => model.ManagerId, new SelectList(Model.ManagersList, "ManagerId", "ManagerName", Model.ManagerId), null, new { @class = "form-control", @id = "drpManagers" })
+            @*@Html.Label("Manager Name is required", new { @class = "error", @id = "errManagerName", style = "display: block !important;" })*@
+            @Html.TextBox("ManagerName", "Manager Name is required", new { @class = "error", @id = "errManagerName", style = "display: none;border:none;width:500px;background: transparent;", @readonly = true, @disabled = true })
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Month)
+            @Html.DropDownListFor(model => model.MonthId, new SelectList(Model.MonthList, "MonthId", "MonthName", Model.MonthId), "--Select Month--", new { @class = "form-control", @id = "drpMonths" })
+            @*@Html.Label("From Date is required", new { @class = "error", @id = "errFromDate", style = "display: none;" })*@
+            @Html.TextBox("Month", "Month is required", new { @class = "error", @id = "errMonth", style = "display: none;border:none;width:500px;background: transparent;", @readonly = true, @disabled = true })
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Year)
+            @Html.DropDownListFor(model => model.YearId, new SelectList(Model.YearList, "YearId", "YearName", Model.YearId), "--Select Year--", new { @class = "form-control", @id = "drpYears" })
+            @*@Html.Label("To Date is required", new { @class = "error", @id = "errToDate", style = "display: none;" })*@
+            @Html.TextBox("Year", "Year is required", new { @class = "error", @id = "errYear", style = "display: none;border:none;width:500px;background: transparent;", @readonly = true, @disabled = true })
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="col-md-3">
+            <input id="btnSearchData" class="btn btn-success" type="submit" value="Search" />
+        </div>
+        <div id="spinner" class="col-md-3">
+            <div id="fade"></div>
+            <div id="modal" style="text-align:center;display:none;">
+                <img id="loader" src="~/Content/images/loadingimage.gif" />
+            </div>
+        </div>
+    </div>
+    <div id="dvResults" style="display:none;margin-bottom:10px;">
+        <div style="margin-top:10px;"></div>
+        @Html.Label("Results")
+        @*@Html.Label("No results found", new { @class = "error", @id = "errNoDataFound", style = "display: none;font-weight: bold;" })*@
+        <button id="btnExport" class="btn btn-info pull-right">Export to Excel</button>
+        @Html.TextBox("NoDataFound", "No results found", new { @class = "error", @id = "errNoDataFound", style = "border:none;width:500px;background: transparent;", @readonly = true, @disabled = true })
+        <div id="dvEmployeeGrid" style="clear:both; padding-top:1em;text-align:center !important;padding-bottom:2em;" class="div-scroll">
+            @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.EmployeeDetails>()
+                                                                                            .Name("EmployeeGridDetails")
+                                                                                            //.ToolBar(toolbar => toolbar.Excel())
+                                                                                            .DataSource(dataSource => dataSource
+                                                                                            .Ajax()
+                                                                                            )
+                                                                                            .Columns(columns =>
+                                                                                            {
+                                                                                                columns.Bound(p => p.EmpolyeeName).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.ManagerName).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;font-weight:bold;" }).Hidden();
+                                                                                                columns.Bound(p => p.FirstDateColumn).HeaderHtmlAttributes(new { @id = "firstColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.SecondDateColumn).HeaderHtmlAttributes(new { @id = "secondColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.ThirdDateColumn).HeaderHtmlAttributes(new { @id = "thirdColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.FourthDateColumn).HeaderHtmlAttributes(new { @id = "fourthColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.FifthDateColumn).HeaderHtmlAttributes(new { @id = "fifthColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.SixthDateColumn).HeaderHtmlAttributes(new { @id = "sixthColumn", style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                                columns.Bound(p => p.Total).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;font-weight:bold;" });
+                                                                                            })
+                                                                                            .Resizable(resizable => resizable.Columns(true))
+                                                                                            //.Scrollable(scrollable => scrollable.Enabled(true))
+                                                                                            .Excel(excel => excel
+                                                                                                    .FileName("Employee_Monthly_TimeSheet.xlsx")
+                                                                                                    .ProxyURL(Url.Action("ExcelExport"))
+                                                                                                    .ForceProxy(true)
+                                                                                                    )
+                    //.Scrollable()
+
+            )
+        </div>
+    </div>
+    <div id="loader" class="overlay">
+        <div id="loading-img"></div>
+    </div>
+    <div id="iframeloading" style="display: none; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">
+        <img src="~/Content/images/loading.gif" itemprop="loading" style="top: 50%; position: relative; left: 50%;" />
+    </div>
+
+    <script>
+
+        $("#drpManagers").change(function () {
+            $("#errManagerName").css('display', 'none');
+        })
+
+        $("#drpMonths").change(function () {
+            $("#errMonth").css('display', 'none');
+        })
+
+        $("#drpYears").change(function () {
+            $("#errYear").css('display', 'none');
+        })
+
+        $("#btnSearchData").click(function () {
+            $("#modal").css("display", "block");
+            var validData = true;
+            var selectedManager = $("#drpManagers option:selected").text();
+            var selectedManagerId = $("#drpManagers option:selected").val();
+
+            var selectedMonth = $("#drpMonths option:selected").text();
+            var selectedMonthId = $("#drpMonths option:selected").val();
+
+            var selectedYear = $("#drpYears option:selected").text();
+
+            if (selectedManager == "--Select Manager--") {
+                $("#errManagerName").css('display', 'block');
+                validData = false;
+            }
+            if (selectedMonth == "--Select Month--") {
+                $("#errMonth").css('display', 'block');
+                validData = false;
+            }
+            if (selectedYear == "--Select Year--") {
+                $("#errYear").css('display', 'block');
+                validData = false;
+            }
+            if (!validData) {
+                $("#modal").css("display", "none");
+            }
+            if (validData) {
+                $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("GetEmployeeDetails")',
+                data: JSON.stringify({
+                    managerNameId: selectedManagerId,
+                    selectedMonth: selectedMonthId,
+                    selectedYear: selectedYear
+                }),
+                    success: function (result) {
+                        $("#dvResults").css("display", "block");
+                        if (result.GridData.Data.length != 0) {
+                            $("#dvEmployeeGrid").css("display", "block");
+                            $("#errNoDataFound").css("display", "none");
+                            var grid = $("#EmployeeGridDetails").data("kendoGrid");
+                            var datesColumnLength = result.DatesColumn.length;
+                            $("#firstColumn").text(result.DatesColumn[0]);
+                            grid.hideColumn("SecondDateColumn");
+                            grid.hideColumn("ThirdDateColumn");
+                            grid.hideColumn("FourthDateColumn");
+                            grid.hideColumn("FifthDateColumn");
+                            grid.hideColumn("SixthDateColumn");
+
+                            if (datesColumnLength == 1) {
+
+                            }
+                            else if (datesColumnLength == 2) {
+                                grid.showColumn("SecondDateColumn");
+                                $("#secondColumn").text(result.DatesColumn[1]);
+                            }
+                            else if (datesColumnLength == 3) {
+                                grid.showColumn("SecondDateColumn");
+                                grid.showColumn("ThirdDateColumn");
+                                $("#secondColumn").text(result.DatesColumn[1]);
+                                $("#thirdColumn").text(result.DatesColumn[2]);
+                            }
+                            else if (datesColumnLength == 4) {
+                                grid.showColumn("SecondDateColumn");
+                                grid.showColumn("ThirdDateColumn");
+                                grid.showColumn("FourthDateColumn");
+                                $("#secondColumn").text(result.DatesColumn[1]);
+                                $("#thirdColumn").text(result.DatesColumn[2]);
+                                $("#fourthColumn").text(result.DatesColumn[3]);
+                            }
+                            else if (datesColumnLength == 5) {
+                                grid.showColumn("SecondDateColumn");
+                                grid.showColumn("ThirdDateColumn");
+                                grid.showColumn("FourthDateColumn");
+                                grid.showColumn("FifthDateColumn");
+                                $("#secondColumn").text(result.DatesColumn[1]);
+                                $("#thirdColumn").text(result.DatesColumn[2]);
+                                $("#fourthColumn").text(result.DatesColumn[3]);
+                                $("#fifthColumn").text(result.DatesColumn[4]);
+                            }
+                            else {
+                                grid.showColumn("SecondDateColumn");
+                                grid.showColumn("ThirdDateColumn");
+                                grid.showColumn("FourthDateColumn");
+                                grid.showColumn("FifthDateColumn");
+                                grid.showColumn("SixthDateColumn");
+                                $("#secondColumn").text(result.DatesColumn[1]);
+                                $("#thirdColumn").text(result.DatesColumn[2]);
+                                $("#fourthColumn").text(result.DatesColumn[3]);
+                                $("#fifthColumn").text(result.DatesColumn[4]);
+                                $("#sixthColumn").text(result.DatesColumn[5]);
+                            }
+
+                            grid.dataSource.data(result.GridData.Data);
+                            grid.refresh();
+
+                            $("#dvEmployeeGrid table th").removeClass("noExport");
+                            $("#dvEmployeeGrid table td").removeClass("noExport");
+
+                            if (datesColumnLength == 1) {
+                                HideColumnFromExport("secondColumn", 3);
+                                HideColumnFromExport("thirdColumn", 4);
+                                HideColumnFromExport("fourthColumn", 5);
+                                HideColumnFromExport("fifthColumn", 6);
+                                HideColumnFromExport("sixthColumn", 7);
+                            }
+                            else if (datesColumnLength == 2) {
+                                HideColumnFromExport("thirdColumn", 4);
+                                HideColumnFromExport("fourthColumn", 5);
+                                HideColumnFromExport("fifthColumn", 6);
+                                HideColumnFromExport("sixthColumn", 7);
+                            }
+                            else if (datesColumnLength == 3) {
+                                HideColumnFromExport("fourthColumn", 5);
+                                HideColumnFromExport("fifthColumn", 6);
+                                HideColumnFromExport("sixthColumn", 7);
+                            }
+                            else if (datesColumnLength == 4) {
+                                HideColumnFromExport("fifthColumn", 6);
+                                HideColumnFromExport("sixthColumn", 7);
+                            }
+                            else if (datesColumnLength == 5) {
+                                HideColumnFromExport("sixthColumn", 7);
+                            }
+
+                        }
+                        else {
+                            $("#dvEmployeeGrid").css("display", "none");
+                            $("#errNoDataFound").css("display", "block");
+                        }
+                        $("#modal").css("display", "none");
+
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+            }
+
+        })
+
+        function HideColumnFromExport(id, column) {
+            $("#" + id).addClass("noExport");
+            $("#dvEmployeeGrid table tbody tr td:nth-child(" + column + ")").addClass("noExport");
+        }
+
+        $(document).ready(function () {
+            $("#btnExport").click(function () {
+                $("#dvEmployeeGrid table").table2excel({
+                    exclude: ".noExport",
+                    filename: $("#drpManagers option:selected").text() + "-" + $("#drpMonths option:selected").text() + "-" + $("#drpYears option:selected").text() + ".xls",
+                });
+            });
+        });
+
+
+    </script>
+

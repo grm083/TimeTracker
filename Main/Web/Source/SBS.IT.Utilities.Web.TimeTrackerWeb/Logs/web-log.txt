@@ -1,0 +1,77 @@
+ERROR 2026-01-16 13:43:04,017 17505ms CTWIND02PC801          WriteMessage       - The remote name could not be resolved: 'mpindo02pc155.wm.com'
+System.Net.WebException: The remote name could not be resolved: 'mpindo02pc155.wm.com'
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at SBS.IT.Utilities.Shared.APIClient.Implementation.APIExtension.InvokePost[TResponse](Uri ServiceURL, String postData) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Shared.APIClient\Implementation\APIExtension.cs:line 108
+   at SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers.AccountController.ValidateUser(String userName, String password) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Web.TimeTrackerWeb\Controllers\AccountController.cs:line 113
+ERROR 2026-01-16 15:14:08,573 5482060ms CTWIND02PC801          WriteMessage       - The remote name could not be resolved: 'mpindo02pc155.wm.com'
+System.Net.WebException: The remote name could not be resolved: 'mpindo02pc155.wm.com'
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at SBS.IT.Utilities.Shared.APIClient.Implementation.APIExtension.InvokePost[TResponse](Uri ServiceURL, String postData) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Shared.APIClient\Implementation\APIExtension.cs:line 108
+   at SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers.AccountController.ValidateUser(String userName, String password) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Web.TimeTrackerWeb\Controllers\AccountController.cs:line 113
+FATAL 2026-01-22 14:17:50,468 2536799ms CTWIND02PC801          WriteMessage       - An item with the same key has already been added.
+System.ArgumentException: An item with the same key has already been added.
+   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
+   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
+   at System.Web.Routing.RouteValueDictionary.Add(String key, Object value)
+   at Kendo.Mvc.UI.GridBoundColumn`2.CreateHeaderBuilderCore()
+   at Kendo.Mvc.UI.GridColumnBase`1.CreateHeaderBuilder()
+   at System.Linq.Enumerable.WhereSelectEnumerableIterator`2.MoveNext()
+   at Kendo.Mvc.UI.Html.GridRowBuilder.CreateRow()
+   at Kendo.Mvc.UI.Html.GridHeaderRowBuilder.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridRowBuilderDecoratorBase.CreateRow()
+   at Kendo.Mvc.UI.Html.GridHtmlBuilder.CreateHeader(GridRenderingData renderingData)
+   at Kendo.Mvc.UI.Html.GridHtmlBuilder.AppendData(IHtmlNode div, GridRenderingData renderingData)
+   at Kendo.Mvc.UI.Html.GridHtmlBuilder.CreateGrid(IDictionary`2 htmlAttributes, GridFunctionalData functionalData, GridRenderingData renderingData)
+   at Kendo.Mvc.UI.Grid`1.WriteHtml(HtmlTextWriter writer)
+   at Kendo.Mvc.UI.WidgetBase.ToHtmlString()
+   at Kendo.Mvc.UI.Fluent.WidgetBuilderBase`2.ToHtmlString()
+   at System.Web.WebPages.WebPageBase.Write(Object value)
+   at ASP._Page_Views_Timesheet_WeeklyTimeSheet_cshtml.Execute() in c:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Web.TimeTrackerWeb\Views\TimeSheet\WeeklyTimeSheet.cshtml:line 14
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy()
+   at System.Web.Mvc.WebViewPage.ExecutePageHierarchy()
+   at System.Web.WebPages.StartPage.ExecutePageHierarchy()
+   at System.Web.WebPages.WebPageBase.ExecutePageHierarchy(WebPageContext pageContext, TextWriter writer, WebPageRenderingBase startPage)
+   at System.Web.Mvc.ViewResultBase.ExecuteResult(ControllerContext context)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultFilterRecursive(IList`1 filters, Int32 filterIndex, ResultExecutingContext preContext, ControllerContext controllerContext, ActionResult actionResult)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionResultWithFilters(ControllerContext controllerContext, IList`1 filters, ActionResult actionResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeAction(IAsyncResult asyncResult)
+   at System.Web.Mvc.Controller.<BeginExecuteCore>b__1d(IAsyncResult asyncResult, ExecuteCoreState innerState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Controller.EndExecuteCore(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.Controller.EndExecute(IAsyncResult asyncResult)
+   at System.Web.Mvc.MvcHandler.<BeginProcessRequest>b__5(IAsyncResult asyncResult, ProcessRequestState innerState)
+   at System.Web.Mvc.Async.AsyncResultWrapper.WrappedAsyncVoid`1.CallEndDelegate(IAsyncResult asyncResult)
+   at System.Web.Mvc.MvcHandler.EndProcessRequest(IAsyncResult asyncResult)
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStepImpl(IExecutionStep step)
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+ERROR 2026-01-29 22:15:49,816 14576ms CTWIND02PC801          WriteMessage       - Unable to connect to the remote server
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it [::1]:58926
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at SBS.IT.Utilities.Shared.APIClient.Implementation.APIExtension.InvokePost[TResponse](Uri ServiceURL, String postData) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Shared.APIClient\Implementation\APIExtension.cs:line 108
+   at SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers.AccountController.ValidateUser(String userName, String password) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Web.TimeTrackerWeb\Controllers\AccountController.cs:line 113
+ERROR 2026-01-29 22:16:06,061 30821ms CTWIND02PC801          WriteMessage       - Unable to connect to the remote server
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it [::1]:58926
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at SBS.IT.Utilities.Shared.APIClient.Implementation.APIExtension.InvokePost[TResponse](Uri ServiceURL, String postData) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Shared.APIClient\Implementation\APIExtension.cs:line 108
+   at SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers.AccountController.ValidateUser(String userName, String password) in C:\Users\bkalyana\Downloads\TimeTracker\Main\Web\Source\SBS.IT.Utilities.Web.TimeTrackerWeb\Controllers\AccountController.cs:line 113

@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TimeTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <Function Name="usp_Application_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="applicationCode" Type="varchar" Mode="In" />
+    <Parameter Name="applicationName" Type="varchar" Mode="In" />
+    <Parameter Name="description" Type="varchar" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="applicationId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_Application_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="applicationId" Type="int" Mode="In" />
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Application_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Application_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="applicationId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_Application_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="applicationId" Type="int" Mode="In" />
+    <Parameter Name="applicationCode" Type="varchar" Mode="In" />
+    <Parameter Name="applicationName" Type="varchar" Mode="In" />
+    <Parameter Name="description" Type="varchar" Mode="In" />
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="logonName" Type="varchar" Mode="In" />
+    <Parameter Name="firstName" Type="varchar" Mode="In" />
+    <Parameter Name="lastName" Type="varchar" Mode="In" />
+    <Parameter Name="emailAddress" Type="varchar" Mode="In" />
+    <Parameter Name="dOJ" Type="date" Mode="In" />
+    <Parameter Name="designation" Type="varchar" Mode="In" />
+    <Parameter Name="timeZoneId" Type="int" Mode="In" />
+    <Parameter Name="teamId" Type="int" Mode="In" />
+    <Parameter Name="managerId" Type="int" Mode="In" />
+    <Parameter Name="locationId" Type="int" Mode="In" />
+    <Parameter Name="employmentTypeId" Type="int" Mode="In" />
+    <Parameter Name="companyName" Type="varchar" Mode="In" />
+    <Parameter Name="userTypeId" Type="int" Mode="In" />
+    <Parameter Name="isTimeEntryEnable" Type="int" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="employeeId" Type="int" Mode="InOut" />
+    <Parameter Name="dOT" Type="date" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_Authentication" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="logonName" Type="varchar" Mode="In" />
+    <Parameter Name="logonPassword" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_GetList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="managerId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_GetManager" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time" />
+  <Function Name="usp_Employee_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="managerId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_Employee_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="firstName" Type="varchar" Mode="In" />
+    <Parameter Name="lastName" Type="varchar" Mode="In" />
+    <Parameter Name="dOJ" Type="date" Mode="In" />
+    <Parameter Name="designation" Type="varchar" Mode="In" />
+    <Parameter Name="timeZoneId" Type="int" Mode="In" />
+    <Parameter Name="teamId" Type="int" Mode="In" />
+    <Parameter Name="managerId" Type="int" Mode="In" />
+    <Parameter Name="locationId" Type="int" Mode="In" />
+    <Parameter Name="employmentTypeId" Type="int" Mode="In" />
+    <Parameter Name="companyName" Type="varchar" Mode="In" />
+    <Parameter Name="userTypeId" Type="int" Mode="In" />
+    <Parameter Name="isTimeEntryEnable" Type="int" Mode="In" />
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+    <Parameter Name="dOT" Type="date" Mode="In" />
+  </Function>
+  <Function Name="usp_EmploymentType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Location_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Project_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectName" Type="varchar" Mode="In" />
+    <Parameter Name="projectDescription" Type="varchar(max)" Mode="In" />
+    <Parameter Name="projectTypeId" Type="int" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_Project_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Project_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Project_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_Project_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectName" Type="varchar" Mode="In" />
+    <Parameter Name="projectDescription" Type="varchar(max)" Mode="In" />
+    <Parameter Name="projectTypeId" Type="int" Mode="In" />
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectItem_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectItemName" Type="varchar" Mode="In" />
+    <Parameter Name="projectItemDescription" Type="varchar(max)" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="projectItemStatusId" Type="int" Mode="In" />
+    <Parameter Name="budget" Type="money" Mode="In" />
+    <Parameter Name="benefit" Type="money" Mode="In" />
+    <Parameter Name="devLOE" Type="decimal" Mode="In" />
+    <Parameter Name="qaLOE" Type="decimal" Mode="In" />
+    <Parameter Name="baLOE" Type="decimal" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="projectItemId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_ProjectItem_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectItem_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectItem_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectItem_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectItemName" Type="varchar" Mode="In" />
+    <Parameter Name="projectItemDescription" Type="varchar(max)" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="projectItemStatusId" Type="int" Mode="In" />
+    <Parameter Name="budget" Type="money" Mode="In" />
+    <Parameter Name="benefit" Type="money" Mode="In" />
+    <Parameter Name="devLOE" Type="decimal" Mode="In" />
+    <Parameter Name="qaLOE" Type="decimal" Mode="In" />
+    <Parameter Name="baLOE" Type="decimal" Mode="In" />
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectItemStatus_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ProjectType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_ReportRegistry_Detail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="userTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_Team_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="teamCode" Type="varchar" Mode="In" />
+    <Parameter Name="teamName" Type="varchar" Mode="In" />
+    <Parameter Name="description" Type="varchar" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="teamId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_Team_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+    <Parameter Name="temCode" Type="varchar" Mode="In" />
+    <Parameter Name="date" Type="date" Mode="In" />
+    <Parameter Name="workHour" Type="decimal" Mode="In" />
+    <Parameter Name="comments" Type="varchar" Mode="In" />
+    <Parameter Name="workItem" Type="varchar" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="timeEntryId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_TimeEntry_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="timeEntryId" Type="varchar" Mode="In" />
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="timeEntryId" Type="int" Mode="In" />
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="date" Type="date" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_GetDistinctRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="date" Type="date" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_GetLastEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="ProductionDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_GetProjectView" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="monthsBack" Type="int" Mode="In" />
+    <Parameter Name="ProductionDate" Type="date" Mode="In" />
+    <Parameter Name="searchDate" Type="date" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_GetProjectViewForExport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="monthsBack" Type="int" Mode="In" />
+    <Parameter Name="ProductionDate" Type="date" Mode="In" />
+    <Parameter Name="searchDate" Type="date" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_GetWeeklyStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="monthsBack" Type="int" Mode="In" />
+    <Parameter Name="ProductionDate" Type="date" Mode="In" />
+    <Parameter Name="searchDate" Type="date" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="timeEntryId" Type="int" Mode="In" />
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="timeEntryDateFrom" Type="date" Mode="In" />
+    <Parameter Name="timeEntryDateTo" Type="date" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeEntry_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="timeEntryId" Type="int" Mode="In" />
+    <Parameter Name="employeeId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+    <Parameter Name="projectId" Type="int" Mode="In" />
+    <Parameter Name="projectItemId" Type="int" Mode="In" />
+    <Parameter Name="date" Type="date" Mode="In" />
+    <Parameter Name="workHour" Type="decimal" Mode="In" />
+    <Parameter Name="comments" Type="varchar" Mode="In" />
+    <Parameter Name="workItem" Type="varchar" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_TimeZone_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_UserType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_WorkType_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="workTypeCode" Type="varchar" Mode="In" />
+    <Parameter Name="workTypeName" Type="varchar" Mode="In" />
+    <Parameter Name="description" Type="varchar" Mode="In" />
+    <Parameter Name="WorkTypeCategoryId" Type="int" Mode="In" />
+    <Parameter Name="isCapitalizable" Type="int" Mode="In" />
+    <Parameter Name="createUserId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="usp_WorkType_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="deleteUserId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_WorkType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_WorkType_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+    <Parameter Name="searchBy" Type="varchar" Mode="In" />
+    <Parameter Name="pageSize" Type="int" Mode="In" />
+    <Parameter Name="pageNumber" Type="int" Mode="In" />
+    <Parameter Name="sortOrder" Type="bit" Mode="In" />
+    <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="usp_WorkType_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="workTypeCode" Type="varchar" Mode="In" />
+    <Parameter Name="workTypeName" Type="varchar" Mode="In" />
+    <Parameter Name="description" Type="varchar" Mode="In" />
+    <Parameter Name="WorkTypeCategoryId" Type="int" Mode="In" />
+    <Parameter Name="isCapitalizable" Type="int" Mode="In" />
+    <Parameter Name="isActive" Type="int" Mode="In" />
+    <Parameter Name="updateUserId" Type="int" Mode="In" />
+    <Parameter Name="workTypeId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="usp_WorkTypeCategory_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+    <Parameter Name="isActive" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="TimeTrackerModelStoreContainer" />
+</Schema>

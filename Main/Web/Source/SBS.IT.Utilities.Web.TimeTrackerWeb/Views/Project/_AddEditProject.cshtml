@@ -1,0 +1,110 @@
+﻿
+@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectModel
+<script>
+    if ('@TempData["ProjectMessage"]' != '') {
+        alert('@TempData["ProjectMessage"]');
+    }
+</script>
+<div class="col-lg-11">
+    <div class="panel panel-default">
+        <div id="messageBox" class="text-danger"></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.HiddenFor(M => M.ProjectId)
+                    @Html.LabelFor(model => model.ProjectName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.ProjectTypeName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.ProjectTypeId, new SelectList(Model.ProjectTypelst, "ProjectTypeId", "ProjectTypeName", Model.ProjectTypeId), "--Select ProjectType--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProjectTypeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.ProjectDescription, new { @class = "" })
+                    @Html.TextAreaFor(model => model.ProjectDescription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProjectDescription, "", new { @class = "text-danger" })
+                </div>
+                @if (Model != null && Model.ProjectId > 0)
+                {
+                    <div class="col-lg-5">
+                        @Html.LabelFor(model => model.IsActive, new { @class = "manadatory" })
+                        @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    </div>
+                }
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveProject")',
+            data: JSON.stringify({
+                ProjectId: $('#ProjectId').val(),
+                ProjectTypeId: $('#ProjectTypeId').val(),
+                ProjectName: $('#ProjectName').val(),
+                ProjectDescription: $('#ProjectDescription').val(),
+                IsActive: $('#IsActive').val()
+            }),
+            success: function (result) {
+                if (result.length > 0) {
+                    displayPartialNotoficationError(['messageBox'], result);
+                }
+                else if (result != null && result == 0)
+                    displayNotoficationError(['Project already exists']);
+                else if (result != null && result> 0) {
+                    displayNotoficationSuccess(['Project Created successfully.']);
+                }
+                else if (result != null && result ==-1){
+                    displayNotoficationSuccess(['Project Updated successfully.']);
+                }
+                if (!result.length > 0) {
+                    var window = $("#AddProject").data("kendoWindow");
+                    window.close();
+                    $('#ProjectId').val(null);
+                    var grid = $("#ProjectGrid").data("kendoGrid");
+                    grid.dataSource.read();
+                }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddProject").data("kendoWindow");
+        window.close();
+    });
+
+    $(document).ready(function () {
+        $("#PlannedDeploymentDt, #ActualDeploymentDt").datepicker
+            ({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 1,
+                changeYear: true,
+                yearRange: new Date().getFullYear()-1 + ':' + new Date().getFullYear(),
+                onSelect: function (date) {
+                }
+            });
+    });
+
+</script>

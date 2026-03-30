@@ -1,0 +1,102 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ExportProjectViewModel
+@using SBS.IT.Utilities.Web.TimeTrackerWeb.Models
+@{
+    // Layout = null;
+}
+
+
+<div class="container row">
+    @*<button id="btnExport" class="btn btn-info pull-right">Export to Excel</button>*@
+    <table class="table table-bordered" id="tbl_grid">
+        <tbody>
+            <tr style="background-color:lightgray">
+                <td>
+                    Employee Name
+                </td>
+                @foreach (SelectListItem e in Model.EmployeeList)
+                {
+                    <td>
+                        @e.Text
+                    </td>
+                }
+                <td style="background-color:darkseagreen">
+                    Total <br />
+                    <span><b>@Model.ExportProjectViews.Sum(x => x.TotalHour)</b></span>
+                </td>
+            </tr>
+
+            @foreach (ExportProjectView p in Model.ExportProjectViews)
+            {
+                <tr style="background-color:darkkhaki">
+                    <td>
+                        <b>@p.LocationName</b>
+                    </td>
+                    @foreach (SelectListItem e in Model.EmployeeList)
+                    {
+                        <td></td>
+                    }
+                    <td>
+                        <b>@p.TotalHour</b>
+                    </td>
+                </tr>
+
+                foreach (WorkType w in p.workTypes)
+                {
+                    <tr>
+                        <td>
+                            @w.WorkTypeName
+                        </td>
+                        @foreach (SelectListItem e in Model.EmployeeList)
+                        {
+                            var hour = w.ProjectViewExportResponses.Where(x => x.EmployeeId == Convert.ToInt32(e.Value)).Select(x => x.WorkHour).FirstOrDefault();
+                            if (hour != null)
+                            {
+                                <td style="background-color:yellowgreen">
+                                    @hour
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+                        <td style="background-color:yellow">
+                            @w.TotalHour
+                        </td>
+                    </tr>
+                }
+            }
+            <tr style="background-color:lightgray">
+                <td>
+                    <b>Total Hours</b>
+                </td>
+                @foreach (SelectListItem e in Model.EmployeeList)
+                {
+                    <td></td>
+                }
+                <td style="background-color:darkseagreen">
+                    <b>@Model.ExportProjectViews.Sum(x => x.TotalHour)</b>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+@*<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            var projectId = $("#ProjectId option:selected").text();
+            var month = $("#Month").val();
+            var year = $("#Year").val();
+
+
+            $("#tbl_grid").table2excel({
+                exclude: ".noExport",
+                filename: projectId + "-" + month + "-" + year + ".xls",
+                preserveColors: true
+            });
+        });
+    });
+</script>*@

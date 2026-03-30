@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBS.IT.Utilities.DataAccess.TimeTrackerDb", "Services\Source\SBS.IT.Utilities.DataAccess\SBS.IT.Utilities.DataAccess.TimeTrackerDb\SBS.IT.Utilities.DataAccess.TimeTrackerDb.csproj", "{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBS.IT.Utilities.Shared", "Shared\Source\SBS.IT.Utilities.Shared\SBS.IT.Utilities.Shared.csproj", "{51E47218-D17F-465E-ABA3-316F696BB297}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBS.IT.Utilities.Logger", "Shared\Source\SBS.IT.Utilities.Logger\SBS.IT.Utilities.Logger.csproj", "{CEE2F702-338C-42B1-AE7B-C273066E1767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBS.IT.Utilities.API.TimeTrackerWebAPI", "Services\Source\SBS.IT.Utilities.API.TimeTrackerWebAPI\SBS.IT.Utilities.API.TimeTrackerWebAPI.csproj", "{47566F94-AC55-4F97-90CE-753B7F5CAC40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E47218-D17F-465E-ABA3-316F696BB297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E47218-D17F-465E-ABA3-316F696BB297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E47218-D17F-465E-ABA3-316F696BB297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E47218-D17F-465E-ABA3-316F696BB297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE2F702-338C-42B1-AE7B-C273066E1767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE2F702-338C-42B1-AE7B-C273066E1767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE2F702-338C-42B1-AE7B-C273066E1767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE2F702-338C-42B1-AE7B-C273066E1767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47566F94-AC55-4F97-90CE-753B7F5CAC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47566F94-AC55-4F97-90CE-753B7F5CAC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47566F94-AC55-4F97-90CE-753B7F5CAC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47566F94-AC55-4F97-90CE-753B7F5CAC40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E66F362-9D3A-4C62-92AD-06844BC99AD8}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://adcacotfspr01.oakleafwastemgmt.com:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = Services\\Source\\SBS.IT.Utilities.DataAccess\\SBS.IT.Utilities.DataAccess.TimeTrackerDb\\SBS.IT.Utilities.DataAccess.TimeTrackerDb.csproj
+		SccProjectName0 = Services/Source/SBS.IT.Utilities.DataAccess/SBS.IT.Utilities.DataAccess.TimeTrackerDb
+		SccAuxPath0 = http://adcacotfspr01.oakleafwastemgmt.com:8080/tfs/defaultcollection
+		SccLocalPath0 = Services\\Source\\SBS.IT.Utilities.DataAccess\\SBS.IT.Utilities.DataAccess.TimeTrackerDb
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = Shared\\Source\\SBS.IT.Utilities.Shared\\SBS.IT.Utilities.Shared.csproj
+		SccProjectName1 = Shared/Source/SBS.IT.Utilities.Shared
+		SccAuxPath1 = http://adcacotfspr01.oakleafwastemgmt.com:8080/tfs/defaultcollection
+		SccLocalPath1 = Shared\\Source\\SBS.IT.Utilities.Shared
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj
+		SccProjectName2 = Shared/Source/SBS.IT.Utilities.Logger
+		SccAuxPath2 = http://adcacotfspr01.oakleafwastemgmt.com:8080/tfs/defaultcollection
+		SccLocalPath2 = Shared\\Source\\SBS.IT.Utilities.Logger
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName3 = Services\\Source\\SBS.IT.Utilities.API.TimeTrackerWebAPI\\SBS.IT.Utilities.API.TimeTrackerWebAPI.csproj
+		SccProjectName3 = Services/Source/SBS.IT.Utilities.API.TimeTrackerWebAPI
+		SccAuxPath3 = http://adcacotfspr01.oakleafwastemgmt.com:8080/tfs/defaultcollection
+		SccLocalPath3 = Services\\Source\\SBS.IT.Utilities.API.TimeTrackerWebAPI
+		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+EndGlobal

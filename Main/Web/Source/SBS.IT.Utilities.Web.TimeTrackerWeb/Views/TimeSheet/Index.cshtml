@@ -1,0 +1,204 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> Time Sheet</h2>
+@Html.Partial("_Notifications")
+<div id='timeSheet-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+@*@if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.IsTimeEntryEnable == 1)
+    {*@
+<div style="float:right; "><a href="~/Timesheet/Add?startDate=@ViewBag.StartDate" id="Add">Add/Update Time</a></div>
+@*}*@
+@Html.Hidden("employeeId", (object)ViewBag.EmployeeId)
+@Html.Hidden("startDate", (object)ViewBag.StartDate)
+@Html.Hidden("isFilter", (object)ViewBag.IsFilter)
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.TimeEntrySearchModel>()
+                        .Name("TimeSheetGrid")
+                        .DataSource(dataSource => dataSource
+                        .Ajax().Model(model => model.Id(p => p.TimeEntryId)
+                    )
+                    .PageSize(25).Model(model =>
+                    {
+                        model.Field(p => p.EmployeeName).Editable(false);
+                        model.Field(p => p.Date).Editable(false);
+                        model.Field(p => p.ApplicationName).Editable(false);
+                        model.Field(p => p.ProjectName).Editable(false);
+                        model.Field(p => p.ProjectItemNameDescription).Editable(false);
+                        model.Field(p => p.WorkTypeName).Editable(false);
+                        model.Field(p => p.WorkItem).Editable(false);
+                    })
+                    .Read(read => read.Url(Url.Action("ReadTimeSheetGrid")).Data("ReadTimeSheetGrid_SearchCriteria"))
+                    .Update(update => update.Action("EditingInline_Update", "Timesheet")).Events(e => e.RequestEnd("onRequestEnd"))
+                ).Events(events => events.DataBound("CustomerGrid_DataBound").Edit("onEdit").Cancel("onCancel").Change("onCancel"))
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.TimeEntryId).Hidden();
+                    columns.Bound(p => p.EmployeeId).Hidden();
+                    if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "ADN"
+                                || SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "SAN")
+                    {
+                        columns.Bound(p => p.EmployeeName).HeaderHtmlAttributes(new { style = "" });
+                    }
+                    columns.Bound(p => p.Date).Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = " width: 5%;" }).Sortable(false);
+                    columns.Bound(p => p.ProjectName).HeaderHtmlAttributes(new { style = "" });
+                    columns.Bound(p => p.ProjectItemNameDescription).HeaderHtmlAttributes(new { style = "25%;" });
+                    columns.Bound(p => p.WorkTypeName).HeaderHtmlAttributes(new { style = "width: 10%" });
+                    columns.Bound(p => p.WorkHour).HeaderHtmlAttributes(new { style = "width: 5%;" }).HtmlAttributes(new { style = "" });
+                    columns.Bound(p => p.Comments).HeaderHtmlAttributes(new { style = "width: 30%;word-break: break-word;" });
+                    columns.Bound(p => p.WorkItem).HeaderHtmlAttributes(new { style = "width: 5%;" }).HtmlAttributes(new { style = "" });
+                    columns.Command(command =>
+                    {
+            //command.Custom("gridIEdit").Text(" ").Click("gridIEditClick");
+            command.Edit().Text(" ");
+                        command.Custom("gridDelete").Text(" ").Click("gridDeleteClick");
+                    }).Title("Action").HtmlAttributes(new { @style = "text-align: center;" }).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;" });
+                }).ToolBar(toolbar =>
+                {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" id="btnReset"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                        }).Editable(editable => editable.Mode(GridEditMode.InLine))
+                                    .Pageable(p => p.Refresh(true).Input(true))
+                                    .Sortable(sortable => sortable.AllowUnsort(false))
+                                    .Resizable(resizable => resizable.Columns(true))
+                                    .Scrollable(scrollable => scrollable.Enabled(false))
+    )
+</div>
+@(Html.Kendo().Window().Name("EditTimeSheet")
+                                                                                    .Visible(false)
+                                                                                    .Animation(false)
+                                                                                    .Modal(true)
+                                                                                    .Draggable()
+                                                                                    .Width(700)
+                                                                                    .Actions(actions => actions.Close())
+)
+
+@section scripts{
+    <script type="text/javascript">
+        function onEdit(e) {
+            $(".k-grid-update").html('<span class="k-icon k-update"></span>');
+            $(".k-grid-cancel").html('<span class="k-icon k-cancel"></span>');
+            $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" });
+            $("#Comments").attr('maxlength', '900');
+            $("#Comments").attr('height', '200px');
+        }
+
+        function onCancel(e) {
+            var grid = $("#TimeSheetGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        function onRequestEnd(e) {
+            if (e.type == "create" || e.type == "update") {
+                if (e.response == null || e.response.Errors == null) {
+                    displayNotoficationSuccess(['Time Sheet updated successfully.']);
+                }
+                else
+                    displayNotoficationError(['Unable to update Time Sheet.']);
+            }
+        }
+
+        function refreshGrid() {
+            var grid = $("#TimeSheetGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        $("#FieldFilter").blur(function () {
+            refreshGrid();
+        });
+        $("#btnSearch").click(function () {
+            refreshGrid();
+        });
+        $("#btnReset").click(function () {
+            $("#FieldFilter").val(null);
+            refreshGrid();
+        });
+
+    function gridIEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var timeentryId = dataItem.TimeEntryId;
+        $("#EditTimeSheet").html("");
+        var window = $("#EditTimeSheet").data("kendoWindow");
+        window.refresh({
+            type: 'POST',
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("EditTimeSheet")',
+            data: JSON.stringify({
+                TimeEntryId: timeentryId,
+            }),
+        })
+        window.title('Edit Time Sheet').center().open();
+    };
+
+        function ReadTimeSheetGrid_SearchCriteria() {
+             return {
+                 searchText: $('#FieldFilter').val(),
+                 employeeId: $('#employeeId').val(),
+                 startDate: $('#startDate').val(),
+                 isFilter: $('#isFilter').val()
+        };
+        }
+    function gridDeleteClick(e) {
+        ClearNotifications();
+        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+        window.center().open();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#yesNotificationButton").click(function () {
+            var timeentryId = dataItem.TimeEntryId;
+            var employeeId = dataItem.EmployeeId;
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("DeleteTimeSheet")',
+                data: JSON.stringify({
+                    TimeEntryId: timeentryId,
+                    EmployeeId: employeeId
+                }),
+                success: function (result) {
+                    if (result != null)
+                        displayNotoficationSuccess(['TimeSheet Deleted successfully.']);
+                    else
+                        displayNotoficationError(['Unable to delete record.']);
+
+                    var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                    window.close();
+                    refreshGrid();
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+        })
+        $("#noNotificationButton").click(function () {
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            window.close();
+        })
+    };
+
+        function CustomerGrid_DataBound(e) {
+        e.preventDefault();
+        $(".k-grid-edit").find("span").addClass("k-icon k-i-pencil pull-left");
+        $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+        $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+        }
+    </script>
+}

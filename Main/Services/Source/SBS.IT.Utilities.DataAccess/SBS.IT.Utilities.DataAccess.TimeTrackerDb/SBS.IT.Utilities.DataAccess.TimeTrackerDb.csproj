@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC0CE53F-8978-48C3-A7D5-FE477DC55D43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SBS.IT.Utilities.DataAccess.TimeTrackerDb</RootNamespace>
+    <AssemblyName>SBS.IT.Utilities.DataAccess.TimeTrackerDb</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\ITrackerDbRepository.cs" />
+    <Compile Include="Edmx\TimeTrackerDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeTrackerDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\TimeTrackerDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\TimeTrackerDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeTrackerDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Application_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Application_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Employee_Authentication_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Employee_GetList_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Employee_GetManager_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Employee_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_EmploymentType_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Location_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_ProjectItemStatus_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_ProjectItem_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_ProjectItem_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_ProjectType_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Project_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Project_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_ReportRegistry_Detail_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_Team_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_GetDistinctRecords_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_GetProjectViewForExport_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_GetProjectView_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_GetWeeklyStatus_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeEntry_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_TimeZone_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_UserType_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_WorkTypeCategory_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_WorkType_Get_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Edmx\usp_WorkType_Search_Result.cs">
+      <DependentUpon>TimeTrackerDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\EFContextFactory.cs" />
+    <Compile Include="EntityFramework\Implementation\EFTimeTrackerDbRepository.cs" />
+    <Compile Include="EntityFramework\Mapper\DomainModelToModelMapper.cs" />
+    <Compile Include="EntityFramework\Mapper\ModelToDomainModelMapper.cs" />
+    <Compile Include="Model\TrackerModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Edmx\TimeTrackerDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TimeTrackerDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Edmx\TimeTrackerDb.edmx.diagram">
+      <DependentUpon>TimeTrackerDb.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\Source\SBS.IT.Utilities.Logger\SBS.IT.Utilities.Logger.csproj">
+      <Project>{cee2f702-338c-42b1-ae7b-c273066e1767}</Project>
+      <Name>SBS.IT.Utilities.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Shared\Source\SBS.IT.Utilities.Shared\SBS.IT.Utilities.Shared.csproj">
+      <Project>{51e47218-d17f-465e-aba3-316f696bb297}</Project>
+      <Name>SBS.IT.Utilities.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Edmx\TimeTrackerDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimeTrackerDb.edmx</DependentUpon>
+      <LastGenOutput>TimeTrackerDb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Edmx\TimeTrackerDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TimeTrackerDb.edmx</DependentUpon>
+      <LastGenOutput>TimeTrackerDb.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

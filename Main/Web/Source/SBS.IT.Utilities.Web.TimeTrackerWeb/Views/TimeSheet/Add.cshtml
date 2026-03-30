@@ -1,0 +1,553 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.TimeSheetModel
+@{
+    ViewBag.Title = "Add";
+}
+<style>
+    .modal2 {
+        display: none !important;
+        position: fixed !important;
+        z-index: 1000 !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        background: rgba( 255, 255, 255, .8 ) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat !important;
+    }
+
+    /* When the body has the loading class, we turn
+    the scrollbar off with overflow:hidden */
+    body.loading .modal2 {
+        overflow: hidden !important;
+    }
+
+    /* Anytime the body has the loading class, our
+    modal element will be visible */
+    body.loading .modal2 {
+        display: block !important;
+    }
+
+    .ddValue {
+        padding: initial !important;
+        font-size: small;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+</style>
+@*<script src="~/Scripts/jquery.validate.min.js"></script>*@
+<script src="~/Scripts/sweetalert2.all.min.js"></script>
+<script src="~/Scripts/jquery.timecard.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@*<script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>*@
+
+<style>
+    .invalid {
+        border: 1px solid red
+    }
+
+    #content {
+        padding: 25px;
+    }
+
+    #fade {
+        /*display: none;*/
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: #ababab;
+        z-index: 1001;
+        -moz-opacity: 0.8;
+        opacity: .70;
+        filter: alpha(opacity=80);
+    }
+
+
+
+    #results {
+        font-size: 1.25em;
+        color: red
+    }
+
+    label.error {
+        color: red;
+    }
+
+
+    body, html {
+        margin: 0;
+        padding;
+        height: 100%
+    }
+
+    /* DivTable.com */
+    .divTable {
+        display: table;
+        width: 100%;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        background-color: black;
+        display: table-header-group;
+    }
+
+    .divTableCell, .divTableHead {
+        border: 1px solid black;
+        display: table-cell;
+        padding: 3px 10px;
+    }
+
+    .divTableHeading {
+        background-color: black;
+        display: table-header-group;
+        font-weight: bold;
+    }
+
+    .divTableFoot {
+        background-color: black;
+        display: table-footer-group;
+        font-weight: bold;
+    }
+
+    .divTableBody {
+        /*display: table-row-group;*/
+    }
+</style>
+
+<script>
+    if ('@TempData["TimeCardMessage"]' != '') {
+        alert('@TempData["TimeCardMessage"]');
+    }
+
+</script>
+
+
+<input type="hidden" value="@ViewBag.UserId" id="hdnUserId" />
+
+<h4 class="page-header">Time Entry</h4>
+<div class="alert alert-info">
+    <strong>Tip!</strong> Work Item textbox will be enabled when you have "Other" selected in Project Item dropdown
+</div>
+
+@if (ViewBag.PendingDate != null && ViewBag.PendingDate != string.Empty && ViewBag.IsPendingAvailable == true)
+{
+    <div>Your time sheet entry is pending since week of<a title="Click here to navigate" href="~/Timesheet/Add?startDate=@ViewBag.PendingDate"> <b style="color:red" id="box"> @ViewBag.PendingDate</b></a></div>
+}
+<div id="messageBox"></div>
+<div class="row">
+
+    <div style="margin-top:10px;"></div>
+
+
+    <div class="panel-body">
+        <div class="col-md-3">
+            @Html.Label("From Date", new { @class = "manadatory" })
+            <input id="datepicker_start" onkeypress="return false; alert('Choose From Date');" class="form-control" type="text" style="width:250px;" />
+        </div>
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-3">
+            @*<div id="_panelmainbutton" style="display:none;">
+                    <input id="Submit" onclick="return ValidateData();" class="btn btn-success" type="submit" value="Save Details">
+                    @Html.ActionLink("Cancel", "Add", "TimeSheet", null, new { @class = "btn btn-danger" })
+                </div>*@
+        </div>
+    </div>
+
+    <div class="panel-body" style="float:right" id="btnPanel">
+        <div class="col-md-12">
+            <div id="_panelmainbutton">
+                <div class="col-md-6">
+                    <input id="btnAddProject" class="btn btn-success" type="submit" value="New Entry" tabindex="11" />
+                </div>
+                <div class="col-md-6">
+                    @*onclick="return SaveTimeSheetRecord();"*@
+                    <input id="btnSubmit" class="btn btn-success" type="submit" value="Submit" tabindex="12" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="_panelmain" style="display:none;">
+
+        <div class="panel-body divTable">
+
+            <div style="margin:10px"></div>
+            <div class="row divTableBody">
+
+                <div class="col-md-2" style="text-align: center;padding-top: 25px;">
+                    @Html.Label("Project")
+                </div>
+                <div class="col-md-2" style="text-align: center;padding-top: 25px;">
+                    @Html.Label("Project Item")
+                </div>
+                <div class="col-md-2 " style="text-align: center;padding-top: 25px;">
+                    @Html.Label("Work Type")
+                </div>
+                <div class="col-md-1 " style="text-align: center;padding-top: 25px;">
+                    @Html.Label("Work Item")
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label1">
+                    </label>
+                    <input type="hidden" id="hdtext1" />
+                    <br />
+                    <label id="date1">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label2">
+                    </label>
+                    <input type="hidden" id="hdtext2" />
+                    <br />
+                    <label id="date2">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label3">
+                    </label><input type="hidden" id="hdtext3" />
+                    <br />
+                    <label id="date3">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label4">
+                    </label><input type="hidden" id="hdtext4" />
+                    <br />
+                    <label id="date4">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label5">
+                    </label><input type="hidden" id="hdtext5" />
+                    <br />
+                    <label id="date5">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label6">
+                    </label><input type="hidden" id="hdtext6" />
+                    <br />
+                    <label id="date6">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    <label id="label7">
+                    </label><input type="hidden" id="hdtext7" />
+                    <br />
+                    <label id="date7">
+                    </label>
+                </div>
+                <div class="col-md-1 divTableCell">
+                    @Html.Label("Total")
+                    <br />
+                    @Html.Label("Hours")
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div style="margin:10px"></div>
+            <form id="TimeSheetForm">
+                <div class="parentProject">
+                    <div class="projectRow_0 divTableRow">
+
+                        <div class="row">
+                            <div class="col-md-2 divTableCell">
+                                <select class="form-control clsSelectProject ddValue ProjectId" id="selectProject" name="selectProject" title="Select Project" tabindex="1">
+                                    <option value="">Select Project</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 divTableCell">
+                                <select class="form-control clsSelectProjectType ddValue ProjectItemId" name="selectProjectType" title="Select Project Item" tabindex="2">
+
+                                    <option value="">Select Project Item</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 divTableCell">
+                                <select class="form-control clsSelectWorkType ddValue WorkTypeId" name="selectWorkType" id="selectWorkType" title="Select WorkType" tabindex="3">
+                                    <option value="">Select Work Type</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control workitem readValue ddValue" name="WorkItem" type="text" tabindex="4" disabled="disabled" placeholder="ALM&#92;INC here" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsSunday readValue Sunday allowNumericWithDecimal" maxlength="5" name="txtSunday" type="text" value="0" tabindex="5" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsMonday readValue Monday allowNumericWithDecimal" name="txtMonday" type="text" maxlength="5" value="0" tabindex="6" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsTuesday readValue Tuesday allowNumericWithDecimal" name="txTuesday" type="text" maxlength="5" value="0" tabindex="7" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsWednesday readValue Wednesday allowNumericWithDecimal" name="txWednesday" type="text" maxlength="5" value="0" tabindex="8" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsThursday readValue Thursday allowNumericWithDecimal" name="txThursday" type="text" value="0" maxlength="5" tabindex="9" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsFriday readValue Friday allowNumericWithDecimal" type="text" name="txtFriday" value="0" maxlength="5" tabindex="10" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour clsSaturday readValue Saturday allowNumericWithDecimal" type="text" name="txtSaturday" maxlength="5" value="0" tabindex="11" />
+                            </div>
+                            <div class="col-md-1 divTableCell">
+                                <input class="form-control hour Total readValue" disabled="disabled" value="0" type="text" />
+                            </div>
+                            <div class="col-md-1" style="padding-left: 5px;height: 30px;padding-top:5px">
+                                <button type="button" class="btn btn-default btn-sm rowSaveClick" id="btnSaverow"><span class='glyphicon glyphicon-floppy-save'></span></button>
+                                <button type="button" class="btn btn-default btn-sm rowDeleteClick" id="btnDeleterow"><span class='glyphicon glyphicon-remove'></span></button>
+                            </div>                            
+                        </div>
+
+                        <div style="margin:10px"></div>
+                    </div>
+                </div>
+
+                <div id="DayWiseTotal" class="row">
+                    <div class="col-md-2"></div><div class="col-md-2"></div><div class="col-md-2"></div><div class="col-md-1"></div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" maxlength="5" id="txtSundayTotal" type="text" disabled="disabled" value="0" tabindex="5" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" id="txtMondayTotal" type="text" maxlength="5" disabled="disabled" value="0" tabindex="6" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" id="txtTuesdayTotal" type="text" maxlength="5" disabled="disabled" value="0" tabindex="7" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" id="txtWednesdayTotal" type="text" maxlength="5" disabled="disabled" value="0" tabindex="8" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" id="txtThursdayTotal" type="text" disabled="disabled" value="0" maxlength="5" tabindex="9" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" type="text" id="txtFridayTotal" disabled="disabled" value="0" maxlength="5" tabindex="10" />
+                    </div>
+                    <div class="col-md-1 divTableCell">
+                        <input class="form-control Total readValue" type="text" id="txtSaturdayTotal" disabled="disabled" maxlength="5" value="0" tabindex="11" />
+                    </div>
+                </div>
+
+            </form>
+            <div id="commentSection">
+                <div class="col-md-6 pull-right">
+                    @*<input type="text" id="txtSunALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px; margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaSun" class="form-control clsComment readValue SundayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtMonALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px; margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaMon" class="form-control clsComment readValue MondayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtTueALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px;  margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaTue" class="form-control clsComment readValue TuesdayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtWedALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px; margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaWed" class="form-control clsComment readValue WednesdayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtThuALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px;  margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaThu" class="form-control clsComment readValue ThursdayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtFriALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px; margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaFri" class="form-control clsComment readValue FridayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                    @*<input type="text" id="txtSatALM" class="form-control clsALM readValue" placeholder="Enter your ALM\INC number item here" style="display:none; width: 270px; margin: 5px; float: left;" />*@
+                    <textarea id="txtAreaSat" class="form-control clsComment readValue SaturdayComment" maxlength="900" placeholder="Enter your comment here" style="display:none;width: 300px;"> </textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div style="margin-bottom:10px;"></div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Time</h4>
+            </div>
+
+
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Hours:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Comments:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal2"></div>
+@*</div>*@
+
+<script type="text/javascript">
+    var startDate = '@ViewBag.StartDate';
+    var tempteamCode = '@ViewBag.TeamCode';
+    var tempTeamWorkType = '@ViewBag.TeamWorkType';
+    $body = $("body");
+    $(window).load(function () {
+        openModal();
+        initializevalues(tempteamCode, tempTeamWorkType);
+        closeModal();
+    });
+
+    $(document).ready(function () {
+        initializevalues(tempteamCode, tempTeamWorkType);
+        $(".allowNumericWithDecimal").on("keypress keyup blur", function (event) {
+            //this.value = this.value.replace(/[^0-9\.]/g,'');
+            $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+
+        $(".allowNumericWithComma").on("keypress keyup blur", function (event) {
+            var theEvent = event || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[^0-9]+$/;
+            if (regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        });
+
+
+        //setInterval(function () { blink() }, 1000);
+
+        function blink() {
+            $("#box").fadeTo(100, 0.1).fadeTo(200, 1.0);
+        }
+
+        $("#TimeSheetForm").validate({
+            rules: {
+                txtSunday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txtMonday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txTuesday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txWednesday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txThursday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txtFriday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                txtSaturday: {
+                    maxlength: 5,
+                    max: 23.59,
+                    number: true
+
+                },
+                selectProject: {
+                    required: true,
+
+
+                },
+                selectProjectType: {
+                    required: true,
+
+
+                },
+                selectWorkType: {
+                    required: true,
+
+
+                }
+
+
+            },
+            messages: {
+                required: "Please fix the error(s) highlighted in red"
+
+            },
+            showErrors: function (errorMap, errorList) {
+                if (submitted) {
+                    var summary = ''; var checkCurrentRow = false;
+                    if (errorList != null && errorList != undefined && errorList.length>0)
+                        summary = "<label class='error'>Please fix the error(s) highlighted in red</label></br>";//"You have the following errors: </br>";
+                    $.each(errorList, function (index, value) {
+                        var element = errorList[index].element;
+                        if (currentRowClass == '' || element.parentElement.parentElement.parentElement.className == currentRowClass) {
+                            $(element).addClass("invalid");
+                            checkCurrentRow = true;
+                        }
+                        //summary += "<label class='error'>" + this.message + "</label></br>";
+                    });
+
+                    if (checkCurrentRow) {
+                        $("#messageBox").empty();
+                        $("#messageBox").append(summary);
+                        closeModal();
+
+                        //$.each(errorList, function () { summary += " * " + this.message + "\n"; });
+
+                        // alert(summary);
+                        submitted = false;
+                    }
+                    else {
+                        submitted = true;
+                        //$("#TimeSheetForm").submit()
+                    }
+                }
+             //   this.defaultShowErrors();
+            },
+
+            submitHandler: function (form) {
+
+                form.submit();
+                // LoginUser();
+            }
+        });
+
+    });
+
+</script>
+
+

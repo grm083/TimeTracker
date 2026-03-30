@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h2> Project Item</h2>
+@Html.Partial("_Notifications")
+<div id='projectItem-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<div style="float:right; "><a href="#" id="Add">Add New Project Item</a></div>
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectItemModel>()
+        .Name("ProjectItemGrid")
+        .Editable(editable => editable.Mode(GridEditMode.InCell))
+        .DataSource(dataSource => dataSource
+        .Ajax(
+
+            ).Events(e => e.RequestEnd("onRequestEnd"))
+        .Batch(true)
+        .ServerOperation(true)
+        .Model(model => model.Id(p => p.ProjectItemId))
+        .Model(model => model.Field(p => p.ProjectItemDescription).Editable(false))
+        .Model(model => model.Field(p => p.ProjectItemName).Editable(false))
+        .Model(model => model.Field(p => p.ProjectName).Editable(false))
+        .Model(model => model.Field(p => p.DevLOE).Editable(false))
+        .Model(model => model.Field(p => p.BaLOE).Editable(false))
+        .Model(model => model.Field(p => p.QaLOE).Editable(false))
+        .PageSize(25)
+        .Read(read => read.Url(Url.Action("ReadProjectItemGrid")).Data("ProjectItemGrid_SearchCriteria"))
+        .Update("ProjectItem_Editing_Update", "ProjectItem")
+    ).Events(events => events.DataBound("ProjectItemGrid_DataBound"))
+   
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.ProjectItemName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.ProjectItemDescription).Title("Project Item Description").HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.ProjectName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        //columns.Bound(p => p.ProjectItemStatusName).HeaderHtmlAttributes(new { style = "width:25%;" });
+        columns.Bound(p => p.ProjectItemStatus).ClientTemplate("#=ProjectItemStatus.ProjectItemStatusName#").HeaderHtmlAttributes(new { style = "width:10%;" });
+        columns.Bound(p => p.ProjectItemId).Hidden();
+        columns.Bound(p => p.DevLOE).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.BaLOE).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.QaLOE).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.IsActive).Hidden().ClientTemplate("#= IsActive == 1 ? 'Yes' : 'No' #").HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Command(command =>
+        {
+            command.Custom("gridEdit").Text(" ").Click("gridEditClick");
+            //command.Custom("gridDelete").Text(" ").Click("gridDeleteClick");
+        }).Title("Action").HtmlAttributes(new { @style = "text-align: center;" }).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;" });
+    }).ToolBar(toolbar =>
+    {
+
+    toolbar.Template(@<text>
+            <div class="toolbar">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="btnReset"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                            </span>
+                        </div>                      
+                    </div>
+                    <div class="col-md-4">
+                        <a class="k-button k-button-icontext k-grid-save-changes" href="javascript:void(0)" style="min-width: 0px; margin: 0px; padding: 2px 2px 2px 5px;"><span class="k-icon k-update"></span>Save changes</a>
+                        &nbsp;&nbsp;
+                        <a class="k-button k-button-icontext k-grid-cancel-changes" href="javascript:void(0)" style="min-width: 0px; margin: 0px; padding: 2px 2px 2px 5px;"><span class="k-icon k-cancel"></span>Cancel changes</a>
+                    </div>
+                    </div>
+                </div>
+
+        </text>);
+        //toolbar.Save();
+    })
+        .Pageable(p => p.Refresh(true).Input(true))
+        .Sortable(sortable => sortable.AllowUnsort(false))
+        .Resizable(resizable => resizable.Columns(true))
+        .Scrollable(scrollable => scrollable.Enabled(false))
+    )
+</div>
+
+@(Html.Kendo().Window().Name("AddProjectItem")
+                            .Visible(false)
+                            .Animation(false)
+                            .Modal(true)
+                            .Draggable()
+                            .Width(900)
+                            .Actions(actions => actions.Close())
+)
+
+@section scripts{
+<script type="text/javascript">
+    function onRequestEnd(e) {
+        if (e.type == "update") {
+            if (!e.response.Errors) {
+                displayNotoficationSuccess(['Project Items Updated successfully.']);
+            }
+        }
+           
+      
+    }
+        function refreshGrid() {
+            var grid = $("#ProjectItemGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+        function ProjectItemGrid_SearchCriteria() {
+            return {
+                searchText: $('#FieldFilter').val()
+            };
+        }
+        $("#FieldFilter").blur(function () {
+            refreshGrid();
+        });
+        $("#btnSearch").click(function () {
+            refreshGrid();
+        });
+        $("#btnReset").click(function () {
+            $("#FieldFilter").val(null);
+            refreshGrid();
+        });
+    $(document).ready(function () {
+        $("#Add").click(function () {
+            var window = $("#AddProjectItem").data("kendoWindow");
+            $("#AddProjectItem").html("");
+            window.refresh({
+                type: 'POST',
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("AddProjectItem")'
+            })
+            window.title('Add Project Item').center().open();
+        });
+    });
+
+    function gridEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var projectItemId = dataItem.ProjectItemId;
+        $("#AddProjectItem").html("");
+        var window = $("#AddProjectItem").data("kendoWindow");
+        window.refresh({
+            type: 'POST',
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("EditProjectItems")',
+            data: JSON.stringify({
+                ProjectItemId: projectItemId,
+            }),
+        })
+        window.title('Edit Project Item').center().open();
+    };
+
+    function gridDeleteClick(e) {
+        ClearNotifications();
+        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+        window.center().open();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#yesNotificationButton").click(function () {
+            var projectItemId = dataItem.ProjectItemId;
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("DeleteProjectItem")',
+                data: JSON.stringify({
+                    ProjectItemId: projectItemId,
+                }),
+                success: function (result) {
+                    if (result != null)
+                        displayNotoficationSuccess(['Project Item Deleted successfully.']);
+
+                    else
+                        displayNotoficationSuccess(['Unable to Delete Project Item']);
+
+                        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                        window.close();
+                        var grid = $("#ProjectItemGrid").data("kendoGrid");
+                        grid.dataSource.read();
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+        })
+        $("#noNotificationButton").click(function () {
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            window.close();
+        })
+    };
+
+        function ProjectItemGrid_DataBound(e) {
+            e.preventDefault();
+            $(".k-grid-gridEdit").find("span").addClass("k-icon k-i-pencil pull-left");
+            $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+            $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+        }
+    </script>
+}

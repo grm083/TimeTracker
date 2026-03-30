@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<h2> Project</h2>
+@Html.Partial("_Notifications")
+<div id='Project-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<div style="float:right; "><a href="#" id="Add">Add New Project</a></div>
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectModel>()
+            .Name("ProjectGrid")
+            .DataSource(dataSource => dataSource
+            .Ajax()
+            .PageSize(25)
+            .Read(read => read.Url(Url.Action("ReadProjectGrid")).Data("ProjectGrid_SearchCriteria"))
+        ).Events(events => events.DataBound("ProjectGrid_DataBound"))
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ProjectId).Hidden();
+            columns.Bound(p => p.ProjectName).HeaderHtmlAttributes(new { style = "text-align: center;" }).Width("25%");
+            columns.Bound(p => p.ProjectDescription).HeaderHtmlAttributes(new { style = "text-align: center;" }).Width("30%");
+            columns.Bound(p => p.ProjectTypeName).HeaderHtmlAttributes(new { style = "text-align: center;" }).Width("25%");
+            columns.Bound(p => p.IsActive).ClientTemplate("#= IsActive == 1 ? 'Yes' : 'No' #").HeaderHtmlAttributes(new { style = "text-align: center;" }).Width("10%");
+            columns.Command(command =>
+            {
+                command.Custom("gridEdit").Text(" ").Click("gridEditClick");
+            }).Title("Action").HtmlAttributes(new { @class = "commandColummn" }).HeaderHtmlAttributes(new { @class = "commandColummn" });
+        }).ToolBar(toolbar =>
+        {
+        toolbar.Template(@<text>
+                <div class="toolbar">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="btnReset"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+                })
+            .Pageable(p => p.Refresh(true).Input(true))
+            .Sortable(sortable => sortable.AllowUnsort(false))
+            .Resizable(resizable => resizable.Columns(true))
+            .Scrollable(scrollable => scrollable.Enabled(false))
+    )
+</div>
+
+@(Html.Kendo().Window().Name("AddProject")
+                            .Visible(false)
+                            .Animation(false)
+                            .Modal(true)
+                            .Draggable()
+                            .Width(900)
+                            .Actions(actions => actions.Close())
+)
+
+@section scripts{
+    <script type="text/javascript">
+        function refreshGrid() {
+            var grid = $("#ProjectGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        function ProjectGrid_SearchCriteria() {
+            return {
+                searchText: $('#FieldFilter').val()
+            };
+        }
+        $("#FieldFilter").blur(function () {
+            refreshGrid();
+        });
+        $("#btnSearch").click(function () {
+            refreshGrid();
+        });
+        $("#btnReset").click(function () {
+            $("#FieldFilter").val(null);
+            refreshGrid();
+        });
+    $(document).ready(function () {
+        $("#Add").click(function () {
+            var window = $("#AddProject").data("kendoWindow");
+            $("#AddProject").html("");
+            window.refresh({
+                type: 'POST',
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("AddProject")'
+            })
+            window.title('Add Project').center().open();
+        });
+    });
+
+    function gridEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var projectId = dataItem.ProjectId;
+        $("#AddProject").html("");
+        var window = $("#AddProject").data("kendoWindow");
+        window.refresh({
+            type: 'POST',
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("EditProjects")',
+            data: JSON.stringify({
+                ProjectId: projectId,
+            }),
+        })
+        window.title('Edit Project Item').center().open();
+    };
+
+    function gridDeleteClick(e) {
+        ClearNotifications();
+        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+        window.center().open();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#yesNotificationButton").click(function () {
+            var projectId = dataItem.ProjectId;
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("DeleteProjects")',
+                data: JSON.stringify({
+                    ProjectId: projectId,
+                }),
+                success: function (result) {
+                    if (result != null) 
+                        displayNotoficationSuccess(['Project Deleted successfully.']);
+                    
+                    else 
+                        displayNotoficationSuccess(['Unable to delete Project']);
+                    var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                    window.close();
+                    refreshGrid();
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+        })
+        $("#noNotificationButton").click(function () {
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            window.close();
+        })
+    };
+
+        function ProjectGrid_DataBound(e) {
+        e.preventDefault();
+        $(".k-grid-gridEdit").find("span").addClass("k-icon k-i-pencil pull-left");
+        $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+        $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+    }
+    </script>
+}

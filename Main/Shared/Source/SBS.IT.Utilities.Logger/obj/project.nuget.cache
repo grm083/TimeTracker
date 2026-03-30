@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "fY3/+E3Uswc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\bkalyana\\Downloads\\TimeTracker\\Main\\Shared\\Source\\SBS.IT.Utilities.Logger\\SBS.IT.Utilities.Logger.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bkalyana\\.nuget\\packages\\log4net\\2.0.12\\log4net.2.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}

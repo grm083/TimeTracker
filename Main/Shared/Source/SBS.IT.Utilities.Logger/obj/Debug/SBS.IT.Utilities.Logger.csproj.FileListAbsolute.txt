@@ -1,0 +1,9 @@
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\bin\Debug\SBS.IT.Utilities.Logger.dll.config
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\bin\Debug\SBS.IT.Utilities.Logger.dll
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\bin\Debug\SBS.IT.Utilities.Logger.pdb
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\bin\Debug\log4net.dll
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\obj\Debug\SBS.IT.Utilities.Logger.csproj.AssemblyReference.cache
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\obj\Debug\SBS.IT.Utilities.Logger.csproj.CoreCompileInputs.cache
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\obj\Debug\SBS.IT.U.6A3C6CF7.Up2Date
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\obj\Debug\SBS.IT.Utilities.Logger.dll
+C:\Users\bkalyana\Downloads\TimeTracker\Main\Shared\Source\SBS.IT.Utilities.Logger\obj\Debug\SBS.IT.Utilities.Logger.pdb

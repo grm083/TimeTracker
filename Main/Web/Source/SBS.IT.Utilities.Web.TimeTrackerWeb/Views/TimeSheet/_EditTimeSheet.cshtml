@@ -1,0 +1,112 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.TimeEntrySearchModel
+<script>
+    if ('@TempData["TimeSheetMessage"]' != '') {
+        alert('@TempData["TimeSheetMessage"]');
+    }
+</script>
+<div class="col-lg-8">
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.HiddenFor(M => M.TimeEntryId)
+                    @Html.HiddenFor(M => M.EmployeeId)
+                    @Html.LabelFor(model => model.WorkTypeName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.WorkTypeId, new SelectList(Model.WorkTypelst, "WorkTypeId", "WorkTypeName", Model.WorkTypeId), "--Select Work Type--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkTypeName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.LabelFor(model => model.date, new { @class = "" })
+                    @Html.TextBoxFor(model => model.date, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.LabelFor(model => model.ProjectItemName, new { @class = "" })
+                    @Html.DropDownListFor(model => model.ProjectItemId, new SelectList(Model.WorkItemlst, "ProjectId", "ProjectName", Model.ProjectItemId), "--Select Project Item--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProjectItemName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.LabelFor(model => model.ApplicationName, new { @class = "" })
+                    @Html.DropDownListFor(model => model.ApplicationId, new SelectList(Model.Applicationlst, "ApplicationId", "ApplicationName", Model.ApplicationId), "--Select Application--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ApplicationName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.LabelFor(model => model.WorkHour, new { @class = "" })
+                    @Html.TextBoxFor(model => model.WorkHour, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkHour, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.LabelFor(model => model.Comments, new { @class = "" })
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("UpdateTimeSheet")',
+            data: JSON.stringify({
+                TimeEntryId: $('#TimeEntryId').val(),
+                EmployeeId: $('#EmployeeId').val(),
+                WorkTypeId: $('#WorkTypeId').val(),
+                ApplicationId: $('#ApplicationId').val(),
+                date: $('#date').val(),
+                ProjectItemId: $('#ProjectItemId').val(),
+                WorkHour: $('#WorkHour').val(),
+                Comments: $('#Comments').val()
+            }),
+            success: function (result) {
+                    displayNotoficationSuccess(['Time Sheet Updated successfully.']);
+                    var grid = $("#TimeSheetGrid").data("kendoGrid");
+                    grid.dataSource.read();
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#EditTimeSheet").data("kendoWindow");
+        window.close();
+    });
+
+    $(document).ready(function () {
+        $("#date").datepicker
+            ({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 1,
+                changeYear: true,
+                yearRange: new Date().getFullYear()-1 + ':' + new Date().getFullYear(),
+                onSelect: function (date) {
+
+                }
+            });
+    });
+</script>

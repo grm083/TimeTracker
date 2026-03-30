@@ -1,0 +1,104 @@
+﻿@model List<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectViewModel>
+@{
+    // Layout = null;
+}
+<style>
+    .empCode {
+        background-color: lightgray;
+    }
+
+    .totalHour {
+        background-color: darkseagreen;
+    }
+</style>
+<script src="~/Scripts/jquery.table2excel.min.js"></script>
+<div class="container row">
+    <div>
+        @if (Model.Count > 0)
+        {
+            <button id="btnExport" class="btn btn-info pull-right">Export to Excel</button>
+            <h2>@Model[0].ProjectName</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr class="totalHour">
+                        <td><b>Total Hours</b></td>
+                        <td><b>@Model[0].TotalHour</b></td>
+                    </tr>
+                    @foreach (SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectViewModel PV in Model)
+                    {
+                        <tr class="empCode">
+                            <td><b>@PV.EmployeeType</b></td>
+                            <td><b>@PV.EmployeeTypeTotalHour</b></td>
+                        </tr>
+                        foreach (SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectViewResponse PVR in PV.ProjectViews)
+                        {
+                            <tr>
+                                <td>@PVR.WorkTypeName</td>
+                                <td>@PVR.WorkHour</td>
+                            </tr>
+                        }
+                    }
+                    <tr class="totalHour">
+                        <td><b>Grand Total</b></td>
+                        <td><b>@Model[0].TotalHour</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>No Record Found.</h3>
+        }
+    </div>
+</div>
+<div id="exportdiv" style="display:none">
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            //var projectId = $("#ProjectId option:selected").text();
+            //var month = $("#Month").val();
+            //var year = $("#Year").val();
+
+
+            //$("#tbl_grid").table2excel({
+            //    exclude: ".noExport",
+            //    filename: projectId + "-" + month + "-" + year + ".xls",
+            //    preserveColors: true
+            //});
+
+            var projectId = $("#ProjectId").val();
+            var projectName = $("#ProjectId option:selected").text();
+            var month = $("#Month").val();
+            var year = $("#Year").val();
+
+            if (projectId) {
+                $("#modal").show();
+                var dataparam = { "projectId": projectId, "month": month, "year": year };
+                $.get("ExportProjectDetail", dataparam, function (data) {
+                    $("#exportdiv").html(data);
+                    $("#modal").hide();
+
+
+
+                    $("#tbl_grid").table2excel({
+                        exclude: ".noExport",
+                        filename: projectName + "-" + month + "-" + year + ".xls",
+                        preserveColors: true
+                    });
+
+
+                }).fail(function () {
+                    alert("Something went wrong! Please try again.");
+                    $("#modal").hide();
+                })
+            } else {
+                showProjectValidationMsg();
+            }
+        });
+    });
+</script>

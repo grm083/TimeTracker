@@ -1,0 +1,140 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.WorkItemModel
+<script>
+    if ('@TempData["WorkItemMessage"]' != '') {
+        alert('@TempData["WorkItemMessage"]');
+    }
+</script>
+<div class="col-lg-10">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.HiddenFor(M => M.WorkItemId)
+                    @Html.LabelFor(model => model.ProjectName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.ProjectList, "ProjectId", "ProjectName", Model.ProjectId), "--Select Application--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.WorkItemName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.WorkItemName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkItemName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10">
+                    @Html.LabelFor(model => model.WorkItemDescription, new { @class = "" })
+                    @Html.TextAreaFor(model => model.WorkItemDescription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkItemDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.PlannedDeploymentDate, new { @class = "" })
+                    @Html.TextBoxFor(model => model.PlannedDeploymentDate, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.PlannedDeploymentDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.ActualDeploymentDate, new { @class = "" })
+                    @Html.TextBoxFor(model => model.ActualDeploymentDate, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ActualDeploymentDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.CompletionComment, new { @class = "" })
+                    @Html.TextBoxFor(model => model.CompletionComment, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.CompletionComment, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.BusinessOwner, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.BusinessOwner, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.BusinessOwner, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Budget, new { @class = "" })
+                    @Html.TextBoxFor(model => model.Budget, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.Budget, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Benefit, new { @class = "" })
+                    @Html.TextBoxFor(model => model.Benefit, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Benefit, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveWorkItems")',
+            data: JSON.stringify({
+                WorkItemId: $('#WorkItemId').val(),
+                ProjectId: $('#ProjectId').val(),
+                WorkItemName: $('#WorkItemName').val(),
+                WorkItemDescription: $('#WorkItemDescription').val(),
+                PlannedDeploymentDate: $('#PlannedDeploymentDate').val(),
+                ActualDeploymentDate: $('#ActualDeploymentDate').val(),
+                CompletionComment: $('#CompletionComment').val(),
+                BusinessOwner: $('#BusinessOwner').val(),
+                Budget: $('#Budget').val(),
+                Benefit: $('#Benefit').val()
+            }),
+            success: function (result) {
+                if (result != null && result.Errors != null && result.Errors.length != 0) {
+                    displayPartialViewErrors('workitem-notification-error', result);
+                }
+                else {
+                    var _clientId = $('#ClientId').val();
+                    if (_clientId != null && _clientId > 0)
+                        displayNotoficationSuccess(['WorkItem Updated successfully.']);
+                    else
+                        displayNotoficationSuccess(['WorkItem Created successfully.']);
+                    var window = $("#AddWorkItem").data("kendoWindow");
+                    window.close();
+                    $('#WorkItemId').val(null);
+                    var grid = $("#WorkItemGrid").data("kendoGrid");
+                    grid.dataSource.read();
+                }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddWorkItem").data("kendoWindow");
+        window.close();
+    });
+
+    $(document).ready(function () {
+        $("#PlannedDeploymentDate, #ActualDeploymentDate").datepicker
+            ({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                numberOfMonths: 1,
+                changeYear: true,
+                yearRange: new Date().getFullYear() + ':' + new Date().getFullYear(),
+                onSelect: function (date) {
+                    $("#ToDate").prop('disabled', false);
+                    var dt = new Date(date);
+                    dt.setDate(dt.getDate());
+                    $("#ToDate").datepicker("option", "minDate", dt);
+                }
+            });
+    });
+</script>

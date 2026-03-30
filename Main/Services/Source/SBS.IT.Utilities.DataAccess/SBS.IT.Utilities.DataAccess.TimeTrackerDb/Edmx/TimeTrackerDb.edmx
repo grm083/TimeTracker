@@ -1,0 +1,1362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TimeTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="usp_Application_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="applicationCode" Type="varchar" Mode="In" />
+          <Parameter Name="applicationName" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="applicationId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_Application_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="applicationId" Type="int" Mode="In" />
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Application_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Application_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="applicationId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_Application_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="applicationId" Type="int" Mode="In" />
+          <Parameter Name="applicationCode" Type="varchar" Mode="In" />
+          <Parameter Name="applicationName" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="logonName" Type="varchar" Mode="In" />
+          <Parameter Name="firstName" Type="varchar" Mode="In" />
+          <Parameter Name="lastName" Type="varchar" Mode="In" />
+          <Parameter Name="emailAddress" Type="varchar" Mode="In" />
+          <Parameter Name="dOJ" Type="date" Mode="In" />
+          <Parameter Name="designation" Type="varchar" Mode="In" />
+          <Parameter Name="timeZoneId" Type="int" Mode="In" />
+          <Parameter Name="teamId" Type="int" Mode="In" />
+          <Parameter Name="managerId" Type="int" Mode="In" />
+          <Parameter Name="locationId" Type="int" Mode="In" />
+          <Parameter Name="employmentTypeId" Type="int" Mode="In" />
+          <Parameter Name="companyName" Type="varchar" Mode="In" />
+          <Parameter Name="userTypeId" Type="int" Mode="In" />
+          <Parameter Name="isTimeEntryEnable" Type="int" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="employeeId" Type="int" Mode="InOut" />
+          <Parameter Name="dOT" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_Authentication" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="logonName" Type="varchar" Mode="In" />
+          <Parameter Name="logonPassword" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_GetList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="managerId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_GetManager" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time" />
+        <Function Name="usp_Employee_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="managerId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_Employee_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="firstName" Type="varchar" Mode="In" />
+          <Parameter Name="lastName" Type="varchar" Mode="In" />
+          <Parameter Name="dOJ" Type="date" Mode="In" />
+          <Parameter Name="designation" Type="varchar" Mode="In" />
+          <Parameter Name="timeZoneId" Type="int" Mode="In" />
+          <Parameter Name="teamId" Type="int" Mode="In" />
+          <Parameter Name="managerId" Type="int" Mode="In" />
+          <Parameter Name="locationId" Type="int" Mode="In" />
+          <Parameter Name="employmentTypeId" Type="int" Mode="In" />
+          <Parameter Name="companyName" Type="varchar" Mode="In" />
+          <Parameter Name="userTypeId" Type="int" Mode="In" />
+          <Parameter Name="isTimeEntryEnable" Type="int" Mode="In" />
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+          <Parameter Name="dOT" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_EmploymentType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Location_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Project_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectName" Type="varchar" Mode="In" />
+          <Parameter Name="projectDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="projectTypeId" Type="int" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_Project_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Project_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Project_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_Project_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectName" Type="varchar" Mode="In" />
+          <Parameter Name="projectDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="projectTypeId" Type="int" Mode="In" />
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectItem_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectItemName" Type="varchar" Mode="In" />
+          <Parameter Name="projectItemDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="projectItemStatusId" Type="int" Mode="In" />
+          <Parameter Name="budget" Type="money" Mode="In" />
+          <Parameter Name="benefit" Type="money" Mode="In" />
+          <Parameter Name="devLOE" Type="decimal" Mode="In" />
+          <Parameter Name="qaLOE" Type="decimal" Mode="In" />
+          <Parameter Name="baLOE" Type="decimal" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="projectItemId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_ProjectItem_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectItem_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectItem_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectItem_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectItemName" Type="varchar" Mode="In" />
+          <Parameter Name="projectItemDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="projectItemStatusId" Type="int" Mode="In" />
+          <Parameter Name="budget" Type="money" Mode="In" />
+          <Parameter Name="benefit" Type="money" Mode="In" />
+          <Parameter Name="devLOE" Type="decimal" Mode="In" />
+          <Parameter Name="qaLOE" Type="decimal" Mode="In" />
+          <Parameter Name="baLOE" Type="decimal" Mode="In" />
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectItemStatus_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ProjectType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_ReportRegistry_Detail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="userTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_Team_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="teamCode" Type="varchar" Mode="In" />
+          <Parameter Name="teamName" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="teamId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_Team_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+          <Parameter Name="temCode" Type="varchar" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+          <Parameter Name="workHour" Type="decimal" Mode="In" />
+          <Parameter Name="comments" Type="varchar" Mode="In" />
+          <Parameter Name="workItem" Type="varchar" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="timeEntryId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_TimeEntry_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="timeEntryId" Type="varchar" Mode="In" />
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="timeEntryId" Type="int" Mode="In" />
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_GetDistinctRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_GetLastEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="ProductionDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_GetProjectView" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="monthsBack" Type="int" Mode="In" />
+          <Parameter Name="ProductionDate" Type="date" Mode="In" />
+          <Parameter Name="searchDate" Type="date" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_GetProjectViewForExport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="monthsBack" Type="int" Mode="In" />
+          <Parameter Name="ProductionDate" Type="date" Mode="In" />
+          <Parameter Name="searchDate" Type="date" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_GetWeeklyStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="monthsBack" Type="int" Mode="In" />
+          <Parameter Name="ProductionDate" Type="date" Mode="In" />
+          <Parameter Name="searchDate" Type="date" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="timeEntryId" Type="int" Mode="In" />
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="timeEntryDateFrom" Type="date" Mode="In" />
+          <Parameter Name="timeEntryDateTo" Type="date" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeEntry_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="timeEntryId" Type="int" Mode="In" />
+          <Parameter Name="employeeId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+          <Parameter Name="projectId" Type="int" Mode="In" />
+          <Parameter Name="projectItemId" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+          <Parameter Name="workHour" Type="decimal" Mode="In" />
+          <Parameter Name="comments" Type="varchar" Mode="In" />
+          <Parameter Name="workItem" Type="varchar" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_TimeZone_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_UserType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_WorkType_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="workTypeCode" Type="varchar" Mode="In" />
+          <Parameter Name="workTypeName" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="WorkTypeCategoryId" Type="int" Mode="In" />
+          <Parameter Name="isCapitalizable" Type="int" Mode="In" />
+          <Parameter Name="createUserId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="usp_WorkType_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="deleteUserId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_WorkType_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_WorkType_Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+          <Parameter Name="searchBy" Type="varchar" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="pageNumber" Type="int" Mode="In" />
+          <Parameter Name="sortOrder" Type="bit" Mode="In" />
+          <Parameter Name="sortColumn" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="usp_WorkType_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="workTypeCode" Type="varchar" Mode="In" />
+          <Parameter Name="workTypeName" Type="varchar" Mode="In" />
+          <Parameter Name="description" Type="varchar" Mode="In" />
+          <Parameter Name="WorkTypeCategoryId" Type="int" Mode="In" />
+          <Parameter Name="isCapitalizable" Type="int" Mode="In" />
+          <Parameter Name="isActive" Type="int" Mode="In" />
+          <Parameter Name="updateUserId" Type="int" Mode="In" />
+          <Parameter Name="workTypeId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_WorkTypeCategory_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Time">
+          <Parameter Name="isActive" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TimeTrackerModelStoreContainer" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TimeTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TimeTrackerEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="usp_WorkType_Get" ReturnType="Collection(TimeTrackerModel.usp_WorkType_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Team_Add">
+            <Parameter Name="teamCode" Mode="In" Type="String" />
+            <Parameter Name="teamName" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="teamId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Team_Get" ReturnType="Collection(TimeTrackerModel.usp_Team_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeZone_Get" ReturnType="Collection(TimeTrackerModel.usp_TimeZone_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_WorkType_Delete">
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Application_Add">
+            <Parameter Name="applicationCode" Mode="In" Type="String" />
+            <Parameter Name="applicationName" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="applicationId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Application_Get" ReturnType="Collection(TimeTrackerModel.usp_Application_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItem_Delete">
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Project_Delete">
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_Delete">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Application_Delete">
+            <Parameter Name="applicationId" Mode="In" Type="Int32" />
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Application_Update">
+            <Parameter Name="applicationId" Mode="In" Type="Int32" />
+            <Parameter Name="applicationCode" Mode="In" Type="String" />
+            <Parameter Name="applicationName" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_GetManager" ReturnType="Collection(TimeTrackerModel.usp_Employee_GetManager_Result)" />
+          <FunctionImport Name="usp_TimeEntry_GetLastEntry" ReturnType="Collection(String)">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="ProductionDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_GetList" ReturnType="Collection(TimeTrackerModel.usp_Employee_GetList_Result)">
+          <Parameter Name="managerId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Application_Search" ReturnType="Collection(TimeTrackerModel.usp_Application_Search_Result)">
+            <Parameter Name="applicationId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectType_Get" ReturnType="Collection(TimeTrackerModel.usp_ProjectType_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItemStatus_Get" ReturnType="Collection(TimeTrackerModel.usp_ProjectItemStatus_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_WorkType_Search" ReturnType="Collection(TimeTrackerModel.usp_WorkType_Search_Result)">
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_EmploymentType_Get" ReturnType="Collection(TimeTrackerModel.usp_EmploymentType_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Location_Get" ReturnType="Collection(TimeTrackerModel.usp_Location_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_UserType_Get" ReturnType="Collection(TimeTrackerModel.usp_UserType_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_WorkTypeCategory_Get" ReturnType="Collection(TimeTrackerModel.usp_WorkTypeCategory_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_WorkType_Add">
+            <Parameter Name="workTypeCode" Mode="In" Type="String" />
+            <Parameter Name="workTypeName" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="WorkTypeCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="isCapitalizable" Mode="In" Type="Int32" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_WorkType_Update">
+            <Parameter Name="workTypeCode" Mode="In" Type="String" />
+            <Parameter Name="workTypeName" Mode="In" Type="String" />
+            <Parameter Name="description" Mode="In" Type="String" />
+            <Parameter Name="WorkTypeCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="isCapitalizable" Mode="In" Type="Int32" />
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_Add">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+            <Parameter Name="temCode" Mode="In" Type="String" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="workHour" Mode="In" Type="Decimal" />
+            <Parameter Name="comments" Mode="In" Type="String" />
+            <Parameter Name="workItem" Mode="In" Type="String" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="timeEntryId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_Delete">
+            <Parameter Name="timeEntryId" Mode="In" Type="String" />
+            <Parameter Name="deleteUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_Get" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_Get_Result)">
+            <Parameter Name="timeEntryId" Mode="In" Type="Int32" />
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_GetWeeklyStatus" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_GetWeeklyStatus_Result)">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="monthsBack" Mode="In" Type="Int32" />
+            <Parameter Name="ProductionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="searchDate" Mode="In" Type="DateTime" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_Search" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_Search_Result)">
+            <Parameter Name="timeEntryId" Mode="In" Type="Int32" />
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="timeEntryDateFrom" Mode="In" Type="DateTime" />
+            <Parameter Name="timeEntryDateTo" Mode="In" Type="DateTime" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_Update">
+            <Parameter Name="timeEntryId" Mode="In" Type="Int32" />
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="workTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="workHour" Mode="In" Type="Decimal" />
+            <Parameter Name="comments" Mode="In" Type="String" />
+            <Parameter Name="workItem" Mode="In" Type="String" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Project_Add">
+            <Parameter Name="projectName" Mode="In" Type="String" />
+            <Parameter Name="projectDescription" Mode="In" Type="String" />
+            <Parameter Name="projectTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Project_Get" ReturnType="Collection(TimeTrackerModel.usp_Project_Get_Result)">
+          <Parameter Name="isActive" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Project_Search" ReturnType="Collection(TimeTrackerModel.usp_Project_Search_Result)">
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Project_Update">
+            <Parameter Name="projectName" Mode="In" Type="String" />
+            <Parameter Name="projectDescription" Mode="In" Type="String" />
+            <Parameter Name="projectTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItem_Add">
+            <Parameter Name="projectItemName" Mode="In" Type="String" />
+            <Parameter Name="projectItemDescription" Mode="In" Type="String" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="budget" Mode="In" Type="Decimal" />
+            <Parameter Name="benefit" Mode="In" Type="Decimal" />
+            <Parameter Name="devLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="qaLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="baLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItem_Get" ReturnType="Collection(TimeTrackerModel.usp_ProjectItem_Get_Result)">
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItem_Search" ReturnType="Collection(TimeTrackerModel.usp_ProjectItem_Search_Result)">
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ProjectItem_Update">
+            <Parameter Name="projectItemName" Mode="In" Type="String" />
+            <Parameter Name="projectItemDescription" Mode="In" Type="String" />
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="budget" Mode="In" Type="Decimal" />
+            <Parameter Name="benefit" Mode="In" Type="Decimal" />
+            <Parameter Name="devLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="qaLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="baLOE" Mode="In" Type="Decimal" />
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+            <Parameter Name="projectItemId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_ReportRegistry_Detail" ReturnType="Collection(TimeTrackerModel.usp_ReportRegistry_Detail_Result)">
+          <Parameter Name="userTypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_Authentication" ReturnType="Collection(TimeTrackerModel.usp_Employee_Authentication_Result)">
+            <Parameter Name="logonName" Mode="In" Type="String" />
+            <Parameter Name="logonPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_GetDistinctRecords" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_GetDistinctRecords_Result)">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_GetProjectView" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_GetProjectView_Result)">
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="monthsBack" Mode="In" Type="Int32" />
+            <Parameter Name="ProductionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="searchDate" Mode="In" Type="DateTime" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_TimeEntry_GetProjectViewForExport" ReturnType="Collection(TimeTrackerModel.usp_TimeEntry_GetProjectViewForExport_Result)">
+            <Parameter Name="projectId" Mode="In" Type="Int32" />
+            <Parameter Name="monthsBack" Mode="In" Type="Int32" />
+            <Parameter Name="ProductionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="searchDate" Mode="In" Type="DateTime" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_Search" ReturnType="Collection(TimeTrackerModel.usp_Employee_Search_Result)">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="managerId" Mode="In" Type="Int32" />
+            <Parameter Name="searchBy" Mode="In" Type="String" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="pageNumber" Mode="In" Type="Int32" />
+            <Parameter Name="sortOrder" Mode="In" Type="Boolean" />
+            <Parameter Name="sortColumn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_Update">
+            <Parameter Name="employeeId" Mode="In" Type="Int32" />
+            <Parameter Name="firstName" Mode="In" Type="String" />
+            <Parameter Name="lastName" Mode="In" Type="String" />
+            <Parameter Name="dOJ" Mode="In" Type="DateTime" />
+            <Parameter Name="designation" Mode="In" Type="String" />
+            <Parameter Name="timeZoneId" Mode="In" Type="Int32" />
+            <Parameter Name="teamId" Mode="In" Type="Int32" />
+            <Parameter Name="managerId" Mode="In" Type="Int32" />
+            <Parameter Name="locationId" Mode="In" Type="Int32" />
+            <Parameter Name="employmentTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="companyName" Mode="In" Type="String" />
+            <Parameter Name="userTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="isTimeEntryEnable" Mode="In" Type="Int32" />
+            <Parameter Name="isActive" Mode="In" Type="Int32" />
+            <Parameter Name="updateUserId" Mode="In" Type="Int32" />
+            <Parameter Name="dOT" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="usp_Employee_Add">
+            <Parameter Name="logonName" Mode="In" Type="String" />
+            <Parameter Name="firstName" Mode="In" Type="String" />
+            <Parameter Name="lastName" Mode="In" Type="String" />
+            <Parameter Name="emailAddress" Mode="In" Type="String" />
+            <Parameter Name="dOJ" Mode="In" Type="DateTime" />
+            <Parameter Name="designation" Mode="In" Type="String" />
+            <Parameter Name="timeZoneId" Mode="In" Type="Int32" />
+            <Parameter Name="teamId" Mode="In" Type="Int32" />
+            <Parameter Name="managerId" Mode="In" Type="Int32" />
+            <Parameter Name="locationId" Mode="In" Type="Int32" />
+            <Parameter Name="employmentTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="companyName" Mode="In" Type="String" />
+            <Parameter Name="userTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="isTimeEntryEnable" Mode="In" Type="Int32" />
+            <Parameter Name="createUserId" Mode="In" Type="Int32" />
+            <Parameter Name="employeeId" Mode="InOut" Type="Int32" />
+            <Parameter Name="dOT" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="usp_WorkType_Get_Result">
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workTypeCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="workTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="2000" />
+        </ComplexType>
+        <ComplexType Name="usp_Team_Get_Result">
+          <Property Type="Int32" Name="teamId" Nullable="false" />
+          <Property Type="String" Name="teamCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="teamName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeZone_Get_Result">
+          <Property Type="Int32" Name="timeZoneId" Nullable="false" />
+          <Property Type="String" Name="timeZoneCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="timeZoneName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="utcOffset" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="description" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_Application_Get_Result">
+          <Property Type="Int32" Name="applicationId" Nullable="false" />
+          <Property Type="String" Name="applicationCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="applicationName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="description" Nullable="false" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_Employee_GetManager_Result">
+          <Property Type="Int32" Name="managerId" Nullable="false" />
+          <Property Type="String" Name="managerName" Nullable="false" MaxLength="201" />
+        </ComplexType>
+        <ComplexType Name="usp_Employee_GetList_Result">
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="String" Name="employeeName" Nullable="false" MaxLength="201" />
+        </ComplexType>
+        <ComplexType Name="usp_Application_Search_Result">
+          <Property Type="Int32" Name="applicationId" Nullable="false" />
+          <Property Type="String" Name="applicationCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="applicationName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="isActive" Nullable="false" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_ProjectType_Get_Result">
+          <Property Type="Int32" Name="projectTypeId" Nullable="false" />
+          <Property Type="String" Name="projectTypeCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="projectTypeName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_ProjectItemStatus_Get_Result">
+          <Property Type="Int32" Name="projectItemStatusId" Nullable="false" />
+          <Property Type="String" Name="projectItemStatusCode" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="projectItemStatusName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="projectItemStatusDescription" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="usp_WorkType_Search_Result">
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workTypeCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="workTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="2000" />
+          <Property Type="Int32" Name="isCapitalizable" Nullable="true" />
+          <Property Type="Int32" Name="isActive" Nullable="false" />
+          <Property Type="Int32" Name="workTypeCategoryId" Nullable="true" />
+          <Property Type="String" Name="workTypeCategoryCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="workTypeCategoryName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_EmploymentType_Get_Result">
+          <Property Type="Int32" Name="employmentTypeId" Nullable="false" />
+          <Property Type="String" Name="employmentTypeCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="employmentTypeName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_Location_Get_Result">
+          <Property Type="Int32" Name="locationId" Nullable="false" />
+          <Property Type="String" Name="locationCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="locationName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_UserType_Get_Result">
+          <Property Type="Int32" Name="userTypeId" Nullable="false" />
+          <Property Type="String" Name="userTypeCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="userTypeName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="description" Nullable="true" MaxLength="250" />
+        </ComplexType>
+        <ComplexType Name="usp_WorkTypeCategory_Get_Result">
+          <Property Type="Int32" Name="workTypeCategoryId" Nullable="false" />
+          <Property Type="String" Name="workTypeCategoryCode" Nullable="false" MaxLength="3" />
+          <Property Type="String" Name="workTypeCategoryName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="workTypeCategorydescription" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_Get_Result">
+          <Property Type="Int32" Name="timeEntryId" Nullable="false" />
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="Int32" Name="projectItemId" Nullable="true" />
+          <Property Type="DateTime" Name="date" Nullable="false" />
+          <Property Type="Decimal" Name="workHour" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="comments" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="workItem" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="weekDays" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_GetWeeklyStatus_Result">
+          <Property Type="Int32" Name="employeeId" Nullable="true" />
+          <Property Type="DateTime" Name="weekStartDT" Nullable="true" />
+          <Property Type="DateTime" Name="weekEndDT" Nullable="true" />
+          <Property Type="String" Name="weeklyUpdate" Nullable="true" MaxLength="44" />
+          <Property Type="String" Name="weekWithMonth" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="weeklyTotalHours" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="String" Name="weeklyStatus" Nullable="false" MaxLength="9" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_Search_Result">
+          <Property Type="Int32" Name="timeEntryId" Nullable="false" />
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="String" Name="firstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="lastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="employeeName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="logonName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="emailAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="employmentType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="employeeLocation" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="designation" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="timeZoneId" Nullable="true" />
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workTypeCode" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="workTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="projectItemId" Nullable="true" />
+          <Property Type="String" Name="projectItemName" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="projectItemDescription" Nullable="true" />
+          <Property Type="String" Name="projectItemNameDescription" Nullable="true" />
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="String" Name="projectName" Nullable="true" MaxLength="500" />
+          <Property Type="DateTime" Name="date" Nullable="true" />
+          <Property Type="Decimal" Name="workHour" Nullable="false" Precision="4" Scale="2" />
+          <Property Type="String" Name="comments" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="workItem" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_Project_Get_Result">
+          <Property Type="Int32" Name="projectId" Nullable="false" />
+          <Property Type="String" Name="projectName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="projectDescription" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_Project_Search_Result">
+          <Property Type="Int32" Name="projectId" Nullable="false" />
+          <Property Type="String" Name="projectName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="projectDescription" Nullable="true" />
+          <Property Type="Int32" Name="projectTypeId" Nullable="true" />
+          <Property Type="String" Name="projectTypeCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="projectTypeName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="isActive" Nullable="false" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_ProjectItem_Get_Result">
+          <Property Type="Int32" Name="projectItemId" Nullable="false" />
+          <Property Type="String" Name="projectItemName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="projectItemDescription" Nullable="true" />
+          <Property Type="String" Name="projectItemNameDescription" Nullable="true" />
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_ProjectItem_Search_Result">
+          <Property Type="Int32" Name="projectItemId" Nullable="false" />
+          <Property Type="String" Name="projectItemName" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="projectItemDescription" Nullable="true" />
+          <Property Type="Decimal" Name="budget" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="benefit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="devLOE" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Decimal" Name="qaLOE" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Decimal" Name="baLOE" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="String" Name="projectName" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="projectItemStatusId" Nullable="true" />
+          <Property Type="String" Name="projectItemStatusCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="projectItemStatusName" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="isActive" Nullable="false" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_ReportRegistry_Detail_Result">
+          <Property Type="Int32" Name="reportRegistryId" Nullable="false" />
+          <Property Type="String" Name="displayName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="reportPath" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="reportFolder" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="reportServerId" Nullable="false" />
+          <Property Type="Int32" Name="isUserIdRequired" Nullable="true" />
+          <Property Type="String" Name="notes" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="reportCategory" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="sourceDescription" Nullable="true" />
+          <Property Type="Binary" Name="sourceImage" Nullable="true" MaxLength="Max" />
+          <Property Type="Int32" Name="isDraft" Nullable="true" />
+          <Property Type="Int32" Name="displayOrder" Nullable="true" />
+          <Property Type="String" Name="toolTip" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="guid_PK" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="isClientFriendly" Nullable="true" />
+          <Property Type="String" Name="reportServerCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="reportServerName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="reportServerURL" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="userTypeId" Nullable="true" />
+          <Property Type="String" Name="userTypeCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="userTypeName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="usp_Employee_Authentication_Result">
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="String" Name="firstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="lastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="logonName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="emailAddress" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="dOJ" Nullable="true" />
+          <Property Type="String" Name="designation" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="locationId" Nullable="true" />
+          <Property Type="String" Name="employeeLocation" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="employmentTypeId" Nullable="true" />
+          <Property Type="String" Name="employmentType" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="userTypeId" Nullable="true" />
+          <Property Type="String" Name="userType" Nullable="true" MaxLength="3" />
+          <Property Type="Int32" Name="isTimeEntryEnable" Nullable="true" />
+          <Property Type="Int32" Name="teamId" Nullable="true" />
+          <Property Type="String" Name="teamCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="teamName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="timeZoneId" Nullable="true" />
+          <Property Type="String" Name="timeZoneCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="utcOffset" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_GetDistinctRecords_Result">
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="Int32" Name="projectItemId" Nullable="true" />
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workItem" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_GetProjectView_Result">
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="String" Name="projectName" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="locationCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="locationName" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="workHour" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_TimeEntry_GetProjectViewForExport_Result">
+          <Property Type="Int32" Name="projectId" Nullable="true" />
+          <Property Type="String" Name="projectName" Nullable="false" MaxLength="500" />
+          <Property Type="Int32" Name="workTypeId" Nullable="false" />
+          <Property Type="String" Name="workTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="locationCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="locationName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="String" Name="employeeName" Nullable="false" MaxLength="201" />
+          <Property Type="Decimal" Name="workHour" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="usp_Employee_Search_Result">
+          <Property Type="Int32" Name="employeeId" Nullable="false" />
+          <Property Type="Int32" Name="employeeCode" Nullable="true" />
+          <Property Type="String" Name="firstName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="lastName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="employeeName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="gender" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="logonName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="emailAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="phoneNumber" Nullable="true" MaxLength="14" />
+          <Property Type="String" Name="emergencyContactNumber" Nullable="true" MaxLength="14" />
+          <Property Type="DateTime" Name="dOB" Nullable="true" />
+          <Property Type="DateTime" Name="dOJ" Nullable="true" />
+          <Property Type="String" Name="designation" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="locationId" Nullable="true" />
+          <Property Type="String" Name="locationCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="employeeLocation" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="employmentTypeId" Nullable="true" />
+          <Property Type="String" Name="employmentTypeCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="employmentType" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="companyName" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="userTypeId" Nullable="true" />
+          <Property Type="String" Name="userTypeCode" Nullable="true" MaxLength="3" />
+          <Property Type="String" Name="userType" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="isTimeEntryEnable" Nullable="true" />
+          <Property Type="Int32" Name="timeZoneId" Nullable="true" />
+          <Property Type="String" Name="timeZoneCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="timeZoneName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="utcOffset" Nullable="false" MaxLength="5" />
+          <Property Type="Int32" Name="teamId" Nullable="true" />
+          <Property Type="String" Name="teamCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="teamName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="managerId" Nullable="true" />
+          <Property Type="String" Name="employeeManager" Nullable="true" MaxLength="201" />
+          <Property Type="Int32" Name="isActive" Nullable="false" />
+          <Property Type="DateTime" Name="dOT" Nullable="true" />
+          <Property Type="Int32" Name="rowTotal" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TimeTrackerModelStoreContainer" CdmEntityContainer="TimeTrackerEntities" >
+          <FunctionImportMapping FunctionImportName="usp_WorkType_Get" FunctionName="TimeTrackerModel.Store.usp_WorkType_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkType_Get_Result">
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+                <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Team_Add" FunctionName="TimeTrackerModel.Store.usp_Team_Add" />
+          <FunctionImportMapping FunctionImportName="usp_Team_Get" FunctionName="TimeTrackerModel.Store.usp_Team_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Team_Get_Result">
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+                <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeZone_Get" FunctionName="TimeTrackerModel.Store.usp_TimeZone_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeZone_Get_Result">
+                <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+                <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+                <ScalarProperty Name="timeZoneName" ColumnName="timeZoneName" />
+                <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_WorkType_Delete" FunctionName="TimeTrackerModel.Store.usp_WorkType_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_Application_Add" FunctionName="TimeTrackerModel.Store.usp_Application_Add" />
+          <FunctionImportMapping FunctionImportName="usp_Application_Get" FunctionName="TimeTrackerModel.Store.usp_Application_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Application_Get_Result">
+                <ScalarProperty Name="applicationId" ColumnName="applicationId" />
+                <ScalarProperty Name="applicationCode" ColumnName="applicationCode" />
+                <ScalarProperty Name="applicationName" ColumnName="applicationName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProjectItem_Delete" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_Project_Delete" FunctionName="TimeTrackerModel.Store.usp_Project_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_Employee_Delete" FunctionName="TimeTrackerModel.Store.usp_Employee_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_Application_Delete" FunctionName="TimeTrackerModel.Store.usp_Application_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_Application_Update" FunctionName="TimeTrackerModel.Store.usp_Application_Update" />
+          <FunctionImportMapping FunctionImportName="usp_Employee_GetManager" FunctionName="TimeTrackerModel.Store.usp_Employee_GetManager">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_GetManager_Result">
+                <ScalarProperty Name="managerId" ColumnName="managerId" />
+                <ScalarProperty Name="managerName" ColumnName="managerName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetLastEntry" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetLastEntry" />
+          <FunctionImportMapping FunctionImportName="usp_Employee_GetList" FunctionName="TimeTrackerModel.Store.usp_Employee_GetList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_GetList_Result">
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Application_Search" FunctionName="TimeTrackerModel.Store.usp_Application_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Application_Search_Result">
+                <ScalarProperty Name="applicationId" ColumnName="applicationId" />
+                <ScalarProperty Name="applicationCode" ColumnName="applicationCode" />
+                <ScalarProperty Name="applicationName" ColumnName="applicationName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProjectType_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectType_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectType_Get_Result">
+                <ScalarProperty Name="projectTypeId" ColumnName="projectTypeId" />
+                <ScalarProperty Name="projectTypeCode" ColumnName="projectTypeCode" />
+                <ScalarProperty Name="projectTypeName" ColumnName="projectTypeName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProjectItemStatus_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectItemStatus_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItemStatus_Get_Result">
+                <ScalarProperty Name="projectItemStatusId" ColumnName="projectItemStatusId" />
+                <ScalarProperty Name="projectItemStatusCode" ColumnName="projectItemStatusCode" />
+                <ScalarProperty Name="projectItemStatusName" ColumnName="projectItemStatusName" />
+                <ScalarProperty Name="projectItemStatusDescription" ColumnName="projectItemStatusDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_WorkType_Search" FunctionName="TimeTrackerModel.Store.usp_WorkType_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkType_Search_Result">
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+                <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="isCapitalizable" ColumnName="isCapitalizable" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="workTypeCategoryId" ColumnName="workTypeCategoryId" />
+                <ScalarProperty Name="workTypeCategoryCode" ColumnName="workTypeCategoryCode" />
+                <ScalarProperty Name="workTypeCategoryName" ColumnName="workTypeCategoryName" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_EmploymentType_Get" FunctionName="TimeTrackerModel.Store.usp_EmploymentType_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_EmploymentType_Get_Result">
+                <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+                <ScalarProperty Name="employmentTypeCode" ColumnName="employmentTypeCode" />
+                <ScalarProperty Name="employmentTypeName" ColumnName="employmentTypeName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Location_Get" FunctionName="TimeTrackerModel.Store.usp_Location_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Location_Get_Result">
+                <ScalarProperty Name="locationId" ColumnName="locationId" />
+                <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+                <ScalarProperty Name="locationName" ColumnName="locationName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_UserType_Get" FunctionName="TimeTrackerModel.Store.usp_UserType_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_UserType_Get_Result">
+                <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+                <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+                <ScalarProperty Name="userTypeName" ColumnName="userTypeName" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_WorkTypeCategory_Get" FunctionName="TimeTrackerModel.Store.usp_WorkTypeCategory_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_WorkTypeCategory_Get_Result">
+                <ScalarProperty Name="workTypeCategoryId" ColumnName="workTypeCategoryId" />
+                <ScalarProperty Name="workTypeCategoryCode" ColumnName="workTypeCategoryCode" />
+                <ScalarProperty Name="workTypeCategoryName" ColumnName="workTypeCategoryName" />
+                <ScalarProperty Name="workTypeCategorydescription" ColumnName="workTypeCategorydescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_WorkType_Add" FunctionName="TimeTrackerModel.Store.usp_WorkType_Add" />
+          <FunctionImportMapping FunctionImportName="usp_WorkType_Update" FunctionName="TimeTrackerModel.Store.usp_WorkType_Update" />
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_Add" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Add" />
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_Delete" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Delete" />
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_Get" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_Get_Result">
+                <ScalarProperty Name="timeEntryId" ColumnName="timeEntryId" />
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="workHour" ColumnName="workHour" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="workItem" ColumnName="workItem" />
+                <ScalarProperty Name="weekDays" ColumnName="weekDays" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetWeeklyStatus" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetWeeklyStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetWeeklyStatus_Result">
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="weekStartDT" ColumnName="weekStartDT" />
+                <ScalarProperty Name="weekEndDT" ColumnName="weekEndDT" />
+                <ScalarProperty Name="weeklyUpdate" ColumnName="weeklyUpdate" />
+                <ScalarProperty Name="weekWithMonth" ColumnName="weekWithMonth" />
+                <ScalarProperty Name="weeklyTotalHours" ColumnName="weeklyTotalHours" />
+                <ScalarProperty Name="weeklyStatus" ColumnName="weeklyStatus" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_Search" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_Search_Result">
+                <ScalarProperty Name="timeEntryId" ColumnName="timeEntryId" />
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+                <ScalarProperty Name="logonName" ColumnName="logonName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+                <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workTypeCode" ColumnName="workTypeCode" />
+                <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+                <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+                <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+                <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+                <ScalarProperty Name="projectItemNameDescription" ColumnName="projectItemNameDescription" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="workHour" ColumnName="workHour" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="workItem" ColumnName="workItem" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_Update" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_Update" />
+          <FunctionImportMapping FunctionImportName="usp_Project_Add" FunctionName="TimeTrackerModel.Store.usp_Project_Add" />
+          <FunctionImportMapping FunctionImportName="usp_Project_Get" FunctionName="TimeTrackerModel.Store.usp_Project_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Project_Get_Result">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="projectDescription" ColumnName="projectDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Project_Search" FunctionName="TimeTrackerModel.Store.usp_Project_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Project_Search_Result">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="projectDescription" ColumnName="projectDescription" />
+                <ScalarProperty Name="projectTypeId" ColumnName="projectTypeId" />
+                <ScalarProperty Name="projectTypeCode" ColumnName="projectTypeCode" />
+                <ScalarProperty Name="projectTypeName" ColumnName="projectTypeName" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Project_Update" FunctionName="TimeTrackerModel.Store.usp_Project_Update" />
+          <FunctionImportMapping FunctionImportName="usp_ProjectItem_Add" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Add" />
+          <FunctionImportMapping FunctionImportName="usp_ProjectItem_Get" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Get">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItem_Get_Result">
+                <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+                <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+                <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+                <ScalarProperty Name="projectItemNameDescription" ColumnName="projectItemNameDescription" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProjectItem_Search" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ProjectItem_Search_Result">
+                <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+                <ScalarProperty Name="projectItemName" ColumnName="projectItemName" />
+                <ScalarProperty Name="projectItemDescription" ColumnName="projectItemDescription" />
+                <ScalarProperty Name="budget" ColumnName="budget" />
+                <ScalarProperty Name="benefit" ColumnName="benefit" />
+                <ScalarProperty Name="devLOE" ColumnName="devLOE" />
+                <ScalarProperty Name="qaLOE" ColumnName="qaLOE" />
+                <ScalarProperty Name="baLOE" ColumnName="baLOE" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="projectItemStatusId" ColumnName="projectItemStatusId" />
+                <ScalarProperty Name="projectItemStatusCode" ColumnName="projectItemStatusCode" />
+                <ScalarProperty Name="projectItemStatusName" ColumnName="projectItemStatusName" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_ProjectItem_Update" FunctionName="TimeTrackerModel.Store.usp_ProjectItem_Update" />
+          <FunctionImportMapping FunctionImportName="usp_ReportRegistry_Detail" FunctionName="TimeTrackerModel.Store.usp_ReportRegistry_Detail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_ReportRegistry_Detail_Result">
+                <ScalarProperty Name="reportRegistryId" ColumnName="reportRegistryId" />
+                <ScalarProperty Name="displayName" ColumnName="displayName" />
+                <ScalarProperty Name="reportPath" ColumnName="reportPath" />
+                <ScalarProperty Name="reportFolder" ColumnName="reportFolder" />
+                <ScalarProperty Name="reportServerId" ColumnName="reportServerId" />
+                <ScalarProperty Name="isUserIdRequired" ColumnName="isUserIdRequired" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="reportCategory" ColumnName="reportCategory" />
+                <ScalarProperty Name="sourceDescription" ColumnName="sourceDescription" />
+                <ScalarProperty Name="sourceImage" ColumnName="sourceImage" />
+                <ScalarProperty Name="isDraft" ColumnName="isDraft" />
+                <ScalarProperty Name="displayOrder" ColumnName="displayOrder" />
+                <ScalarProperty Name="toolTip" ColumnName="toolTip" />
+                <ScalarProperty Name="guid_PK" ColumnName="guid_PK" />
+                <ScalarProperty Name="isClientFriendly" ColumnName="isClientFriendly" />
+                <ScalarProperty Name="reportServerCode" ColumnName="reportServerCode" />
+                <ScalarProperty Name="reportServerName" ColumnName="reportServerName" />
+                <ScalarProperty Name="reportServerURL" ColumnName="reportServerURL" />
+                <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+                <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+                <ScalarProperty Name="userTypeName" ColumnName="userTypeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Employee_Authentication" FunctionName="TimeTrackerModel.Store.usp_Employee_Authentication">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_Authentication_Result">
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="logonName" ColumnName="logonName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="dOJ" ColumnName="dOJ" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="locationId" ColumnName="locationId" />
+                <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+                <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+                <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+                <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+                <ScalarProperty Name="userType" ColumnName="userType" />
+                <ScalarProperty Name="isTimeEntryEnable" ColumnName="isTimeEntryEnable" />
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+                <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+                <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+                <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetDistinctRecords" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetDistinctRecords">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetDistinctRecords_Result">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectItemId" ColumnName="projectItemId" />
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workItem" ColumnName="workItem" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetProjectView" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetProjectView">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetProjectView_Result">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+                <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+                <ScalarProperty Name="locationName" ColumnName="locationName" />
+                <ScalarProperty Name="workHour" ColumnName="workHour" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_TimeEntry_GetProjectViewForExport" FunctionName="TimeTrackerModel.Store.usp_TimeEntry_GetProjectViewForExport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_TimeEntry_GetProjectViewForExport_Result">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="projectName" ColumnName="projectName" />
+                <ScalarProperty Name="workTypeId" ColumnName="workTypeId" />
+                <ScalarProperty Name="workTypeName" ColumnName="workTypeName" />
+                <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+                <ScalarProperty Name="locationName" ColumnName="locationName" />
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+                <ScalarProperty Name="workHour" ColumnName="workHour" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Employee_Search" FunctionName="TimeTrackerModel.Store.usp_Employee_Search">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TimeTrackerModel.usp_Employee_Search_Result">
+                <ScalarProperty Name="employeeId" ColumnName="employeeId" />
+                <ScalarProperty Name="employeeCode" ColumnName="employeeCode" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="logonName" ColumnName="logonName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="emergencyContactNumber" ColumnName="emergencyContactNumber" />
+                <ScalarProperty Name="dOB" ColumnName="dOB" />
+                <ScalarProperty Name="dOJ" ColumnName="dOJ" />
+                <ScalarProperty Name="designation" ColumnName="designation" />
+                <ScalarProperty Name="locationId" ColumnName="locationId" />
+                <ScalarProperty Name="locationCode" ColumnName="locationCode" />
+                <ScalarProperty Name="employeeLocation" ColumnName="employeeLocation" />
+                <ScalarProperty Name="employmentTypeId" ColumnName="employmentTypeId" />
+                <ScalarProperty Name="employmentTypeCode" ColumnName="employmentTypeCode" />
+                <ScalarProperty Name="employmentType" ColumnName="employmentType" />
+                <ScalarProperty Name="companyName" ColumnName="companyName" />
+                <ScalarProperty Name="userTypeId" ColumnName="userTypeId" />
+                <ScalarProperty Name="userTypeCode" ColumnName="userTypeCode" />
+                <ScalarProperty Name="userType" ColumnName="userType" />
+                <ScalarProperty Name="isTimeEntryEnable" ColumnName="isTimeEntryEnable" />
+                <ScalarProperty Name="timeZoneId" ColumnName="timeZoneId" />
+                <ScalarProperty Name="timeZoneCode" ColumnName="timeZoneCode" />
+                <ScalarProperty Name="timeZoneName" ColumnName="timeZoneName" />
+                <ScalarProperty Name="utcOffset" ColumnName="utcOffset" />
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+                <ScalarProperty Name="teamCode" ColumnName="teamCode" />
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="managerId" ColumnName="managerId" />
+                <ScalarProperty Name="employeeManager" ColumnName="employeeManager" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="dOT" ColumnName="dOT" />
+                <ScalarProperty Name="rowTotal" ColumnName="rowTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_Employee_Update" FunctionName="TimeTrackerModel.Store.usp_Employee_Update" />
+          <FunctionImportMapping FunctionImportName="usp_Employee_Add" FunctionName="TimeTrackerModel.Store.usp_Employee_Add" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

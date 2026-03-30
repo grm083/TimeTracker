@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Application";
+}
+<h2> Employee</h2>
+@Html.Partial("_Notifications")
+<div id='employee-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<div style="float:right; "><a href="#" id="Add">Add New Employee</a></div>
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.EmployeeModel>()
+    .Name("EmployeeGrid")
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .PageSize(25)
+    .Read(read => read.Url(Url.Action("ReadEmployeeGrid")).Data("ReadEmployeeGrid_SearchCriteria"))
+    ).Events(events => events.DataBound("CustomerGrid_DataBound"))
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.EmployeeId).Hidden();
+        columns.Bound(p => p.EmployeeCode).HeaderHtmlAttributes(new { style = "text-align: center;" }).Hidden();
+        columns.Bound(p => p.EmailAddress).HeaderHtmlAttributes(new { style = "text-align: center;" }).Hidden();
+        columns.Bound(p => p.DOB).Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = "text-align: center;" }).Sortable(false).Hidden();
+
+        columns.Bound(p => p.EmployeeName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.LogonName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        if (SBS.IT.Utilities.Web.TimeTrackerWeb.Extension.AuthenticateExtension.UserType == "SAN")
+        {
+            columns.Bound(p => p.EmployeeManager).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        }
+        columns.Bound(p => p.TeamName).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.UserType).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.EmployeeLocation).ClientTemplate("#= EmployeeLocation #" +" - "+ "#= TimeZoneCode #").HeaderHtmlAttributes(new { style = "text-align: center;" });
+        //columns.Bound(p => p.TimeZoneCode).HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.DOJ).Hidden().Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = "text-align: center;" }).Sortable(false);
+        columns.Bound(p => p.IsActive).ClientTemplate("#= IsActive == 1 ? 'Yes' : 'No' #").HeaderHtmlAttributes(new { style = "text-align: center;" });
+        columns.Bound(p => p.IsTimeEntryEnable).ClientTemplate("#= IsTimeEntryEnable == 1 ? 'Yes' : 'No' #").HeaderHtmlAttributes(new { style = "text-align: center;" }).Title("Time Entry Enabled");
+        columns.Bound(p => p.DOT).Format("{0:MM/dd/yyyy}").HeaderHtmlAttributes(new { style = "text-align: center;" }).Title("Date Of Termination");
+        columns.Command(command =>
+        {
+            command.Custom("gridIEdit").Text(" ").Click("gridIEditClick");
+            //command.Custom("gridDelete").Text(" ").Click("gridDeleteClick");
+        }).Title("Action").HtmlAttributes(new { @style = "text-align: center;" }).HeaderHtmlAttributes(new { style = "text-align: center;width:5%;" });
+    }).ToolBar(toolbar =>
+    {
+    toolbar.Template(@<text>
+        <div class="toolbar">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="btnReset"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </text>);
+    })
+    .Pageable(p => p.Refresh(true).Input(true))
+    .Sortable(sortable => sortable.AllowUnsort(false))
+    .Resizable(resizable => resizable.Columns(true))
+    .Scrollable(scrollable => scrollable.Enabled(false))
+    )
+</div>
+
+@(Html.Kendo().Window().Name("AddEmployee")
+                                        .Visible(false)
+                                        .Animation(false)
+                                        .Modal(true)
+                                        .Draggable()
+                                        .Width(900)
+                                        .Actions(actions => actions.Close())
+)
+
+@section scripts{
+    <script type="text/javascript">
+        function refreshGrid() {
+            var grid = $("#EmployeeGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        function ReadEmployeeGrid_SearchCriteria() {
+            return {
+                searchText: $('#FieldFilter').val()
+            };
+        }
+
+        $("#FieldFilter").blur(function () {
+            refreshGrid();
+        });
+        $("#btnSearch").click(function () {
+            refreshGrid();
+        });
+        $("#btnReset").click(function () {
+            $("#FieldFilter").val(null);
+            refreshGrid();
+        });
+
+        $(document).ready(function () {
+            $('#AddEmployee').parent().css("top", "166px");
+            $('#AddEmployee').parent().css("left", "537px");
+        $("#Add").click(function () {
+            var window = $("#AddEmployee").data("kendoWindow");
+            $("#AddEmployee").html("");
+            window.refresh({
+                type: 'POST',
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("AddEmployee")'
+            })
+            window.title('Add Employee').open();
+        });
+    });
+
+    function gridIEditClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var employeeId = dataItem.EmployeeId;
+        $("#AddEmployee").html("");
+        var window = $("#AddEmployee").data("kendoWindow");
+        window.refresh({
+            type: 'POST',
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("EditEmployee")',
+            data: JSON.stringify({
+                EmployeeId: employeeId ,
+            }),
+        })
+        window.title('Edit Employee').center().open();
+    };
+
+    function gridDeleteClick(e) {
+        ClearNotifications();
+        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+        window.center().open();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $("#yesNotificationButton").click(function () {
+            var employeeId = dataItem.EmployeeId;
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("DeleteEmployee")',
+                data: JSON.stringify({
+                    EmployeeId: employeeId,
+                }),
+                success: function (result) {
+                    if (result != null)
+                        displayNotoficationSuccess(['Employee Deleted successfully.']);
+
+                    else
+                        displayNotoficationSuccess(['Unable to delete Employee']);
+
+                        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                        window.close();
+                    refreshGrid();
+                },
+                complete: function () {
+                    displayAjaxLoading(false);
+                }
+            })
+        })
+        $("#noNotificationButton").click(function () {
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            window.close();
+        })
+    };
+
+    function CustomerGrid_DataBound(e) {
+        e.preventDefault();
+        $(".k-grid-gridIEdit").find("span").addClass("k-icon k-i-pencil pull-left");
+        $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+        $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+    }
+    </script>
+}

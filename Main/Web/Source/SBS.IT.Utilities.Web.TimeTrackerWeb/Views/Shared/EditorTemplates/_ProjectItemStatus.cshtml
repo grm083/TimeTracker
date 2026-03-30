@@ -1,0 +1,8 @@
+﻿
+@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ProjectItemStatusModel
+
+@(Html.Kendo().DropDownListFor(m => m)
+            .DataValueField("ProjectItemStatusId")
+            .DataTextField("ProjectItemStatusName")
+            .BindTo((System.Collections.IEnumerable)ViewData["projectItemStatusList"])
+)

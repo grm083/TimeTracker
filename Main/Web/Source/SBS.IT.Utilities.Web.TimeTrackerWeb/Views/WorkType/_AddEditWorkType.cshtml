@@ -1,0 +1,116 @@
+﻿@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.WorkTypeModel
+<script>
+    if ('@TempData["WorkTypeMessage"]' != '') {
+        alert('@TempData["WorkTypeMessage"]');
+    }
+</script>
+<div class="col-lg-10">
+    <div class="panel panel-default">
+        <div id="messageBox" class="text-danger"></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.HiddenFor(M => M.WorkTypeId)
+                    @Html.LabelFor(model => model.WorkTypeCode, new { @class = "manadatory" })
+                    @if (Model != null && Model.WorkTypeId > 0)
+                        {
+                            @Html.TextBoxFor(model => model.WorkTypeCode, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.HiddenFor(M => M.WorkTypeCode)
+                        }
+                    else
+                        {
+                            @Html.TextBoxFor(model => model.WorkTypeCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.WorkTypeCode, "", new { @class = "text-danger" })
+                        }
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.WorkTypeName, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.WorkTypeName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkTypeName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Description, new { @class = "" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.IsCapitalizable, new { @class = "" })
+                    @Html.DropDownList("IsCapitalizable", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IsCapitalizable, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.WorkTypeCategoryName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.WorkTypeCategoryId, new SelectList(Model.WorkTypeCategoryModellst, "WorkTypeCategoryId", "WorkTypeCategoryName", Model.WorkTypeCategoryId), "--Select Work Type Category--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkTypeCategoryId, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @if (Model != null && Model.WorkTypeId > 0)
+                    {
+                        @Html.LabelFor(model => model.IsActive, new { @class = "manadatory" })
+                        @Html.DropDownList("IsActive", new List<SelectListItem> { new SelectListItem { Text = "Yes", Value = "1" }, new SelectListItem { Text = "No", Value = "0" } }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveWorkType")',
+            data: JSON.stringify({
+                WorkTypeId: $('#WorkTypeId').val(),
+                WorkTypeCode: $('#WorkTypeCode').val(),
+                WorkTypeName: $('#WorkTypeName').val(),
+                Description: $('#Description').val(),
+                IsCapitalizable: $('#IsCapitalizable').val(),
+                WorkTypeCategoryId: $('#WorkTypeCategoryId').val(),
+                IsActive: $('#IsActive').val()
+            }),
+            success: function (result) {
+                if (result.length > 0) {
+                    displayPartialNotoficationError(['messageBox'], result);
+                }
+                else if (result != null && result == 0)
+                    displayNotoficationError(['Application already exists']);
+                else if (result != null && result > 0) {
+                    displayNotoficationSuccess(['Work Type Created successfully.']);
+                }
+                else if (result != null && result == -1) {
+                    displayNotoficationSuccess(['Work Type Updated successfully.']);
+                }
+                if (!result.length > 0) {
+                    var window = $("#AddWorkType").data("kendoWindow");
+                    window.close();
+                    $('#WorkTypeId').val(null);
+                    var grid = $("#WorkTypeGrid").data("kendoGrid");
+                    grid.dataSource.read();
+                }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddWorkType").data("kendoWindow");
+        window.close();
+    });
+</script>

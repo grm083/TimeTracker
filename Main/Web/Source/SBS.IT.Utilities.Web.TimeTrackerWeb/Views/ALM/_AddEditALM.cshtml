@@ -1,0 +1,103 @@
+﻿
+@model SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ALMModel
+<script>
+    if ('@TempData["ALMMessage"]' != '') {
+        alert('@TempData["ALMMessage"]');
+    }
+</script>
+<div class="col-lg-10">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.HiddenFor(M => M.ALMId)
+                    @Html.LabelFor(model => model.ProjectName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.ProjectId, new SelectList(Model.ProjectList, "ProjectId", "ProjectName", Model.ProjectId), "--Select Projects--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.WorkItemName, new { @class = "manadatory" })
+                    @Html.DropDownListFor(model => model.WorkItemId, new SelectList(Model.WorkitemList, "ProjectId", "ProjectName", Model.WorkItemId), "--Select WorkItems--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.WorkItemName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.ALM, new { @class = "manadatory" })
+                    @Html.TextBoxFor(model => model.ALM, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.ALM, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.ALMDescription, new { @class = "" })
+                    @Html.TextAreaFor(model => model.ALMDescription, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ALMDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Budget, new { @class = "" })
+                    @Html.TextBoxFor(model => model.Budget, new { @class = "form-control", @maxlength = "90" })
+                    @Html.ValidationMessageFor(model => model.Budget, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(model => model.Benefit, new { @class = "" })
+                    @Html.TextBoxFor(model => model.Benefit, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Benefit, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-12">
+                        @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { @class = "btn btn-success", style = "float:center", type = "button" }).Content("Save"))
+                        @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { @class = "btn btn-danger", style = "float:center", type = "button" }).Content("Cancel"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#btnSave").click(function () {
+        displayAjaxLoading(true);
+        $.ajax({
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            url: '@Url.Action("SaveALM")',
+            data: JSON.stringify({
+                ALMId: $('#ALMId').val(),
+                ProjectId: $('#ProjectId').val(),
+                WorkItemId: $('#WorkItemId').val(),
+                ALM: $('#ALM').val(),
+                ALMDescription: $('#ALMDescription').val(),
+                Budget: $('#Budget').val(),
+                Benefit: $('#Benefit').val()
+            }),
+            success: function (result) {
+                if (result != null && result.Errors != null && result.Errors.length != 0) {
+                    displayPartialViewErrors('alm-notification-error', result);
+                }
+                else {
+                    var _clientId = $('#ALMId').val();
+                    if (_clientId != null && _clientId > 0)
+                        displayNotoficationSuccess(['Requirement Updated successfully.']);
+                    else
+                        displayNotoficationSuccess(['Requirement Created successfully.']);
+                    var window = $("#AddALM").data("kendoWindow");
+                    window.close();
+                    $('#ALMId').val(null);
+                    var grid = $("#ALMGrid").data("kendoGrid");
+                    grid.dataSource.read();
+                }
+            },
+            complete: function () {
+                displayAjaxLoading(false);
+            }
+        })
+    });
+    $("#btnCancel").click(function () {
+        var window = $("#AddALM").data("kendoWindow");
+        window.close();
+    });
+
+</script>

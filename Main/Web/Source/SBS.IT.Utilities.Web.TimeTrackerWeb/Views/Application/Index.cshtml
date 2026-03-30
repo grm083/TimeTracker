@@ -1,0 +1,196 @@
+﻿@{
+    ViewBag.Title = "Application";
+}
+<h2> Application</h2>
+@Html.Partial("_Notifications")
+<div id='application-notification-error' class="notificationBox notificationError" title="Error" style="display:none;"></div>
+<div style="float:right; "><a href="#" id="Add">Add New Application</a></div>
+<div style="clear:both; padding-top:2em;">
+    @(Html.Kendo().Grid<SBS.IT.Utilities.Web.TimeTrackerWeb.Models.ApplicationModel>()
+        .Name("ApplicationGrid")
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(25)
+        .Read(read => read.Url(Url.Action("ReadApplicationGrid")).Data("ReadApplicationGrid_SearchCriteria"))
+    )
+    .Events(events => events.DataBound("CustomerGrid_DataBound"))
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.ApplicationId).Hidden();
+        columns.Bound(p => p.ApplicationCode).HeaderHtmlAttributes(new { style = "text-align: center;" }).Hidden();
+        columns.Bound(p => p.ApplicationName).HeaderHtmlAttributes(new { style = "text-align: center;width:25%;" });
+        columns.Bound(p => p.Description).HeaderHtmlAttributes(new { style = "text-align: center;width:60%;" });
+        columns.Bound(p => p.IsActive).ClientTemplate("#= IsActive == 1 ? 'Yes' : 'No' #").HeaderHtmlAttributes(new { style = "text-align: center;width:60%;" });
+        columns.Command(command =>
+        {
+            command.Custom("gridIEdit").Text(" ").Click("gridIEditClick");
+            //command.Custom("gridDelete").Text(" ").Click("gridDeleteClick");
+        }).Title("Action").HtmlAttributes(new { @style = "text-align: center;" }).HeaderHtmlAttributes(new { style = "text-align: center;width:15%;" });
+    })
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+            <div class="toolbar">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="btnReset"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </text>);
+        })
+    )
+</div>
+
+@(Html.Kendo().Window().Name("AddApplication")
+                                                            .Visible(false)
+                                                            .Animation(false)
+                                                            .Modal(true)
+                                                            .Draggable()
+                                                            .Width(700)
+                                                            .Actions(actions => actions.Close())
+)
+
+@section scripts{
+    <script type="text/javascript">
+        function ReadApplicationGrid_SearchCriteria() {
+            return {
+                searchText: $('#FieldFilter').val()
+            };
+        }
+
+        function ApplicationGrid_Edit(e) {
+            var grid = $("#ApplicationGrid").data('kendoGrid');
+            var dataItem = this.dataItem(this.select());
+            if (dataItem.IsSelected) {
+                grid.closeCell();
+            }
+        }
+
+        $(document).ready(function () {
+
+
+
+            $("#FieldFilter").blur(function () {
+                refreshGrid();
+            });
+            $("#btnSearch").click(function () {
+                refreshGrid();
+            });
+            $("#btnReset").click(function () {
+                $("#FieldFilter").val(null);
+                refreshGrid();
+            });
+
+            $("#Add").click(function () {
+                var window = $("#AddApplication").data("kendoWindow");
+                $("#AddApplication").html("");
+                window.refresh({
+                    type: 'POST',
+                    dataType: "html",
+                    contentType: 'application/json; charset=utf-8',
+                    url: '@Url.Action("AddApplication")'
+                })
+                window.title('Add Application').center().open();
+            });
+        });
+
+        function refreshGrid() {
+            var grid = $("#ApplicationGrid").data("kendoGrid");
+            grid.dataSource.read();
+        }
+
+        function gridIEditClick(e) {
+            e.preventDefault();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var applicationId = dataItem.ApplicationId;
+            $("#AddApplication").html("");
+            var window = $("#AddApplication").data("kendoWindow");
+            window.refresh({
+                type: 'POST',
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Action("EditApplication")',
+                data: JSON.stringify({
+                    ApplicationId: applicationId,
+                }),
+            })
+            window.title('Edit Application').center().open();
+        };
+
+        function gridDeleteClick(e) {
+            ClearNotifications();
+            var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+            displayWindowCenteredOnXYAxis(window);
+            //window.center().open();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            $("#yesNotificationButton").click(function () {
+                var applicationId = dataItem.ApplicationId;
+                $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    url: '@Url.Action("DeleteApplication")',
+                    data: JSON.stringify({
+                        ApplicationId: applicationId,
+                    }),
+                    success: function (result) {
+                        if (result != null)
+                            displayNotoficationSuccess(['Application Deleted successfully.']);
+
+                        else
+                            displayNotoficationSuccess(['Unable to delete Application']);
+
+                        var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                        window.close();
+                        refreshGrid();
+                    },
+                    complete: function () {
+                        displayAjaxLoading(false);
+                    }
+                })
+            })
+            $("#noNotificationButton").click(function () {
+                var window = $("#DeleteNotificationPopUpWindow").data("kendoWindow");
+                window.close();
+            })
+        };
+
+        function displayWindowCenteredOnXYAxis(kendoWindow) {
+
+            var windowOptions = kendoWindow.options;
+
+            var pos = kendoWindow.wrapper.position();
+
+            var viewPortWidth = $(window).width();
+            var wndWidth = windowOptions.width;
+            var viewportHeight = $(window).height();
+            var wnHeight = windowOptions.height;
+
+            pos.left = viewPortWidth / 2 - wndWidth / 2;
+
+            pos.height = viewportHeight / 2 - wnHeight / 2;
+
+            kendoWindow.wrapper.css({
+                left: pos.left,
+                top: pos.height
+            });
+
+            kendoWindow.open();
+
+        }
+
+        function CustomerGrid_DataBound(e) {
+            e.preventDefault();
+            $(".k-grid-gridIEdit").find("span").addClass("k-icon k-i-pencil pull-left");
+            $(".k-grid-gridDelete").find("span").addClass("k-icon k-i-close pull-left");
+            $(".k-button").css({ "min-width": "0", "margin": "0", "padding": "2px 2px 2px 5px" })
+        }
+    </script>
+}
