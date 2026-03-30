@@ -6,31 +6,33 @@ Each item is tagged with an effort estimate (S/M/L) and severity (Critical/High/
 
 ---
 
-## Critical
+## Completed
 
-### 1. Silent Exception Swallowing in TimeEntry Save/Update
-**Effort:** S | **File:** `EFTimeTrackerDbRepository.cs` (lines 260, 301)
+The following quick wins have been implemented:
 
-`TimeEntryAdd()` and `TimeEntryUpdate()` have empty `catch (Exception ex) { }` blocks inside `TransactionScope`. Database errors are silently discarded and the user's data is lost without any feedback. Fix: log the exception and rethrow (or return an error result the controller can surface).
+| # | Fix | Commit |
+|---|-----|--------|
+| ~~1~~ | Silent exception swallowing in `TimeEntryAdd`/`TimeEntryUpdate` - now logs and rethrows | `820b689` |
+| ~~3~~ | Password stored in Forms Auth cookie - now stores only the username; session expiry forces re-login | `820b689` |
+| ~~4~~ | Delete operations used HTTP GET - changed to `[HttpPost]` on API and updated web callers | `820b689` |
+| ~~10~~ | Mixed HTTP client implementations - replaced raw `HttpWebRequest` calls with `APIExtension` | `820b689` |
+| ~~13~~ | URL construction without encoding - added `Uri.EscapeDataString()` to all user-input parameters | `820b689` |
+| ~~17~~ | Validation re-fetched all reference data - lists now passed from caller, removed unused `projectItemList` fetch | `820b689` |
+| ~~21~~ | ChangePassword non-functional - uncommented the `usp_Employee_UpdatePassword` stored procedure call | `820b689` |
+| ~~22~~ | Non-production auth bypass risk - added WARN-level logging when bypass is triggered | `820b689` |
+
+---
+
+## Remaining - Critical
 
 ### 2. API Errors Silently Return Default Values
 **Effort:** M | **File:** `APIExtension.cs` (lines 73-87)
 
 `InvokeGet<T>()` and `InvokePost<T>()` catch `WebException`, discard the error, then deserialize an empty string. Callers cannot distinguish "no data found" from "server error." Fix: log the error and either throw or return a result wrapper that carries error state.
 
-### 3. Password Stored in Forms Auth Cookie
-**Effort:** S | **File:** `AccountController.cs` (line 53)
-
-The full `LoginModel` including plaintext password is serialized into the Forms Auth ticket `UserData`. Fix: store only the username (or a session token) in the ticket, not the password. The `GetAuthenticatedUserFromTicket` method will need to be updated to re-authenticate by session rather than replaying credentials.
-
-### 4. Delete Operations Use HTTP GET
-**Effort:** S | **File:** API `EmployeeController.cs`, `ProjectController.cs`
-
-`EmployeeDelete` and `ProjectDelete` on the API side are `[HttpGet]` actions. Browser pre-fetch, link previews, or crawlers can trigger deletions. Fix: change to `[HttpPost]` or `[HttpDelete]` and update the web-side callers to use POST.
-
 ---
 
-## High
+## Remaining - High
 
 ### 5. No Caching of Reference Data
 **Effort:** M | **Files:** All web controllers, `MemoryDataCacheManager.cs`
@@ -57,11 +59,6 @@ The employee loop fires a separate API call per employee. Even without a new bul
 
 `AddEmployee()` and `EditEmployee()` make 6-7 sequential API calls for lookup data. Fix: cache lookup data (see item 5), or issue the calls in parallel, or create a single composite API endpoint that returns all lookups in one response.
 
-### 10. Mixed HTTP Client Implementations
-**Effort:** S | **File:** `TimeSheetController.cs` (lines 550-643)
-
-`GetAllApplication()`, `GetAllProjectItem()`, and `GetAllWorkType()` bypass `APIExtension` and create raw `HttpWebRequest` objects directly. Fix: replace with calls through `APIExtension` (or its successor) so logging and error handling are consistent.
-
 ### 11. No Input Validation on API Layer
 **Effort:** M | **Files:** All API controllers
 
@@ -74,12 +71,7 @@ The API has zero authentication. Fix: add token-based or API key authentication 
 
 ---
 
-## Medium
-
-### 13. URL Construction via String Concatenation (No Encoding)
-**Effort:** S | **Files:** All web controllers
-
-Query parameters are concatenated without `Uri.EscapeDataString()`. Special characters in search text or comments break requests. Fix: encode all parameter values, or switch to a URI builder / RestSharp parameter binding.
+## Remaining - Medium
 
 ### 14. Duplicated Model Definitions with Type Mismatches
 **Effort:** L | **Files:** `Web/.../Models/` vs `Services/.../Model/TrackerModel.cs`
@@ -89,17 +81,7 @@ Models are defined independently in both tiers. The web-side `TimeEntry.WorkHour
 ### 15. No Dependency Injection in Web Frontend
 **Effort:** M | **Files:** All web controllers, need new `UnityConfig` for web project
 
-All dependencies are `new`-ed in constructors. This blocks unit testing and forces duplicate instances. Fix: add Unity (or another DI container) to the web project and register `APIExtension`, `APIConfiguration`, `SessionCacheManager`, and `ILogger` as shared instances.
-
-### 16. Authentication Ticket Re-validates Against AD on Session Expiry
-**Effort:** M | **File:** `AuthenticateExtension.cs` (lines 112-128)
-
-When the session cache is empty but the Forms Auth cookie is still valid, `GetAuthenticatedUserFromTicket` replays the stored credentials against AD. This is slow and fragile. Fix: store only non-sensitive user profile data in the ticket (after removing the password per item 3), and redirect to login on session expiry rather than silently re-authenticating.
-
-### 17. Validation Re-fetches All Reference Data
-**Effort:** S | **File:** `TimeSheetController.cs` (line 681+)
-
-`ValidateTimeEntries()` calls `getWorkTypeList()`, `getallProjectList()`, and `getProjectItemList()` on every save. Fix: once reference data is cached (item 5), this becomes a non-issue. Alternatively, validate against IDs only and let the database enforce referential integrity.
+All dependencies are `new`-ed in constructors. This blocks unit testing and forces duplicate instances. Fix: add Unity (or another DI container) to the web project and register `APIExtension`, `APIConfiguration`, `SessionCacheManager`, and `ILogger` as shared instances. Note: this is closely related to item 7 - solving one effectively solves both.
 
 ### 18. Static AutoMapper Configuration (Legacy API)
 **Effort:** M | **File:** `AutoMapperExtension.cs`
@@ -115,13 +97,3 @@ Some methods log and rethrow, some log and swallow, some don't log at all. No co
 **Effort:** M | **File:** `EFTimeTrackerDbRepository.cs`, `EFContextFactory.cs`
 
 Every repository method creates a new context. Fix: manage context lifetime per-request using Unity's `PerResolveLifetimeManager` or `HierarchicalLifetimeManager`, so a single API request shares one DB connection.
-
-### 21. ChangePassword Is Non-Functional
-**Effort:** S | **File:** `EFTimeTrackerDbRepository.cs` (lines 436-445)
-
-The stored procedure call is commented out. The UI presents the feature but it always fails. Fix: either uncomment the sproc call (if the procedure exists and works) or remove the ChangePassword UI to avoid user confusion.
-
-### 22. Non-Production Auth Bypass Risk
-**Effort:** S | **File:** `EFTimeTrackerDbRepository.cs` (line 372)
-
-When `IsProduction=false`, any valid AD username is accepted without a password. Fix: add a safeguard so this flag cannot be accidentally left off in deployed environments (e.g., fail-closed by requiring an explicit override, or log a warning at startup).
