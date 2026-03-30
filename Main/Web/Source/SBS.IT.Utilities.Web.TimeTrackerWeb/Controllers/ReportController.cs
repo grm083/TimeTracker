@@ -30,11 +30,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
 
-        public ReportController()
+        public ReportController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
 
         [HttpGet]

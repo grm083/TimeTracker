@@ -4,9 +4,11 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using Unity.WebApi;
+using AutoMapper;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Core;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Implementation;
 using SBS.IT.Utilities.Shared.APIExtension.AppStart;
+using SBS.IT.Utilities.Shared.Mapper;
 
 namespace SBS.IT.Utilities.API.TimeTrackerWebAPI
 {
@@ -15,7 +17,8 @@ namespace SBS.IT.Utilities.API.TimeTrackerWebAPI
         public static void RegisterComponents()
         {
 			var container = new UnityContainer();
-            container.RegisterType<ITrackerDbRepository, EFTimeTrackerDbRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ITrackerDbRepository, EFTimeTrackerDbRepository>(new HierarchicalLifetimeManager());
+            container.RegisterInstance<IMapper>(AutoMapperExtension.Mapper);
             ConfigureFluentValidators(container);
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

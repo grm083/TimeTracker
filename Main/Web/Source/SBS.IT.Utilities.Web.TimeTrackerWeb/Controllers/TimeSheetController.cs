@@ -8,6 +8,7 @@ using SBS.IT.Utilities.Shared.APIClient.Implementation;
 using SBS.IT.Utilities.Shared.APIClient.Message;
 using SBS.IT.Utilities.Shared.Cache.Core;
 using SBS.IT.Utilities.Shared.Cache.Implementation;
+using SBS.IT.Utilities.Web.TimeTrackerWeb.Extension;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Filters;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 using System;
@@ -28,12 +29,12 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
         private readonly ILogger logger;
-        public TimeSheetController()
+        public TimeSheetController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager, ILogger logger)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
-            logger = new Log4NetLogger();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
+            this.logger = logger;
         }
         // GET: TimeSheet
         public ActionResult Index(Nullable<int> employeeId, string startDate, int isFilter = 0)
@@ -119,7 +120,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                         requestModel.ProjectId = timeentrySearchModel.ProjectId;
                         requestModel.ProjectItemId = timeentrySearchModel.ProjectItemId;
                         requestModel.Date = timeentrySearchModel.Date.Value;
-                        requestModel.WorkHour = Convert.ToDouble(timeentrySearchModel.WorkHour);
+                        requestModel.WorkHour = timeentrySearchModel.WorkHour;
                         requestModel.Comments = timeentrySearchModel.Comments;
                         requestModel.WorkItem = timeentrySearchModel.WorkItem;
                         model.UserId = requestModel.UserId = authenticationModel.EmployeeId;
@@ -218,8 +219,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ApplicationModel> getapplicationList()
         {
-            List<ApplicationModel> applicationlst = apiExtension.InvokeGet<List<ApplicationModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllApplication));
-            return applicationlst;
+            return ReferenceDataCache.GetApplications(apiExtension, apiConfiguration);
         }
 
         /// <summary>
@@ -228,8 +228,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ProjectListModel> getallProjectList()
         {
-            List<ProjectListModel> projectTypelst = apiExtension.InvokeGet<List<ProjectListModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetProject + "?applicationId="));
-            return projectTypelst;
+            return ReferenceDataCache.GetProjects(apiExtension, apiConfiguration);
         }
 
         /// <summary>
@@ -238,8 +237,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<WorkTypeModel> getWorkTypeList()
         {
-            List<WorkTypeModel> workTypelst = apiExtension.InvokeGet<List<WorkTypeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllWorkType));
-            return workTypelst;
+            return ReferenceDataCache.GetWorkTypes(apiExtension, apiConfiguration);
         }
 
         private List<ProjectItemListModel> getProjectItemList()
@@ -273,7 +271,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     requestModel.ApplicationId = timeentrySearchModel.ApplicationId;
                     requestModel.ProjectItemId = timeentrySearchModel.ProjectItemId;
                     requestModel.Date = timeentrySearchModel.Date.Value;
-                    requestModel.WorkHour = Convert.ToDouble(timeentrySearchModel.WorkHour);
+                    requestModel.WorkHour = timeentrySearchModel.WorkHour;
                     requestModel.Comments = timeentrySearchModel.Comments;
                     timeSheetmodel.TimeEntry.Add(requestModel);
                     string postData = JsonConvert.SerializeObject(timeSheetmodel);

@@ -23,11 +23,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIExtension apiExtension;
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
-        public ProjectController()
+        public ProjectController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
         // GET: Project
         public ActionResult Index()
@@ -90,8 +90,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<ProjectTypeModel> getProjectTypeList()
         {
-            List<ProjectTypeModel> projectTypelst = apiExtension.InvokeGet<List<ProjectTypeModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetProjectType));
-            return projectTypelst;
+            return ReferenceDataCache.GetProjectTypes(apiExtension, apiConfiguration);
         }
 
         /// <summary>

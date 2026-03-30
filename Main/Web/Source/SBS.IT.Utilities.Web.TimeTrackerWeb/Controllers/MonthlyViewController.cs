@@ -21,6 +21,8 @@ using SBS.IT.Utilities.Web.TimeTrackerWeb.Extension;
 using System.Globalization;
 using SBS.IT.Utilities.Logger.Core;
 using SBS.IT.Utilities.Logger.Implementation;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models.Common;
 
@@ -33,17 +35,17 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
         private readonly ILogger logger;
-        public MonthlyViewController()
+        public MonthlyViewController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager, ILogger logger)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
-            logger = new Log4NetLogger();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
+            this.logger = logger;
         }
         [HttpGet]
         public ActionResult Index()
         {
-            List<Manager> lstTeam = apiExtension.InvokeGet<List<Manager>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetManager));
+            List<Manager> lstTeam = ReferenceDataCache.GetManagers(apiExtension, apiConfiguration);
             lstTeam.Insert(0, new Manager { ManagerId = -1, ManagerName = "All" });
             MonthlyViewModel model = new MonthlyViewModel();
             //Add Months
@@ -88,7 +90,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             }
 
             var details = getEmployeeList(managerId);
-            foreach (var emp in details)
+            var concurrentResults = new ConcurrentBag<EmployeeDetails>();
+            Parallel.ForEach(details, emp =>
             {
                 var empData = getTimeSheetData(emp.EmployeeId, startDate);
                 EmployeeDetails employee = new EmployeeDetails();
@@ -132,8 +135,9 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
 
                     }
                 }
-                EmployeeLst.Add(employee);
-            }
+                concurrentResults.Add(employee);
+            });
+            EmployeeLst.AddRange(concurrentResults);
             int Total = EmployeeLst != null && EmployeeLst.Count > 0 ? EmployeeLst.FirstOrDefault().RowTotal.GetValueOrDefault(0) : 0;
             return Json(new DataSourceResult()
             {

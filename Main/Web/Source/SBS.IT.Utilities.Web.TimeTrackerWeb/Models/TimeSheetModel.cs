@@ -28,7 +28,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Models
         public int? ProjectItemId { get; set; }
         public int? ProjectId { get; set; }
         public DateTime Date { get; set; }
-        public double WorkHour { get; set; }
+        public decimal WorkHour { get; set; }
         public string Comments { get; set; }
         public string WeekDays { get; set; }
         public int UserId { get; set; }

@@ -26,6 +26,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             FluentValidationConfig.RegisterFluentValidation();
+            UnityConfig.RegisterComponents();
         }
         void Application_Error(object sender, EventArgs e)
         {

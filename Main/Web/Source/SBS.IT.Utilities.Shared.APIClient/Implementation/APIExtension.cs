@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using SBS.IT.Utilities.Logger.Core;
@@ -6,8 +6,10 @@ using SBS.IT.Utilities.Logger.Implementation;
 using SBS.IT.Utilities.Shared.APIClient.Core;
 using SBS.IT.Utilities.Shared.BaseMessage;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 
@@ -15,10 +17,21 @@ namespace SBS.IT.Utilities.Shared.APIClient.Implementation
 {
     public class APIExtension : IAPIExtension
     {
+        public const string CorrelationIdHeader = "X-Correlation-ID";
+        private const string ApiKeyHeader = "X-Api-Key";
+
+        private static readonly HttpClient httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromMinutes(5)
+        };
+
         private readonly ILogger logger;
+        private readonly string apiKey;
+
         public APIExtension()
         {
             logger = new Log4NetLogger();
+            apiKey = ConfigurationManager.AppSettings["ApiKey"];
         }
 
         public TResponse InvokeServiceWithBasicAuth<TResponse>(Uri ServiceURL, string ServiceMethod, APIRequestBase Request)
@@ -58,36 +71,25 @@ namespace SBS.IT.Utilities.Shared.APIClient.Implementation
         /// <returns></returns>
         public TResponse InvokeGet<TResponse>(Uri ServiceURL)
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(ServiceURL.AbsoluteUri);
-            request.Method = "GET";
-            String responseData = String.Empty;
+            var correlationId = Guid.NewGuid().ToString();
+            string responseData;
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseData = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-                }
+                var request = new HttpRequestMessage(HttpMethod.Get, ServiceURL);
+                request.Headers.Add(CorrelationIdHeader, correlationId);
+                if (!string.IsNullOrEmpty(apiKey))
+                    request.Headers.Add(ApiKeyHeader, apiKey);
+                var response = httpClient.SendAsync(request).Result;
+                response.EnsureSuccessStatusCode();
+                responseData = response.Content.ReadAsStringAsync().Result;
             }
-            catch (WebException wex)
+            catch (Exception ex)
             {
-                if (wex.Response != null)
-                {
-                    using (var errorResponse = (HttpWebResponse)wex.Response)
-                    {
-                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                        {
-                            string error = reader.ReadToEnd();
-                        }
-                    }
-                }
+                logger.WriteMessage(this.GetType(), LogLevel.ERROR,
+                    string.Format("[{0}] API GET request failed: {1}", correlationId, ServiceURL), ex);
+                throw;
             }
-            var rawResponse = JsonConvert.DeserializeObject<TResponse>(responseData);
-            return rawResponse;
-
+            return JsonConvert.DeserializeObject<TResponse>(responseData);
         }
 
         /// <summary>
@@ -97,45 +99,28 @@ namespace SBS.IT.Utilities.Shared.APIClient.Implementation
         /// <param name="ServiceURL"></param>
         /// <param name="postData"></param>
         /// <returns></returns>
-        public TResponse InvokePost<TResponse>(Uri ServiceURL,string postData)
+        public TResponse InvokePost<TResponse>(Uri ServiceURL, string postData)
         {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(ServiceURL.AbsoluteUri);
-            request.Method = "POST";
-            var data = Encoding.ASCII.GetBytes(postData);
-            request.ContentType = "application/json";
-            request.ContentLength = data.Length;
-
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-            String responseData = String.Empty;
+            var correlationId = Guid.NewGuid().ToString();
+            string responseData;
             try
             {
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    Stream dataStream = response.GetResponseStream();
-                    StreamReader reader = new StreamReader(dataStream);
-                    responseData = reader.ReadToEnd();
-                    reader.Close();
-                    dataStream.Close();
-                }
+                var request = new HttpRequestMessage(HttpMethod.Post, ServiceURL);
+                request.Headers.Add(CorrelationIdHeader, correlationId);
+                if (!string.IsNullOrEmpty(apiKey))
+                    request.Headers.Add(ApiKeyHeader, apiKey);
+                request.Content = new StringContent(postData, Encoding.UTF8, "application/json");
+                var response = httpClient.SendAsync(request).Result;
+                response.EnsureSuccessStatusCode();
+                responseData = response.Content.ReadAsStringAsync().Result;
             }
-            catch (WebException wex)
+            catch (Exception ex)
             {
-                if (wex.Response != null)
-                {
-                    using (var errorResponse = (HttpWebResponse)wex.Response)
-                    {
-                        using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                        {
-                            string error = reader.ReadToEnd();
-                        }
-                    }
-                }
+                logger.WriteMessage(this.GetType(), LogLevel.ERROR,
+                    string.Format("[{0}] API POST request failed: {1}", correlationId, ServiceURL), ex);
+                throw;
             }
-            var rawResponse = JsonConvert.DeserializeObject<TResponse>(responseData);
-            return rawResponse;
+            return JsonConvert.DeserializeObject<TResponse>(responseData);
         }
     }
 }

@@ -24,11 +24,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIExtension apiExtension;
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
-        public EmployeeController()
+        public EmployeeController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
         // GET: Employee
         public ActionResult Index()
@@ -42,8 +42,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<Manager> getManagerList()
         {
-            List<Manager> TeamlLst = apiExtension.InvokeGet<List<Manager>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetManager));
-            return TeamlLst;
+            return ReferenceDataCache.GetManagers(apiExtension, apiConfiguration);
         }
 
         /// <summary>
@@ -52,18 +51,15 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<Team> getTeamList()
         {
-            List<Team> TeamlLst = apiExtension.InvokeGet<List<Team>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetTeam));
-            return TeamlLst;
+            return ReferenceDataCache.GetTeams(apiExtension, apiConfiguration);
         }
         private List<UserType> getUserTypeList()
         {
-            List<UserType> UserTypelLst = apiExtension.InvokeGet<List<UserType>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetUserType));
-            return UserTypelLst;
+            return ReferenceDataCache.GetUserTypes(apiExtension, apiConfiguration);
         }
         private List<Location> getLocationList()
         {
-            List<Location> LocationLst = apiExtension.InvokeGet<List<Location>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetLocation));
-            return LocationLst;
+            return ReferenceDataCache.GetLocations(apiExtension, apiConfiguration);
         }
 
         /// <summary>
@@ -131,13 +127,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         /// <returns></returns>
         private List<EmployeeTimeZone> getTimeZoneList()
         {
-            List<EmployeeTimeZone> TimeZonelst = apiExtension.InvokeGet<List<EmployeeTimeZone>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetTimeZone));
-            return TimeZonelst;
+            return ReferenceDataCache.GetTimeZones(apiExtension, apiConfiguration);
         }
         private List<EmploymentType> getEmploymentTypeList()
         {
-            List<EmploymentType> EmploymentTypelst = apiExtension.InvokeGet<List<EmploymentType>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetEmploymentType));
-            return EmploymentTypelst;
+            return ReferenceDataCache.GetEmploymentTypes(apiExtension, apiConfiguration);
         }
 
         /// <summary>

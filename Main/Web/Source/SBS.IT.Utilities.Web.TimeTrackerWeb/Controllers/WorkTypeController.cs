@@ -25,11 +25,11 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         private readonly IAPIConfiguration apiConfiguration;
         private readonly ISessionCacheManager sessionCacheManager;
 
-        public WorkTypeController()
+        public WorkTypeController(IAPIExtension apiExtension, IAPIConfiguration apiConfiguration, ISessionCacheManager sessionCacheManager)
         {
-            apiExtension = new APIExtension();
-            apiConfiguration = new APIConfiguration();
-            sessionCacheManager = new SessionCacheManager();
+            this.apiExtension = apiExtension;
+            this.apiConfiguration = apiConfiguration;
+            this.sessionCacheManager = sessionCacheManager;
         }
         // GET: WorkType
         public ActionResult Index()
@@ -94,8 +94,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
         }
         private List<WorkTypeCategoryModel> getWorkTypeCategoryList()
         {
-            List<WorkTypeCategoryModel> workTypeCategorylst = apiExtension.InvokeGet<List<WorkTypeCategoryModel>>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetAllWorkTypeCategory));
-            return workTypeCategorylst;
+            return ReferenceDataCache.GetWorkTypeCategories(apiExtension, apiConfiguration);
         }
         /// <summary>
         /// Saving work type
