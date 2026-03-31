@@ -8,6 +8,7 @@ using System.Data;
 using System.DirectoryServices.AccountManagement;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Core;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model;
+using SBS.IT.Utilities.Shared.Model;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Edmx;
 using System.Transactions;
 using SBS.IT.Utilities.Logger.Core;

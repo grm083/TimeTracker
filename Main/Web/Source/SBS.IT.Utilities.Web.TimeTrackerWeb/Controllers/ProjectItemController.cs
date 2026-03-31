@@ -1,5 +1,6 @@
 ﻿using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using SBS.IT.Utilities.Shared.Model;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -115,13 +116,6 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 Total = Total,
             });
         }
-
-        //public virtual JsonResult GetProjectByApplicationId(int? applicationId)
-        //{
-        //    List<ProjectListModel> projectLst = new List<ProjectListModel>();
-        //    projectLst = getProjectList();
-        //    return Json(projectLst, JsonRequestBehavior.AllowGet);
-        //}
 
         /// <summary>
         /// list of project items

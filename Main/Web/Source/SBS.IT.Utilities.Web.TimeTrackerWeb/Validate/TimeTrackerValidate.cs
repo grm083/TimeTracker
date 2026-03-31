@@ -3,16 +3,11 @@ using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 
 namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Validate
 {
-    public class TimeTrackerValidate
-    {
-    }
     public class WorkItemModelValidator : AbstractValidator<ProjectItemModel>
     {
         public WorkItemModelValidator()
         {
-            //RuleFor(x => x.ApplicationId).NotNull().NotEmpty().WithMessage("Application is required");
             RuleFor(x => x.ProjectItemName).NotNull().NotEmpty().WithMessage("WorkItem Name is required");
-            //RuleFor(x => x.BusinessOwner).NotNull().NotEmpty().WithMessage("Business Owner is required");
         }
     }
 

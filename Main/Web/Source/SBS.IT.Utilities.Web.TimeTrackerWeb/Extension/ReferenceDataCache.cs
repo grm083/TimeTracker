@@ -1,6 +1,7 @@
 using SBS.IT.Utilities.Shared.APIClient.Core;
 using SBS.IT.Utilities.Shared.APIClient.Message;
 using SBS.IT.Utilities.Shared.Cache.Implementation;
+using SBS.IT.Utilities.Shared.Model;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 using System;
 using System.Collections.Generic;

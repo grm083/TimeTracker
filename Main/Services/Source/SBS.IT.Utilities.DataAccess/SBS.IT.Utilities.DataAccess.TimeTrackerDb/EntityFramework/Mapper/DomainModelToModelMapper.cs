@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Edmx;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model;
+using SBS.IT.Utilities.Shared.Model;
 
 namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.EntityFramework.Mapper
 {

@@ -444,6 +444,11 @@ function SaveTimeSheetData(data) {
         //    closeModal();
         //},
         success: function (successData) {
+            if (successData && successData.success === false) {
+                closeModal();
+                swal("Error!", successData.error || "An unexpected error occurred. Please try again.", "error");
+                return;
+            }
             if (successData > 0) {
                 $("#messageBox").append(summary);
                 swal({
@@ -461,7 +466,6 @@ function SaveTimeSheetData(data) {
             }
 
             else {
-                //swal("Error!", successData, "error");
                 var summary = " * <label class='error'>" + successData + "</label></br>";
                 $("#messageBox").empty();
                 $("#messageBox").append(summary);
@@ -470,7 +474,7 @@ function SaveTimeSheetData(data) {
         },
         error: function (error) {
             closeModal();
-            swal("opps!", error.statusText, "error");
+            swal("Error!", "Failed to save time entries. Please try again.", "error");
         }
     });
 }

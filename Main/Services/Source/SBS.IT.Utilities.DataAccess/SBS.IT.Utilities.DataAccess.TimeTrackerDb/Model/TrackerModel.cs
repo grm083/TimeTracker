@@ -31,19 +31,11 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model
         public string WorkTypeCategoryName { get; set; }
         public Nullable<int> RowTotal { get; set; }
     }
-    public class WorkTypeCategoryModel : BaseModel
-    {
-        public int WorkTypeCategoryId { get; set; }
-        public string WorkTypeCategoryCode { get; set; }
-        public string WorkTypeCategoryName { get; set; }
-        public string WorkTypeCategorydescription { get; set; }
-    }
     public class TimeEntryModel : BaseModel
     {
         public int TimeEntryId { get; set; }
         public int EmployeeId { get; set; }
         public int WorkTypeId { get; set; }
-        //public int ApplicationId { get; set; }
         public int ProjectItemId { get; set; }
         public int ProjectId { get; set; }
         public System.DateTime Date { get; set; }
@@ -68,9 +60,6 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model
         public int WorkTypeId { get; set; }
         public string WorkTypeCode { get; set; }
         public string WorkTypeName { get; set; }
-        //public Nullable<int> ApplicationId { get; set; }
-        //public string ApplicationCode { get; set; }
-        //public string ApplicationName { get; set; }
         public Nullable<int> ProjectItemId { get; set; }
         public string ProjectItemName { get; set; }
         public string ProjectItemDescription { get; set; }
@@ -323,20 +312,6 @@ namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model
         public int? userTypeId { get; set; }
         public string UserTypeCode { get; set; }
         public string UserTypeName { get; set; }
-    }
-    public class ProjectTypeModel
-    {
-        public int ProjectTypeId { get; set; }
-        public string ProjectTypeCode { get; set; }
-        public string ProjectTypeName { get; set; }
-        public string Description { get; set; }
-    }
-    public class ProjectItemStatusModel
-    {
-        public int ProjectItemStatusId { get; set; }
-        public string ProjectItemStatusCode { get; set; }
-        public string ProjectItemStatusName { get; set; }
-        public string ProjectItemStatusDescription { get; set; }
     }
     public class UserTypeModel : BaseModel
     {

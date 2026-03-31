@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model;
+using SBS.IT.Utilities.Shared.Model;
 
 namespace SBS.IT.Utilities.DataAccess.TimeTrackerDb.Core
 {

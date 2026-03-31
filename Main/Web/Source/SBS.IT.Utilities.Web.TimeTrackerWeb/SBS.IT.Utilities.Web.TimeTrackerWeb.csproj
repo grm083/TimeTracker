@@ -255,13 +255,15 @@
     <Compile Include="Controllers\MonthlyViewController.cs" />
     <Compile Include="Controllers\ProjectViewController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\TimeSheetController.cs" />
     <Compile Include="Controllers\ProjectItemController.cs" />
     <Compile Include="Controllers\WorkTypeController.cs" />
     <Compile Include="Extension\AuthenticateExtension.cs" />
     <Compile Include="Extension\ReferenceDataCache.cs" />
     <Compile Include="Filters\SessionTimeoutAttribute.cs" />
+    <Compile Include="Services\ApiRetryHelper.cs" />
+    <Compile Include="Services\TeamWorkTypeHelper.cs" />
+    <Compile Include="Services\TimeEntryValidationService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -272,15 +274,11 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\ProjectItemStatusModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
-    <Compile Include="Models\ProjectTypeModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\TimeSheetMaster.cs" />
     <Compile Include="Models\TimeSheetModel.cs" />
-    <Compile Include="Models\TimeSheetModeoldl.cs" />
     <Compile Include="Models\ProjectItemModel.cs" />
-    <Compile Include="Models\WorkTypeCategoryModel.cs" />
     <Compile Include="Models\WorkTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validate\TimeTrackerValidate.cs" />
@@ -424,6 +422,7 @@
     <Content Include="Content\themes\sbs\kendo.customized.2013.01.11.css" />
     <Content Include="Content\themes\sbs\styles.css" />
     <Content Include="Content\Validation.css" />
+    <Content Include="Content\wm-modern-theme.css" />
     <Content Include="Content\vendor\metisMenu\metisMenu.css" />
     <Content Include="Content\vendor\metisMenu\metisMenu.js" />
     <Content Include="Content\vendor\metisMenu\metisMenu.min.css" />

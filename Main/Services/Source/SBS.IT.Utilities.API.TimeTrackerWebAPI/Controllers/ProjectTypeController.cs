@@ -1,5 +1,6 @@
 ﻿using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Core;
 using SBS.IT.Utilities.DataAccess.TimeTrackerDb.Model;
+using SBS.IT.Utilities.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

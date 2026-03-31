@@ -11,6 +11,7 @@ using SBS.IT.Utilities.Shared.Cache.Implementation;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Extension;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Filters;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
+using SBS.IT.Utilities.Web.TimeTrackerWeb.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -126,13 +127,16 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                         model.UserId = requestModel.UserId = authenticationModel.EmployeeId;
                         model.TimeEntry.Add(requestModel);
                         string postData = JsonConvert.SerializeObject(model);
-                        savedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.UpdateTimeEntry), postData);
+                        savedCount = ApiRetryHelper.ExecuteWithRetry(
+                            () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.UpdateTimeEntry), postData),
+                            logger, this.GetType(), "EditingInline_Update");
                     }
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to save time entry. Please try again." });
             }
 
             return Json(savedCount);
@@ -172,7 +176,6 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     timeentrySearchModel = getTimeEntryById(TimeEntryId);
                     timeentrySearchModel.WorkTypelst = getWorkTypeList();
-                    //timeentrySearchModel.ProjectItemlst = getProjectItemList(timeentrySearchModel.ApplicationId);
                     timeentrySearchModel.Applicationlst = getapplicationList();
                 }
             }
@@ -275,7 +278,9 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     requestModel.Comments = timeentrySearchModel.Comments;
                     timeSheetmodel.TimeEntry.Add(requestModel);
                     string postData = JsonConvert.SerializeObject(timeSheetmodel);
-                    savedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData);
+                    savedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData),
+                        logger, this.GetType(), "UpdateTimeSheet");
                     if (savedCount > 0)
                         TempData["TimeSheetMessage"] = "TimeSheet updated successfully";
                 }
@@ -283,6 +288,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to update time entry. Please try again." });
             }
             return Json(savedCount);
         }
@@ -301,10 +307,6 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     return RedirectToAction("AccessDenied", "Account");
                 }
 
-                //else if (authenticationModel != null && !string.IsNullOrEmpty(authenticationModel.TeamCode) && !string.Equals(authenticationModel.TeamCode, "DEV", StringComparison.InvariantCultureIgnoreCase) && (authenticationModel.UserType != "ADN" || authenticationModel.UserType != "SAN"))
-                //{
-                //    return RedirectToAction("Timesheet", new { startDate = startDate });
-                //}
                 if (string.IsNullOrEmpty(startDate))
                 {
                     startDate = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek).ToString("yyyy-MM-dd");
@@ -329,46 +331,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     ViewBag.thisWeekStart = thisWeekStart;
                 }
                 ViewBag.TeamCode = authenticationModel.TeamCode;
-                int worktypeId = 0;
                 var workTypelst = getWorkTypeList();
-                var temWorkType = new WorkTypeModel();
-                if (authenticationModel != null && !string.IsNullOrEmpty(authenticationModel.TeamCode))
-                {
-                    switch (authenticationModel.TeamCode)
-                    {
-                        case "DEV":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "DEV").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "QA":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "TES").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "PS":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "RPT":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "RPT").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "BA":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "PMT").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "MGT":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "ADN").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                    }
-                }
-                ViewBag.TeamWorkType = worktypeId;
+                ViewBag.TeamWorkType = TeamWorkTypeHelper.GetDefaultWorkTypeId(authenticationModel.TeamCode, workTypelst);
                 ViewBag.PendingDate = pendingDate;
                 ViewBag.StartDate = startDate;
             }
@@ -409,46 +373,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     }
                     ViewBag.thisWeekStart = thisWeekStart;
                 }
-                int worktypeId = 0;
                 var workTypelst = getWorkTypeList();
-                var temWorkType = new WorkTypeModel();
-                if (authenticationModel != null && !string.IsNullOrEmpty(authenticationModel.TeamCode))
-                {
-                    switch (authenticationModel.TeamCode)
-                    {
-                        case "DEV":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "DEV").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "QA":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "TES").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "PS":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "RPT":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "RPT").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "BA":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "PMT").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                        case "MGT":
-                            temWorkType = workTypelst.Where(x => x.WorkTypeCode == "ADN").FirstOrDefault();
-                            if (temWorkType != null && temWorkType.WorkTypeId > 0)
-                                worktypeId = temWorkType.WorkTypeId;
-                            break;
-                    }
-                }
-                ViewBag.TeamWorkType = worktypeId;
+                ViewBag.TeamWorkType = TeamWorkTypeHelper.GetDefaultWorkTypeId(authenticationModel.TeamCode, workTypelst);
                 ViewBag.PendingDate = pendingDate;
                 ViewBag.StartDate = startDate;
             }
@@ -621,229 +547,28 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 }
                 var workTypelst = getWorkTypeList();
                 var projectlst = getallProjectList();
-                if (ValidateTimeEntries(model, workTypelst, projectlst, ref responseData))
+                var projectItemlst = getProjectItemList();
+                var validationService = new TimeEntryValidationService(logger);
+                if (validationService.Validate(model, workTypelst, projectlst, projectItemlst, ref responseData))
                 {
                     model.CreateUserId = model.UserId = authenticationModel.EmployeeId;
                     var postData = JsonConvert.SerializeObject(model);
-                    responseData = apiExtension.InvokePost<string>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData);
+                    responseData = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<string>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData),
+                        logger, this.GetType(), "SavetimeSheet");
 
                     return Json(responseData, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(responseData, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, error = responseData }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to save time entries. Please try again." }, JsonRequestBehavior.AllowGet);
             }
-            return Json(responseData, JsonRequestBehavior.AllowGet);
-        }
-
-        private bool ValidateTimeEntries(TimeSheetModel model, List<WorkTypeModel> workTypelst, List<ProjectListModel> projectlst, ref String responseData)
-        {
-            try
-            {
-                var groupedResult = from obj in model.TimeEntry
-                                    where obj.WorkHour > 0
-                                    group obj by obj.Date into g
-                                    select new { date = g.Key, TimeEntries = g.ToList() };
-                foreach (var dateEntry in groupedResult)
-                {
-                    if (dateEntry != null && dateEntry.TimeEntries != null)
-                    {
-                        //if (dateEntry.TimeEntries.Count > 1)
-                        //{
-                        //    var result = from obj1 in dateEntry.TimeEntries
-                        //                 where workTypelst.Where(x => x.WorkTypeId == obj1.WorkTypeId).FirstOrDefault().WorkTypeCode == "PTO"
-                        //                 select obj1;
-                        //    if (result.Count() > 0)
-                        //    {
-                        //        responseData = "Invalid time entries found with PTO/Holiday";
-                        //        return false;
-                        //    }
-                        //}
-                        if (dateEntry.TimeEntries.Sum(x => x.WorkHour) >= 24)
-                        {
-                            responseData = "Time entries for a day cannot exceed 24 hours";
-                            return false;
-                        }
-                    }
-                }
-
-                // check for duplicate application project item and work type
-                var duplicateKeys = from dp in model.TimeEntry
-                                    group dp by new
-                                    {
-                                        //dp.ApplicationId,
-                                        dp.ProjectItemId,
-                                        dp.ProjectId,
-                                        dp.WorkTypeId,
-                                        dp.WorkItem
-                                    } into gc
-                                    select new { timeEntries = gc.Key, rowcount = gc.Count() };
-                if (duplicateKeys != null && duplicateKeys.Count() >= 1)
-                {
-                    foreach (var item in duplicateKeys)
-                    {
-                        if (item.rowcount > 7)
-                        {
-                            //if (model != null && !string.IsNullOrEmpty(model.TeamCode) && string.Equals(model.TeamCode, "BA", StringComparison.CurrentCultureIgnoreCase))
-                            //    responseData = "Please select unique Project or Work Type";
-                            //else
-                            responseData = "Please select unique Project , Project Item and Work Type";
-                            return false;
-                        }
-                    }
-                }
-
-                // check for application / project / project item/ work type is required
-
-                var distinctKeys = from dp in model.TimeEntry
-                                   group dp by new
-                                   {
-                                       //dp.ApplicationId,
-                                       dp.ProjectItemId,
-                                       dp.WorkTypeId,
-                                       dp.ProjectId
-                                   } into gc
-                                   select new { timeEntries = gc.Key };
-                if (distinctKeys != null && distinctKeys.Count() >= 1)
-                {
-                    var adminWorkType = workTypelst.Where(x => x.WorkTypeCode == "ADN").FirstOrDefault();
-                    var adminProject = projectlst.Where(x => x.ProjectName.Contains("Admin")).FirstOrDefault();
-                    var PSWorkType = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault();
-                    var PSProject = projectlst.Where(x => x.ProjectName.Contains("Production Support")).OrderBy(x=>x.ProjectId).FirstOrDefault();
-
-                    foreach (var item in distinctKeys)
-                    {
-                        //if (model != null && !string.IsNullOrEmpty(model.TeamCode) && string.Equals(model.TeamCode, "DEV", StringComparison.CurrentCultureIgnoreCase))
-                        //{
-                        if (item.timeEntries.ProjectId == 0 || item.timeEntries.ProjectItemId == 0 || item.timeEntries.WorkTypeId == 0)
-                        {
-                            responseData = "Please select Project or Project Item or Work Type";
-                            return false;
-                        }
-                        //if (adminProject != null && adminWorkType != null)
-                        //{
-                        //    if (item.timeEntries.WorkTypeId == adminWorkType.WorkTypeId && item.timeEntries.ProjectId != adminProject.ProjectId)
-                        //    {
-                        //        responseData = "Please select 'Administration' workType for 'Admin' Project";
-                        //        return false;
-                        //    }
-                        //}
-                        if (PSWorkType != null && PSProject != null)
-                        {
-                            if (item.timeEntries.WorkTypeId == PSWorkType.WorkTypeId && item.timeEntries.ProjectId != PSProject.ProjectId)
-                            {
-                                responseData = "Please select 'Production Support' workType for 'Production Support' Project";
-                                return false;
-                            }
-                        }
-
-                        if (model != null && !string.IsNullOrEmpty(model.TeamCode) && model.TeamCode.ToUpper() == "PS")
-                        {
-                            string projectIds = Convert.ToString(ConfigurationManager.AppSettings["ProdSupprtProjectIds"]);
-                            string projects = Convert.ToString(ConfigurationManager.AppSettings["ProdSupprtProjects"]);
-                            if (!string.IsNullOrEmpty(projectIds))
-                            {
-                                List<int> prjIds = projectIds.Split(',').Select(int.Parse).ToList();
-
-                                if (prjIds.IndexOf(item.timeEntries.ProjectId.GetValueOrDefault()) == -1)
-                                {
-                                    responseData = "Production support team can only select : Production " + projects + " as project(s)";
-                                    return false;
-                                }
-                            }
-                        }
-                        //}
-                        //else
-                        //{
-                        //    if (item.timeEntries.ProjectId == 0 || item.timeEntries.WorkTypeId == 0)
-                        //    {
-                        //        responseData = "Please select Project or Work Type";
-                        //        return false;
-                        //    }
-                        //}
-                    }
-                }
-
-
-                var distinctKeysWithWorkItem = from dp in model.TimeEntry
-                                               group dp by new
-                                               {
-                                                   //dp.ApplicationId,
-                                                   dp.ProjectItemId,
-                                                   dp.WorkTypeId,
-                                                   dp.ProjectId,
-                                                   dp.WorkItem
-                                               } into gc
-                                               select new { timeEntries = gc.Key };
-                if (distinctKeysWithWorkItem != null && distinctKeysWithWorkItem.Count() >= 1)
-                {
-                    var projectitem = (projectItemlst != null && projectItemlst.Count > 0) ? projectItemlst.Where(x => x.ProjectItemName.ToLower().Contains("other")).FirstOrDefault() : null;
-                    foreach (var item in distinctKeysWithWorkItem)
-                    {
-                        if (projectitem != null && item.timeEntries.ProjectItemId == projectitem.ProjectItemId && string.IsNullOrEmpty(item.timeEntries.WorkItem))
-                        {
-                            responseData = "Work Item required for 'Other' project item";
-                            return false;
-                        }
-                        //}
-                        //else
-                        //{
-                        //    if (item.timeEntries.ProjectId == 0 || item.timeEntries.WorkTypeId == 0)
-                        //    {
-                        //        responseData = "Please select Project or Work Type";
-                        //        return false;
-                        //    }
-                        //}
-                    }
-                }
-
-
-                //Comment below code to enter future date entries other then PTO 
-                //As per Samir Comment on 12/19/2019
-                //var distinctdates = from dp in model.TimeEntry
-                //                    group dp by new
-                //                    {
-                //                        dp.Date,
-                //                        dp.ProjectId,
-                //                        dp.WorkTypeId
-                //                    } into gc
-                //                    select new { timeEntries = gc.Key };
-                //if (distinctdates != null && distinctdates.Count() >= 1)
-                //{
-                //    DayOfWeek day = DateTime.Now.DayOfWeek;
-                //    int days = day - DayOfWeek.Sunday;
-                //    DateTime startDate = DateTime.Now.AddDays(-days);
-                //    DateTime thisWeekEnd = startDate.AddDays(6);
-
-                //    //DateTime thisWeekEnd = DateTime.Today.AddDays(7).AddSeconds(-1).Date;
-                //    var workType = workTypelst.Where(x => x.WorkTypeCode == "PTO").FirstOrDefault();
-                //    var project = projectlst.Where(x => x.ProjectName.Contains("PTO")).FirstOrDefault();
-
-                //    foreach (var item in distinctdates)
-                //    {
-                //        DateTime timeEntryDate = item.timeEntries.Date.Date;
-                //        if (workType != null && project != null)
-                //        {
-                //            if (timeEntryDate > thisWeekEnd && workType != null && project != null && item.timeEntries.ProjectId != project.ProjectId && item.timeEntries.WorkTypeId != workType.WorkTypeId)
-                //            {
-                //                responseData = "Please select Project, Project Item or Work Type 'PTO' for future date";
-                //                return false;
-                //            }
-                //        }
-                //    }
-                //}
-            }
-            catch (Exception ex)
-            {
-                logger.WriteMessage(this.GetType(), LogLevel.ERROR, ex.Message, ex);
-                return false;
-            }
-            return true;
         }
 
         /// <summary>
@@ -864,12 +589,15 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     TimeEntryDeleteModel requestModel = new TimeEntryDeleteModel() { TimeEntryId = timeentryIds, DeleteUserId = deletedUserId };
                     string postData = JsonConvert.SerializeObject(requestModel);
-                    deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData);
+                    deletedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData),
+                        logger, this.GetType(), "DeleteRows");
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to delete time entries. Please try again." }, JsonRequestBehavior.AllowGet);
             }
             return Json(deletedCount, JsonRequestBehavior.AllowGet);
         }
@@ -889,13 +617,15 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     TimeEntryDeleteModel requestModel = new TimeEntryDeleteModel() { TimeEntryId = Convert.ToString(TimeEntryId), DeleteUserId = EmployeeId };
                     string postData = JsonConvert.SerializeObject(requestModel);
-                    deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData);
-                    //deletedCount = apiExtension.InvokeGet<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry + "?timeEntryId=" + TimeEntryId + "&deleteUserId=" + EmployeeId));
+                    deletedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData),
+                        logger, this.GetType(), "DeleteTimeSheet");
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, string.Empty, ex);
+                return Json(new { success = false, error = "Failed to delete time entry. Please try again." });
             }
             return Json(deletedCount);
         }
@@ -1039,33 +769,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             EmployeeModel employeeModel = apiExtension.InvokeGet<EmployeeModel>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.GetByEmployeeId + "?employeeId=" + employeeId));
             try
             {
-                int worktypeId = 0;
                 var workTypelst = getWorkTypeList();
-                if (employeeModel != null && !string.IsNullOrEmpty(employeeModel.TeamCode))
-                {
-                    switch (employeeModel.TeamCode)
-                    {
-                        case "DEV":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "DEV").FirstOrDefault().WorkTypeId;
-                            break;
-                        case "QA":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "TES").FirstOrDefault().WorkTypeId;
-                            break;
-                        case "PS":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault().WorkTypeId;
-                            break;
-                        case "RPT":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault().WorkTypeId;
-                            break;
-                        case "BA":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "PMT").FirstOrDefault().WorkTypeId;
-                            break;
-                        case "MGT":
-                            worktypeId = workTypelst.Where(x => x.WorkTypeCode == "ADN").FirstOrDefault().WorkTypeId;
-                            break;
-                    }
-                }
-                employeeModel.TeamWorkType = worktypeId;
+                employeeModel.TeamWorkType = TeamWorkTypeHelper.GetDefaultWorkTypeId(employeeModel?.TeamCode, workTypelst);
             }
             catch (Exception ex)
             {

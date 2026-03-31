@@ -205,7 +205,6 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EmploymentTypeController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ProjectItemController.cs" />
@@ -216,7 +215,6 @@
     <Compile Include="Controllers\TimeEntryController.cs" />
     <Compile Include="Controllers\TimeZoneController.cs" />
     <Compile Include="Controllers\UserTypeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WorkTypeCategoryController.cs" />
     <Compile Include="Controllers\WorkTypeController.cs" />
     <Compile Include="Global.asax.cs">
