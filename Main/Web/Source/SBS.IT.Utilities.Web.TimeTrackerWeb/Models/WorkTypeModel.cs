@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SBS.IT.Utilities.Shared.Model;
 
 namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Models
 {

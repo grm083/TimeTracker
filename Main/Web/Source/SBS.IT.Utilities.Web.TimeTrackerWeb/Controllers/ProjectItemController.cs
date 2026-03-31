@@ -1,5 +1,6 @@
 ﻿using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using SBS.IT.Utilities.Shared.Model;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 using System;
 using System.Collections.Generic;

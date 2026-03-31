@@ -271,14 +271,11 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\ProjectItemStatusModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
-    <Compile Include="Models\ProjectTypeModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\TimeSheetMaster.cs" />
     <Compile Include="Models\TimeSheetModel.cs" />
     <Compile Include="Models\ProjectItemModel.cs" />
-    <Compile Include="Models\WorkTypeCategoryModel.cs" />
     <Compile Include="Models\WorkTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validate\TimeTrackerValidate.cs" />

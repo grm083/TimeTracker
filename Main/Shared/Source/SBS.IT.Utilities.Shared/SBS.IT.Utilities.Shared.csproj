@@ -79,6 +79,7 @@
     <Compile Include="Cache\Implementation\SessionCacheManager.cs" />
     <Compile Include="Mapper\AutoMapperExtension.cs" />
     <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\LookupModels.cs" />
     <Compile Include="BaseMessage\BaseServiceMessageUtility.cs" />
     <Compile Include="BaseMessage\BaseServiceRequest.cs" />
     <Compile Include="BaseMessage\BaseServiceResponse.cs" />

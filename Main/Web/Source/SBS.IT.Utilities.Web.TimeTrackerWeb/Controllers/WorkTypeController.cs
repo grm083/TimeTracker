@@ -7,6 +7,7 @@ using SBS.IT.Utilities.Shared.APIClient.Message;
 using SBS.IT.Utilities.Shared.Cache.Core;
 using SBS.IT.Utilities.Shared.Cache.Implementation;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Filters;
+using SBS.IT.Utilities.Shared.Model;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Models;
 using SBS.IT.Utilities.Web.TimeTrackerWeb.Extension;
 using System;
