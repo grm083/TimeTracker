@@ -127,13 +127,16 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                         model.UserId = requestModel.UserId = authenticationModel.EmployeeId;
                         model.TimeEntry.Add(requestModel);
                         string postData = JsonConvert.SerializeObject(model);
-                        savedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.UpdateTimeEntry), postData);
+                        savedCount = ApiRetryHelper.ExecuteWithRetry(
+                            () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.UpdateTimeEntry), postData),
+                            logger, this.GetType(), "EditingInline_Update");
                     }
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to save time entry. Please try again." });
             }
 
             return Json(savedCount);
@@ -275,7 +278,9 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     requestModel.Comments = timeentrySearchModel.Comments;
                     timeSheetmodel.TimeEntry.Add(requestModel);
                     string postData = JsonConvert.SerializeObject(timeSheetmodel);
-                    savedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData);
+                    savedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData),
+                        logger, this.GetType(), "UpdateTimeSheet");
                     if (savedCount > 0)
                         TempData["TimeSheetMessage"] = "TimeSheet updated successfully";
                 }
@@ -283,6 +288,7 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to update time entry. Please try again." });
             }
             return Json(savedCount);
         }
@@ -547,20 +553,22 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     model.CreateUserId = model.UserId = authenticationModel.EmployeeId;
                     var postData = JsonConvert.SerializeObject(model);
-                    responseData = apiExtension.InvokePost<string>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData);
+                    responseData = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<string>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.SaveTimeSheet), postData),
+                        logger, this.GetType(), "SavetimeSheet");
 
                     return Json(responseData, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(responseData, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, error = responseData }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to save time entries. Please try again." }, JsonRequestBehavior.AllowGet);
             }
-            return Json(responseData, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -581,12 +589,15 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     TimeEntryDeleteModel requestModel = new TimeEntryDeleteModel() { TimeEntryId = timeentryIds, DeleteUserId = deletedUserId };
                     string postData = JsonConvert.SerializeObject(requestModel);
-                    deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData);
+                    deletedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData),
+                        logger, this.GetType(), "DeleteRows");
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, authenticationModel?.UserName, string.Empty, ex.Message, ex);
+                return Json(new { success = false, error = "Failed to delete time entries. Please try again." }, JsonRequestBehavior.AllowGet);
             }
             return Json(deletedCount, JsonRequestBehavior.AllowGet);
         }
@@ -606,13 +617,15 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     TimeEntryDeleteModel requestModel = new TimeEntryDeleteModel() { TimeEntryId = Convert.ToString(TimeEntryId), DeleteUserId = EmployeeId };
                     string postData = JsonConvert.SerializeObject(requestModel);
-                    deletedCount = apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData);
-                    //deletedCount = apiExtension.InvokeGet<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry + "?timeEntryId=" + TimeEntryId + "&deleteUserId=" + EmployeeId));
+                    deletedCount = ApiRetryHelper.ExecuteWithRetry(
+                        () => apiExtension.InvokePost<int>(new Uri(apiConfiguration.ServiceBaseAddress + APIResources.DeleteTimeEntry), postData),
+                        logger, this.GetType(), "DeleteTimeSheet");
                 }
             }
             catch (Exception ex)
             {
                 logger.WriteMessage(this.GetType(), LogLevel.ERROR, string.Empty, ex);
+                return Json(new { success = false, error = "Failed to delete time entry. Please try again." });
             }
             return Json(deletedCount);
         }

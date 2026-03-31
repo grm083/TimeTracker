@@ -544,6 +544,11 @@ function SaveTimeSheetData(data) {
         //},
         success: function (successData) {
             openModal();
+            if (successData && successData.success === false) {
+                closeModal();
+                swal("Error!", successData.error || "An unexpected error occurred. Please try again.", "error");
+                return;
+            }
             if (successData > 0) {
                 $("#messageBox").append(summary);
                 swal({
@@ -561,7 +566,6 @@ function SaveTimeSheetData(data) {
             }
 
             else {
-                //swal("Error!", successData, "error");
                 var summary = " * <label class='error'>" + successData + "</label></br>";
                 $("#messageBox").empty();
                 $("#messageBox").append(summary);
@@ -570,7 +574,7 @@ function SaveTimeSheetData(data) {
         },
         error: function (error) {
             closeModal();
-            swal("oops!", error.statusText, "error");
+            swal("Error!", "Failed to save time entries. Please try again.", "error");
         }
     });
 }
@@ -2448,7 +2452,11 @@ function deleteRow(timeentryIds) {
         cache: false,
         async: false,
         success: function (successData) {
-            //debugger;
+            if (successData && successData.success === false) {
+                closeModal();
+                swal("Error!", successData.error || "Failed to delete time entries. Please try again.", "error");
+                return;
+            }
             if (successData != null && successData != undefined && successData != "") {
                 swal({
                     title: "Success!",
@@ -2464,6 +2472,8 @@ function deleteRow(timeentryIds) {
             closeModal();
         },
         error: function (error) {
+            closeModal();
+            swal("Error!", "Failed to delete time entries. Please try again.", "error");
         }
     });
 }

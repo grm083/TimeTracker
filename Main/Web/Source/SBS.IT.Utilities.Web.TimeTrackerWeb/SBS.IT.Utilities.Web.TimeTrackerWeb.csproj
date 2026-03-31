@@ -261,6 +261,7 @@
     <Compile Include="Extension\AuthenticateExtension.cs" />
     <Compile Include="Extension\ReferenceDataCache.cs" />
     <Compile Include="Filters\SessionTimeoutAttribute.cs" />
+    <Compile Include="Services\ApiRetryHelper.cs" />
     <Compile Include="Services\TeamWorkTypeHelper.cs" />
     <Compile Include="Services\TimeEntryValidationService.cs" />
     <Compile Include="Global.asax.cs">
