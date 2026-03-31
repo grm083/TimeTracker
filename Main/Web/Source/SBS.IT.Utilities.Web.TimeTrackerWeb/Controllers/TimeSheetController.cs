@@ -172,7 +172,6 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                 {
                     timeentrySearchModel = getTimeEntryById(TimeEntryId);
                     timeentrySearchModel.WorkTypelst = getWorkTypeList();
-                    //timeentrySearchModel.ProjectItemlst = getProjectItemList(timeentrySearchModel.ApplicationId);
                     timeentrySearchModel.Applicationlst = getapplicationList();
                 }
             }
@@ -672,11 +671,10 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     }
                 }
 
-                // check for duplicate application project item and work type
+                // check for duplicate project item and work type
                 var duplicateKeys = from dp in model.TimeEntry
                                     group dp by new
                                     {
-                                        //dp.ApplicationId,
                                         dp.ProjectItemId,
                                         dp.ProjectId,
                                         dp.WorkTypeId,
@@ -689,21 +687,16 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                     {
                         if (item.rowcount > 7)
                         {
-                            //if (model != null && !string.IsNullOrEmpty(model.TeamCode) && string.Equals(model.TeamCode, "BA", StringComparison.CurrentCultureIgnoreCase))
-                            //    responseData = "Please select unique Project or Work Type";
-                            //else
                             responseData = "Please select unique Project , Project Item and Work Type";
                             return false;
                         }
                     }
                 }
 
-                // check for application / project / project item/ work type is required
-
+                // check for project / project item / work type is required
                 var distinctKeys = from dp in model.TimeEntry
                                    group dp by new
                                    {
-                                       //dp.ApplicationId,
                                        dp.ProjectItemId,
                                        dp.WorkTypeId,
                                        dp.ProjectId
@@ -711,28 +704,16 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                                    select new { timeEntries = gc.Key };
                 if (distinctKeys != null && distinctKeys.Count() >= 1)
                 {
-                    var adminWorkType = workTypelst.Where(x => x.WorkTypeCode == "ADN").FirstOrDefault();
-                    var adminProject = projectlst.Where(x => x.ProjectName.Contains("Admin")).FirstOrDefault();
                     var PSWorkType = workTypelst.Where(x => x.WorkTypeCode == "PST").FirstOrDefault();
                     var PSProject = projectlst.Where(x => x.ProjectName.Contains("Production Support")).OrderBy(x=>x.ProjectId).FirstOrDefault();
 
                     foreach (var item in distinctKeys)
                     {
-                        //if (model != null && !string.IsNullOrEmpty(model.TeamCode) && string.Equals(model.TeamCode, "DEV", StringComparison.CurrentCultureIgnoreCase))
-                        //{
                         if (item.timeEntries.ProjectId == 0 || item.timeEntries.ProjectItemId == 0 || item.timeEntries.WorkTypeId == 0)
                         {
                             responseData = "Please select Project or Project Item or Work Type";
                             return false;
                         }
-                        //if (adminProject != null && adminWorkType != null)
-                        //{
-                        //    if (item.timeEntries.WorkTypeId == adminWorkType.WorkTypeId && item.timeEntries.ProjectId != adminProject.ProjectId)
-                        //    {
-                        //        responseData = "Please select 'Administration' workType for 'Admin' Project";
-                        //        return false;
-                        //    }
-                        //}
                         if (PSWorkType != null && PSProject != null)
                         {
                             if (item.timeEntries.WorkTypeId == PSWorkType.WorkTypeId && item.timeEntries.ProjectId != PSProject.ProjectId)
@@ -757,23 +738,12 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                                 }
                             }
                         }
-                        //}
-                        //else
-                        //{
-                        //    if (item.timeEntries.ProjectId == 0 || item.timeEntries.WorkTypeId == 0)
-                        //    {
-                        //        responseData = "Please select Project or Work Type";
-                        //        return false;
-                        //    }
-                        //}
                     }
                 }
-
 
                 var distinctKeysWithWorkItem = from dp in model.TimeEntry
                                                group dp by new
                                                {
-                                                   //dp.ApplicationId,
                                                    dp.ProjectItemId,
                                                    dp.WorkTypeId,
                                                    dp.ProjectId,
@@ -790,53 +760,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
                             responseData = "Work Item required for 'Other' project item";
                             return false;
                         }
-                        //}
-                        //else
-                        //{
-                        //    if (item.timeEntries.ProjectId == 0 || item.timeEntries.WorkTypeId == 0)
-                        //    {
-                        //        responseData = "Please select Project or Work Type";
-                        //        return false;
-                        //    }
-                        //}
                     }
                 }
-
-
-                //Comment below code to enter future date entries other then PTO 
-                //As per Samir Comment on 12/19/2019
-                //var distinctdates = from dp in model.TimeEntry
-                //                    group dp by new
-                //                    {
-                //                        dp.Date,
-                //                        dp.ProjectId,
-                //                        dp.WorkTypeId
-                //                    } into gc
-                //                    select new { timeEntries = gc.Key };
-                //if (distinctdates != null && distinctdates.Count() >= 1)
-                //{
-                //    DayOfWeek day = DateTime.Now.DayOfWeek;
-                //    int days = day - DayOfWeek.Sunday;
-                //    DateTime startDate = DateTime.Now.AddDays(-days);
-                //    DateTime thisWeekEnd = startDate.AddDays(6);
-
-                //    //DateTime thisWeekEnd = DateTime.Today.AddDays(7).AddSeconds(-1).Date;
-                //    var workType = workTypelst.Where(x => x.WorkTypeCode == "PTO").FirstOrDefault();
-                //    var project = projectlst.Where(x => x.ProjectName.Contains("PTO")).FirstOrDefault();
-
-                //    foreach (var item in distinctdates)
-                //    {
-                //        DateTime timeEntryDate = item.timeEntries.Date.Date;
-                //        if (workType != null && project != null)
-                //        {
-                //            if (timeEntryDate > thisWeekEnd && workType != null && project != null && item.timeEntries.ProjectId != project.ProjectId && item.timeEntries.WorkTypeId != workType.WorkTypeId)
-                //            {
-                //                responseData = "Please select Project, Project Item or Work Type 'PTO' for future date";
-                //                return false;
-                //            }
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {

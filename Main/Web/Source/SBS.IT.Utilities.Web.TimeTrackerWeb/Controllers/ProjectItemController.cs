@@ -116,13 +116,6 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb.Controllers
             });
         }
 
-        //public virtual JsonResult GetProjectByApplicationId(int? applicationId)
-        //{
-        //    List<ProjectListModel> projectLst = new List<ProjectListModel>();
-        //    projectLst = getProjectList();
-        //    return Json(projectLst, JsonRequestBehavior.AllowGet);
-        //}
-
         /// <summary>
         /// list of project items
         /// </summary>
