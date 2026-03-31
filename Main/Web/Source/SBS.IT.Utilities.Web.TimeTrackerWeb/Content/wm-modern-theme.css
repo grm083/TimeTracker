@@ -1,0 +1,735 @@
+/* ==========================================================================
+   WM Modern Theme Override
+   Aligns TimeTracker visual style with wm.com's modern design language.
+   Loaded last to override Bootstrap, SB Admin 2, and legacy SBS styles.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Custom Properties (Color Palette)
+   -------------------------------------------------------------------------- */
+:root {
+    /* WM Brand Colors */
+    --wm-green: #1c8200;
+    --wm-green-hover: #135B00;
+    --wm-dark-green: #024731;
+    --wm-accent: #E8F733;
+
+    /* Neutrals */
+    --wm-white: #FFFFFF;
+    --wm-off-white: #F8F8F2;
+    --wm-bg: #f5f5f5;
+    --wm-text: #333333;
+    --wm-text-secondary: #4F4F58;
+    --wm-text-light: #767676;
+    --wm-border: #e0e0e0;
+    --wm-border-light: #eeeeee;
+
+    /* Sidebar */
+    --wm-sidebar-bg: #1a1a2e;
+    --wm-sidebar-hover: rgba(255, 255, 255, 0.08);
+    --wm-sidebar-active: rgba(28, 130, 0, 0.15);
+    --wm-sidebar-text: #a8a8b3;
+    --wm-sidebar-text-hover: #FFFFFF;
+    --wm-sidebar-border: #2a2a3e;
+
+    /* Status */
+    --wm-success-bg: #f0f9eb;
+    --wm-success-border: #1c8200;
+    --wm-error-bg: #fef2f2;
+    --wm-error-border: #dc2626;
+    --wm-warning-bg: #fffbeb;
+    --wm-warning-border: #d97706;
+
+    /* Elevation */
+    --wm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --wm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --wm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --wm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+    /* Spacing */
+    --wm-radius: 4px;
+    --wm-radius-lg: 8px;
+
+    /* Transitions */
+    --wm-transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: var(--wm-text);
+    line-height: 1.5;
+    background-color: var(--wm-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 600;
+    color: var(--wm-dark-green);
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.75rem; }
+h2, h3 { font-size: 1.25rem; }
+
+a {
+    color: var(--wm-green);
+    transition: color var(--wm-transition);
+}
+
+a:hover, a:focus {
+    color: var(--wm-green-hover);
+    text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — Flat modern style (replaces gradient buttons)
+   -------------------------------------------------------------------------- */
+.button-1,
+.k-button,
+.WMAcorn_Reporting input[type="submit"],
+input[type="button"],
+input[type="submit"],
+a.button {
+    background-color: var(--wm-green) !important;
+    background-image: none !important;
+    border: 1px solid var(--wm-green) !important;
+    border-radius: var(--wm-radius) !important;
+    color: var(--wm-white) !important;
+    text-shadow: none !important;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.8125rem;
+    letter-spacing: 0.025em;
+    line-height: 1.5;
+    padding: 8px 16px;
+    cursor: pointer !important;
+    display: inline-block !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    transition: all var(--wm-transition) !important;
+    box-shadow: var(--wm-shadow-sm);
+    filter: none !important;
+}
+
+.button-1:hover, .button-1:focus,
+.k-button:hover, .k-button:focus,
+input[type="button"]:hover, input[type="button"]:focus,
+input[type="submit"]:hover, input[type="submit"]:focus,
+a.button:hover, a.button:focus {
+    background-color: var(--wm-green-hover) !important;
+    border-color: var(--wm-green-hover) !important;
+    color: var(--wm-white) !important;
+    text-shadow: none !important;
+    box-shadow: var(--wm-shadow-md);
+    filter: none !important;
+}
+
+.button-2 {
+    background-color: #6b7280 !important;
+    background-image: none !important;
+    border: 1px solid #6b7280 !important;
+    border-radius: var(--wm-radius) !important;
+    color: var(--wm-white) !important;
+    text-shadow: none !important;
+    padding: 8px 16px;
+    font-weight: 600;
+    transition: all var(--wm-transition);
+    box-shadow: var(--wm-shadow-sm);
+    filter: none !important;
+}
+
+.button-2:hover, .button-2:focus {
+    background-color: #4b5563 !important;
+    border-color: #4b5563 !important;
+    color: var(--wm-white) !important;
+    text-shadow: none !important;
+    box-shadow: var(--wm-shadow-md);
+    filter: none !important;
+}
+
+.no-svg .button-1,
+.no-svg .k-button,
+.no-svg .button-2 {
+    filter: none !important;
+}
+
+.btnSearch, .button {
+    background-color: var(--wm-green);
+    border: none;
+    border-radius: var(--wm-radius);
+    color: white;
+    padding: 8px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all var(--wm-transition);
+    box-shadow: var(--wm-shadow-sm);
+}
+
+.btnSearch:hover, .button:hover,
+.btn:hover {
+    background-color: var(--wm-green-hover);
+    color: white;
+}
+
+.greenbtn {
+    background-color: var(--wm-green) !important;
+    background-image: none !important;
+    border: 1px solid var(--wm-green) !important;
+    text-shadow: none !important;
+    box-shadow: var(--wm-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Form Inputs — Clean modern style
+   -------------------------------------------------------------------------- */
+input[type="text"],
+input[type="password"] {
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius);
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--wm-text);
+    background-color: var(--wm-white);
+    box-shadow: var(--wm-shadow-sm);
+    transition: border-color var(--wm-transition), box-shadow var(--wm-transition);
+}
+
+input[type='text']:hover, input[type='password']:hover {
+    border-color: var(--wm-green);
+}
+
+input[type='text']:focus, input[type='password']:focus {
+    border-color: var(--wm-green);
+    box-shadow: 0 0 0 3px rgba(28, 130, 0, 0.15);
+    outline: none;
+}
+
+select {
+    height: auto;
+    padding: 8px 12px;
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius);
+    font-size: 14px;
+    cursor: pointer;
+    background-color: var(--wm-white);
+}
+
+fieldset {
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius-lg);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--wm-dark-green);
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar Navigation — Modern dark theme
+   -------------------------------------------------------------------------- */
+#sidebar-wrapper {
+    background: var(--wm-sidebar-bg);
+    border-right: 1px solid var(--wm-sidebar-border);
+    box-shadow: var(--wm-shadow-lg);
+}
+
+#sidebar_menu li a, .sidebar-nav li a {
+    background: transparent;
+    color: var(--wm-sidebar-text);
+    border-right: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: all var(--wm-transition);
+}
+
+.sidebar-nav li {
+    line-height: 44px;
+}
+
+.sidebar-nav li a:hover {
+    color: var(--wm-sidebar-text-hover);
+    background: var(--wm-sidebar-hover);
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    line-height: 65px;
+    border-bottom: 1px solid var(--wm-sidebar-border);
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: var(--wm-white);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    background: none;
+    color: var(--wm-accent);
+}
+
+.sidebar_name {
+    color: var(--wm-sidebar-text);
+    opacity: 0.8;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Sidebar icons */
+.sidebar-nav li a .fa {
+    width: 20px;
+    text-align: center;
+    margin-right: 8px;
+    opacity: 0.7;
+    transition: opacity var(--wm-transition);
+}
+
+.sidebar-nav li a:hover .fa {
+    opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Content Section Headers — Modern flat style (replaces green bars)
+   -------------------------------------------------------------------------- */
+.contentSectionFullTop,
+.contentSectionHalfTop {
+    background-color: var(--wm-dark-green);
+    border-radius: var(--wm-radius-lg) var(--wm-radius-lg) 0 0;
+    border-color: var(--wm-dark-green);
+    height: auto;
+    padding: 2px 0;
+}
+
+.contentSectionFullTop h2,
+.contentSectionHalfTop h2 {
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    letter-spacing: 0.01em;
+}
+
+.contentSectionFull,
+.contentSectionHalf {
+    border-color: var(--wm-border);
+    border-radius: 0 0 var(--wm-radius-lg) var(--wm-radius-lg);
+    padding: 12px;
+    background-color: var(--wm-white);
+}
+
+/* --------------------------------------------------------------------------
+   Section Headers
+   -------------------------------------------------------------------------- */
+.section-header {
+    border-bottom: 2px solid var(--wm-green);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+}
+
+.section-header .title {
+    color: var(--wm-dark-green);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Data Tables — Clean modern style
+   -------------------------------------------------------------------------- */
+.data-table {
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius);
+}
+
+.data-table th {
+    background-color: var(--wm-off-white);
+    font-weight: 600;
+    padding: 10px 12px;
+    color: var(--wm-dark-green);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.data-table td {
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+.data-table th, .data-table td {
+    border-bottom: 1px solid var(--wm-border-light);
+    border-right: none;
+}
+
+.data-table .even {
+    background-color: var(--wm-off-white);
+}
+
+/* --------------------------------------------------------------------------
+   Kendo Grid Overrides — Modern flat style
+   -------------------------------------------------------------------------- */
+.k-grid {
+    border-radius: var(--wm-radius-lg);
+    border-color: var(--wm-border);
+    box-shadow: var(--wm-shadow);
+}
+
+.k-grid .k-toolbar {
+    border-radius: var(--wm-radius-lg) var(--wm-radius-lg) 0 0;
+    background-color: var(--wm-off-white);
+    border-color: var(--wm-border);
+    padding: 8px 12px;
+}
+
+.k-grid .k-pager-wrap {
+    border-radius: 0 0 var(--wm-radius-lg) var(--wm-radius-lg);
+    border-color: var(--wm-border);
+}
+
+div.k-window-titlebar, .k-window-titlebar {
+    background-color: var(--wm-dark-green);
+    border-radius: var(--wm-radius-lg) var(--wm-radius-lg) 0 0;
+    color: white;
+    padding: 8px 12px;
+}
+
+div.k-window-content {
+    border-radius: 0 0 var(--wm-radius-lg) var(--wm-radius-lg);
+    padding: 16px;
+}
+
+div.k-widget.k-window {
+    border-radius: var(--wm-radius-lg);
+    box-shadow: var(--wm-shadow-lg);
+    border-color: var(--wm-border);
+}
+
+.k-autocomplete.k-state-hover,
+.k-picker-wrap.k-state-hover,
+.k-numeric-wrap.k-state-hover,
+.k-dropdown-wrap.k-state-hover {
+    border-color: var(--wm-green) !important;
+}
+
+.k-selectable tr.k-state-selected {
+    background-color: var(--wm-white) !important;
+}
+
+.k-selectable tr.k-alt.k-state-selected {
+    background-color: rgba(28, 130, 0, 0.05) !important;
+}
+
+.k-overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Kendo Panelbar */
+.k-panelbar > .k-state-active > a.k-state-selected {
+    background-color: var(--wm-green);
+}
+
+.k-panelbar > .k-state-active > a.k-state-selected.k-state-hover,
+.k-panelbar > .k-state-default > a.k-state-hover {
+    background-color: var(--wm-green-hover);
+}
+
+/* Kendo Tabstrip */
+.k-tabstrip-items .k-link, .k-panelbar > li > .k-link {
+    color: var(--wm-green) !important;
+}
+
+.k-item.k-state-default {
+    background-color: var(--wm-off-white);
+    border: 1px solid var(--wm-border);
+}
+
+/* Grid button hover */
+.k-grid tbody .k-button:hover,
+.no-svg .k-grid tbody button.k-button:hover,
+.button-right:hover,
+.no-svg .button-right:hover {
+    color: var(--wm-green) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Notifications — Modern flat style
+   -------------------------------------------------------------------------- */
+.notificationError {
+    background-color: var(--wm-error-bg);
+    border: 1px solid var(--wm-error-border);
+    border-left: 4px solid var(--wm-error-border);
+    border-radius: var(--wm-radius);
+    padding: 12px 16px;
+}
+
+.notificationSuccess {
+    background-color: var(--wm-success-bg);
+    border: 1px solid var(--wm-success-border);
+    border-left: 4px solid var(--wm-success-border);
+    border-radius: var(--wm-radius);
+    padding: 12px 16px;
+}
+
+.notificationBox {
+    background-color: var(--wm-off-white);
+    border-radius: var(--wm-radius);
+    padding: 12px 16px;
+}
+
+/* --------------------------------------------------------------------------
+   Validation — Modern style
+   -------------------------------------------------------------------------- */
+.validation-summary-errors {
+    background-color: var(--wm-error-bg);
+    border: 1px solid var(--wm-error-border);
+    border-left: 4px solid var(--wm-error-border);
+    border-radius: var(--wm-radius);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.field-validation-error {
+    color: var(--wm-error-border);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.input-validation-error {
+    border-color: var(--wm-error-border) !important;
+    background-color: var(--wm-error-bg);
+}
+
+/* --------------------------------------------------------------------------
+   Top Navigation Bar
+   -------------------------------------------------------------------------- */
+.topNav {
+    background-color: var(--wm-dark-green);
+    background-image: none;
+    border: 1px solid var(--wm-dark-green);
+    border-radius: var(--wm-radius);
+}
+
+.no-svg .topNav {
+    filter: none;
+}
+
+#navTabs td {
+    border-color: rgba(255, 255, 255, 0.15);
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#navTabs a.navTabs-topLevel,
+#navTabs a.navTabs-topLevel:hover,
+#navTabs a.navTabs-topLevel:focus,
+#navTabs a.navTabs-topLevel:active {
+    color: #fff;
+    text-shadow: none;
+    border-color: rgba(255, 255, 255, 0.1);
+    transition: background-color var(--wm-transition);
+}
+
+#navTabs a.navTabs-topLevel:hover,
+#navTabs a.navTabs-topLevel:focus {
+    background: rgba(255, 255, 255, 0.1);
+    background-image: none;
+}
+
+.no-svg #navTabs a.navTabs-topLevel:hover,
+.no-svg #navTabs a.navTabs-topLevel:focus {
+    filter: none;
+}
+
+#navTabs .selected a.navTabs-topLevel {
+    background: rgba(0, 0, 0, 0.2);
+    background-image: none;
+    box-shadow: none;
+}
+
+.no-svg #navTabs .selected a.navTabs-topLevel {
+    filter: none;
+}
+
+#navTabs .megamenu > ul {
+    border-top: 2px solid var(--wm-green);
+    border: 1px solid var(--wm-border);
+    border-top: 2px solid var(--wm-green);
+    box-shadow: var(--wm-shadow-lg);
+    border-radius: var(--wm-radius);
+}
+
+#navTabs li li {
+    border-left-color: var(--wm-green);
+}
+
+#navTabs li ul {
+    border-top-color: var(--wm-green);
+}
+
+/* --------------------------------------------------------------------------
+   Header Area
+   -------------------------------------------------------------------------- */
+.header {
+    background: var(--wm-white);
+    box-shadow: var(--wm-shadow-sm);
+}
+
+.header-username li {
+    border-left-color: var(--wm-green);
+}
+
+.navbar-top-links {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.dropdown-menu {
+    border-radius: var(--wm-radius);
+    box-shadow: var(--wm-shadow-lg);
+    border: 1px solid var(--wm-border);
+}
+
+.dropdown-user li a {
+    padding: 8px 16px;
+    font-size: 14px;
+    transition: background-color var(--wm-transition);
+}
+
+.dropdown-user li a:hover {
+    background-color: var(--wm-off-white);
+}
+
+/* --------------------------------------------------------------------------
+   Content Header & Page Title
+   -------------------------------------------------------------------------- */
+.content-header {
+    border-bottom: 1px solid var(--wm-border-light);
+}
+
+.page-title h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--wm-dark-green);
+    margin-bottom: 0.75em;
+}
+
+.page-title h2 {
+    color: var(--wm-text-secondary);
+    font-weight: 400;
+}
+
+/* --------------------------------------------------------------------------
+   Login Page (styles applied to body.master-body-login-page)
+   -------------------------------------------------------------------------- */
+body.master-body-login-page {
+    background: linear-gradient(135deg, var(--wm-off-white) 0%, #e8e8e0 100%);
+}
+
+.master-wrapper-login-page-content-center {
+    border-radius: var(--wm-radius-lg);
+    box-shadow: var(--wm-shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Search
+   -------------------------------------------------------------------------- */
+.search-page .search-input {
+    background: var(--wm-off-white);
+    border-radius: var(--wm-radius-lg);
+    padding: 16px;
+    border: 1px solid var(--wm-border);
+}
+
+.callSearch {
+    border: 1px solid var(--wm-border);
+    background-color: var(--wm-off-white);
+    border-radius: var(--wm-radius-lg);
+}
+
+/* --------------------------------------------------------------------------
+   AJAX Loading Indicator
+   -------------------------------------------------------------------------- */
+.ajax-loading-block-window {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   Dropdown Menus (custom dropdowns in header)
+   -------------------------------------------------------------------------- */
+.dropdown-content, .dropdown-logout {
+    background-color: var(--wm-white);
+    border: 1px solid var(--wm-border);
+    box-shadow: var(--wm-shadow-lg);
+    border-radius: var(--wm-radius);
+}
+
+.dropdown-content a, .dropdown-logout a {
+    color: var(--wm-text);
+    transition: background-color var(--wm-transition);
+}
+
+.dropdown-content a:hover, .dropdown-logout a:hover {
+    background-color: var(--wm-off-white);
+    color: var(--wm-green);
+}
+
+.menu a, .dropbtn,
+.menuLogout a, .dropbtnlogout {
+    color: var(--wm-green);
+    font-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   Chat Bubbles
+   -------------------------------------------------------------------------- */
+.chat {
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius-lg);
+    background-color: var(--wm-off-white);
+}
+
+.bubble {
+    box-shadow: var(--wm-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Misc Utilities
+   -------------------------------------------------------------------------- */
+.HeaderLink {
+    border: 1px solid var(--wm-border);
+    background-color: var(--wm-off-white);
+    border-radius: var(--wm-radius-lg);
+    color: var(--wm-green);
+    font-size: 11px;
+}
+
+.headingContact {
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--wm-dark-green);
+    background-color: var(--wm-off-white);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    html {
+        font-size: 13px;
+    }
+}

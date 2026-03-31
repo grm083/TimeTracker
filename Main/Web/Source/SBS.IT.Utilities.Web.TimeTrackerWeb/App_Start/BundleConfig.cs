@@ -45,7 +45,8 @@ namespace SBS.IT.Utilities.Web.TimeTrackerWeb
                        "~/Content/sb-admin-2.min.css",
                        "~/Content/Validation.css",
                       "~/Scripts/datetimepicker/jqueryui.css",
-                       "~/fonts/font-awesome/css/font-awesome.min.css"));
+                       "~/fonts/font-awesome/css/font-awesome.min.css",
+                       "~/Content/wm-modern-theme.css"));
         }
     }
 

@@ -422,6 +422,7 @@
     <Content Include="Content\themes\sbs\kendo.customized.2013.01.11.css" />
     <Content Include="Content\themes\sbs\styles.css" />
     <Content Include="Content\Validation.css" />
+    <Content Include="Content\wm-modern-theme.css" />
     <Content Include="Content\vendor\metisMenu\metisMenu.css" />
     <Content Include="Content\vendor\metisMenu\metisMenu.js" />
     <Content Include="Content\vendor\metisMenu\metisMenu.min.css" />
